@@ -5,29 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    tools:context=".WelcomeActivity">
+    tools:context=".activities.WelcomeActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="80dp" />
-
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="145dp"
+            android:layout_marginTop="60dp"
             app:srcCompat="@drawable/logobk" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="82dp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:editable="false"
             android:gravity="center"
             android:text="Sign2Speech"
@@ -35,16 +29,12 @@
             android:textSize="48sp"
             android:textStyle="bold" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="143dp" />
-
         <Button
-            android:id="@+id/btnStart"
             android:layout_width="201dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:onClick="btnStartOnClick"
+            android:layout_marginBottom="100dp"
+            android:onClick="onClickBtnStart"
             android:text="Start"
             android:textColor="#FFFFFF"
             android:textColorHighlight="#FFFFFF"

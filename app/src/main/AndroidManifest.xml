@@ -2,17 +2,25 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.dadn_app">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".LibraryActivity"></activity>
-        <activity android:name=".TextSpeechActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".WelcomeActivity">
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".activities.LibraryAudioActivity"></activity>
+        <activity android:name=".activities.LibraryVideoActivity" />
+        <activity android:name=".activities.SettingsActivity" />
+        <activity android:name=".activities.FotgotPasswordActivity" />
+        <activity android:name=".activities.SignupActivity" />
+        <activity android:name=".activities.LibraryActivity" />
+        <activity android:name=".activities.TextSpeechActivity" />
+        <activity android:name=".activities.LoginActivity" />
+        <activity android:name=".activities.WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

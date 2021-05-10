@@ -1,10 +1,12 @@
-package com.example.dadn_app;
+package com.example.dadn_app.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+
+import com.example.dadn_app.R;
 
 public class TextSpeechActivity extends AppCompatActivity {
 
@@ -14,7 +16,7 @@ public class TextSpeechActivity extends AppCompatActivity {
         setContentView(R.layout.activity_text_speech);
     }
 
-    public void txtLibraryOnClick(View view) {
+    public void onClickLibrary(View view) {
         Intent i = new Intent(TextSpeechActivity.this, LibraryActivity.class);
         startActivity(i);
     }

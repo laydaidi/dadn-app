@@ -4,9 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
-    tools:context=".activities.LoginActivity">
-
+    tools:context=".activities.SignupActivity">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -15,8 +13,8 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="145dp"
-            android:layout_marginTop="90dp"
-            android:layout_marginBottom="60dp"
+            android:layout_marginTop="35dp"
+            android:layout_marginBottom="35dp"
             app:srcCompat="@drawable/logobk" />
 
         <LinearLayout
@@ -33,7 +31,6 @@
                 app:srcCompat="@drawable/ic_user_24" />
 
             <EditText
-                android:id="@+id/editUsername"
                 style="@style/Widget.AppCompat.EditText"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -48,7 +45,56 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="60dp"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal"
+            android:paddingRight="15dp">
+
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                app:srcCompat="@drawable/ic_baseline_email_24" />
+
+            <EditText
+                style="@style/Widget.AppCompat.EditText"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/bg_edittext"
+                android:ems="10"
+                android:hint="Email"
+                android:inputType="textEmailAddress"
+                android:textColorHint="@color/cardview_dark_background" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal"
+            android:paddingRight="15dp">
+
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                app:srcCompat="@drawable/ic_baseline_phone_24" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/bg_edittext"
+                android:ems="10"
+                android:hint="Phone"
+                android:inputType="textPhonetic"
+                android:textColorHint="@color/cardview_dark_background" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
             android:orientation="horizontal"
             android:paddingRight="15dp">
 
@@ -59,7 +105,6 @@
                 app:srcCompat="@drawable/ic_baseline_lock_24" />
 
             <EditText
-                android:id="@+id/editPassword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -73,10 +118,33 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:orientation="horizontal"
+            android:paddingRight="15dp">
+
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                app:srcCompat="@drawable/ic_baseline_lock_24" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/bg_edittext"
+                android:ems="10"
+                android:hint="Re-type password"
+                android:inputType="textPassword"
+                android:textColorHint="@color/cardview_dark_background" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/btnLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
@@ -84,21 +152,7 @@
                 android:layout_marginEnd="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_weight="1"
-                android:text="Login"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                app:backgroundTint="#5E8DB6" />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginEnd="30dp"
-                android:layout_marginRight="30dp"
-                android:layout_weight="1"
-                android:onClick="onClickBtnCancel"
-                android:text="Cancel"
+                android:text="Signup"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 app:backgroundTint="#5E8DB6" />
@@ -115,7 +169,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:gravity="center"
-                android:onClick="onClickForgotPassword"
+                android:onClick="onClickForgetPassword"
                 android:text="Forgot password ?"
                 android:textColor="@color/cardview_dark_background"
                 android:textSize="18sp" />
@@ -125,12 +179,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:gravity="center"
-                android:onClick="onClickSignup"
-                android:text="Do not have an account ? Sign up"
+                android:onClick="onClickLogin"
+                android:text="Already have an account ? Log in"
                 android:textColor="@color/cardview_dark_background"
                 android:textSize="18sp" />
         </LinearLayout>
 
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
