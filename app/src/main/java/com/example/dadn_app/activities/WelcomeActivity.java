@@ -35,8 +35,8 @@ public class WelcomeActivity extends AppCompatActivity {
         Helper.resetToken(
             queue,
             prefs,
-            () -> this.switchToTextSpeech(),
-            () -> this.switchToLogin()
+            this::switchToTextSpeech,
+            this::switchToLogin
         );
     }
 

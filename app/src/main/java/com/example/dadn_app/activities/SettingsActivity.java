@@ -80,8 +80,8 @@ public class SettingsActivity extends AppCompatActivity {
                             Helper.resetToken(
                                 queue,
                                 getSharedPreferences("com.example.dadn_app", Context.MODE_PRIVATE),
-                                () -> this.renderInformation(),
-                                () -> this.switchToLogin()
+                                this::renderInformation,
+                                this::switchToLogin
                             );
                         } else {
                             Helper.showToast(getApplicationContext(), message);
@@ -105,7 +105,57 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void onClickBtnSaveInformation() {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = Helper.buildAPIURL("/users/save-information");
 
+        JSONObject requestObj = new JSONObject();
+        try {
+            requestObj.put("email", editEmail.getText());
+            requestObj.put("phone", editPhone.getText());
+            requestObj.put("birthday", editBirthday.getText());
+            requestObj.put("address", editAddress.getText());
+
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, requestObj,
+                    response -> {
+                        Helper.showToast(getApplicationContext(), "Update successfully");
+                        this.renderInformation();
+                    },
+                    error -> {
+                        int statusCode = error.networkResponse.statusCode;
+                        try {
+                            String message = (new JSONObject(new String(error.networkResponse.data))).getString("message");
+                            if (statusCode == 403) {
+                                if (message.equals("Invalid token")) {
+                                    // Reset token here
+                                    Helper.resetToken(
+                                        queue,
+                                        getSharedPreferences("com.example.dadn_app", Context.MODE_PRIVATE),
+                                        this::onClickBtnSaveInformation,
+                                        this::switchToLogin
+                                    );
+                                } else {
+                                    Helper.showToast(getApplicationContext(), message);
+                                }
+                            } else if (statusCode == 401) {
+                                Helper.showToast(getApplicationContext(), message);
+                            } else {
+                                Helper.showToast(getApplicationContext(), "Cant connect to the server");
+                            }
+                        } catch (JSONException e) {
+                            this.switchToLogin();
+                        }
+                    }
+            ){
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    return Helper.buildAuthorizationHeader();
+                }
+            };
+            queue.add(request);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void onClickBtnLogout() {

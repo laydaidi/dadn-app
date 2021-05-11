@@ -44,7 +44,7 @@ public class LoginActivity extends AppCompatActivity {
         Helper.resetToken(
                 queue,
                 prefs,
-                () -> this.switchToTextSpeech(),
+                this::switchToTextSpeech,
                 () -> {}
         );
     }
