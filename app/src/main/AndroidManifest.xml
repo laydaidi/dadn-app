@@ -13,18 +13,35 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true"
         >
-        <activity android:name=".activities.LibraryAudioActivity"></activity>
-        <activity android:name=".activities.LibraryVideoActivity" />
-        <activity android:name=".activities.SettingsActivity" />
-        <activity android:name=".activities.ForgotPasswordActivity" />
-        <activity android:name=".activities.SignupActivity" />
-        <activity android:name=".activities.LibraryActivity" />
-        <activity android:name=".activities.TextSpeechActivity" />
-        <activity android:name=".activities.LoginActivity" />
-        <activity android:name=".activities.WelcomeActivity">
+        <activity
+            android:name=".activities.LibraryAudioActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activities.LibraryVideoActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activities.SettingsActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activities.ForgotPasswordActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activities.SignupActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activities.LibraryActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activities.TextSpeechActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activities.LoginActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activities.WelcomeActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
