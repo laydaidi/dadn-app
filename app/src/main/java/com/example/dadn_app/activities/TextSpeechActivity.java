@@ -20,4 +20,9 @@ public class TextSpeechActivity extends AppCompatActivity {
         Intent i = new Intent(TextSpeechActivity.this, LibraryActivity.class);
         startActivity(i);
     }
+
+    public void onClickBtnSetting(View view) {
+        Intent i = new Intent(TextSpeechActivity.this, SettingsActivity.class);
+        startActivity(i);
+    }
 }

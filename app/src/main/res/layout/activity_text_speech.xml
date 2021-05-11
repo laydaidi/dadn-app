@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     tools:context=".activities.TextSpeechActivity">
 
     <LinearLayout
@@ -57,6 +58,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:minWidth="40dp"
+                    android:onClick="onClickBtnSetting"
                     app:srcCompat="@drawable/ic_baseline_settings_24" />
             </LinearLayout>
 
