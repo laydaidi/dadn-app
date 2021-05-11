@@ -28,43 +28,16 @@ public class WelcomeActivity extends AppCompatActivity {
     }
 
     public void onClickBtnStart(View view) {
+
         SharedPreferences prefs = getSharedPreferences("com.example.dadn_app", Context.MODE_PRIVATE);
-        String refreshToken = prefs.getString("refreshToken", null);
+        RequestQueue queue = Volley.newRequestQueue(this);
 
-        if (refreshToken != null) {
-            try {
-                RequestQueue queue = Volley.newRequestQueue(this);
-                String url = Helper.buildAPIURL("/users/token");
-
-                JSONObject obj = new JSONObject();
-                obj.put("token", refreshToken);
-
-                JsonObjectRequest request = new JsonObjectRequest(
-                        Request.Method.POST,
-                        url,
-                        obj,
-                        response -> {
-                            try {
-                                String accessToken = response.get("token").toString();
-                                Helper.setAccessToken(accessToken);
-                                this.switchToTextSpeech();
-
-                            } catch (JSONException e) {
-                                this.switchToLogin();
-                            }
-                        },
-                        error -> {
-                            this.switchToLogin();
-                        }
-                );
-                queue.add(request);
-            } catch (JSONException e) {
-                this.switchToLogin();
-            }
-        } else {
-            this.switchToLogin();
-        }
-
+        Helper.resetToken(
+            queue,
+            prefs,
+            () -> this.switchToTextSpeech(),
+            () -> this.switchToLogin()
+        );
     }
 
     private void switchToLogin() {

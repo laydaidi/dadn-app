@@ -1,6 +1,19 @@
 package com.example.dadn_app.helpers;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Helper {
 
@@ -25,5 +38,47 @@ public class Helper {
 
     public static String getAccessToken() {
         return accessToken;
+    }
+
+    public static Map<String, String> buildAuthorizationHeader() {
+        Map<String, String> headers = new HashMap<String, String>();
+        headers.put("Authorization", "Bearer " + getAccessToken());
+
+        return headers;
+    }
+
+    public static void showToast(Context context, String text) {
+        Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
+        toast.show();
+    }
+
+    public static void resetToken(
+            RequestQueue queue,
+            SharedPreferences prefs,
+            LambdaFunction successMethod,
+            LambdaFunction failedMethod
+    ) {
+        String url = Helper.buildAPIURL("/users/token");
+        String refreshToken = prefs.getString("refreshToken", null);
+
+        if (refreshToken != null) {
+            try {
+                JSONObject obj = new JSONObject();
+                obj.put("token", refreshToken);
+
+                JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, obj,
+                    response -> {
+                        try {
+                            String accessToken = response.get("token").toString();
+                            setAccessToken(accessToken);
+                            successMethod.run();
+
+                        } catch (JSONException e) { failedMethod.run(); }
+                    },
+                    error -> failedMethod.run()
+                );
+                queue.add(request);
+            } catch (JSONException e) { failedMethod.run(); }
+        } else failedMethod.run();
     }
 }

@@ -8,7 +8,7 @@ import android.view.View;
 
 import com.example.dadn_app.R;
 
-public class FotgotPasswordActivity extends AppCompatActivity {
+public class ForgotPasswordActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,7 +17,7 @@ public class FotgotPasswordActivity extends AppCompatActivity {
     }
 
     public void onClickBtnBack(View view) {
-        Intent i = new Intent(FotgotPasswordActivity.this, LoginActivity.class);
+        Intent i = new Intent(ForgotPasswordActivity.this, LoginActivity.class);
         startActivity(i);
     }
 }

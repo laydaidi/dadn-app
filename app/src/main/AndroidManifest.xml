@@ -11,11 +11,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        >
         <activity android:name=".activities.LibraryAudioActivity"></activity>
         <activity android:name=".activities.LibraryVideoActivity" />
         <activity android:name=".activities.SettingsActivity" />
-        <activity android:name=".activities.FotgotPasswordActivity" />
+        <activity android:name=".activities.ForgotPasswordActivity" />
         <activity android:name=".activities.SignupActivity" />
         <activity android:name=".activities.LibraryActivity" />
         <activity android:name=".activities.TextSpeechActivity" />

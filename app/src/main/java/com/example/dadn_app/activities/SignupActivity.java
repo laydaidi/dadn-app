@@ -2,9 +2,7 @@ package com.example.dadn_app.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -45,7 +43,7 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     public void onClickForgetPassword(View view) {
-        Intent i = new Intent(SignupActivity.this, FotgotPasswordActivity.class);
+        Intent i = new Intent(SignupActivity.this, ForgotPasswordActivity.class);
         startActivity(i);
     }
 
@@ -67,28 +65,27 @@ public class SignupActivity extends AppCompatActivity {
             obj.put("repass", editRepassword.getText());
 
             JsonObjectRequest request = new JsonObjectRequest(
-                    Request.Method.POST,
-                    url,
-                    obj,
-                    response -> {
-                        Helper.hideStatus(txtStatus);
-                        Intent i = new Intent(SignupActivity.this, LoginActivity.class);
-                        startActivity(i);
-                    },
-                    error -> {
-                        if (error.networkResponse.statusCode == 406 || error.networkResponse.statusCode == 403) {
-                            try {
-                                JSONObject res = new JSONObject(new String(error.networkResponse.data));
-                                String message = res.get("message").toString();
-                                Helper.showStatus(txtStatus, message);
-                            } catch (JSONException e) {
-                                Helper.showStatus(txtStatus, "Response is invalid");
-                            }
-                        } else {
-                            Helper.showStatus(txtStatus, "Cant connect to the server");
+                Request.Method.POST,
+                url,
+                obj,
+                response -> {
+                    Helper.hideStatus(txtStatus);
+                    Intent i = new Intent(SignupActivity.this, LoginActivity.class);
+                    startActivity(i);
+                },
+                error -> {
+                    if (error.networkResponse.statusCode == 406 || error.networkResponse.statusCode == 403) {
+                        try {
+                            JSONObject res = new JSONObject(new String(error.networkResponse.data));
+                            String message = res.get("message").toString();
+                            Helper.showStatus(txtStatus, message);
+                        } catch (JSONException e) {
+                            Helper.showStatus(txtStatus, "Response is invalid");
                         }
-
+                    } else {
+                        Helper.showStatus(txtStatus, "Cant connect to the server");
                     }
+                }
             );
             queue.add(request);
         } catch (JSONException e) {
