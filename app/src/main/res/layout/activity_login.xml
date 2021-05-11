@@ -39,6 +39,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="0.5"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 app:srcCompat="@drawable/ic_user_24" />
 
             <EditText
@@ -65,6 +67,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="0.5"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 app:srcCompat="@drawable/ic_baseline_lock_24" />
 
             <EditText

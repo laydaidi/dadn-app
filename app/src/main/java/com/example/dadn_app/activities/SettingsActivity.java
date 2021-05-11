@@ -63,7 +63,7 @@ public class SettingsActivity extends AppCompatActivity {
                     editUsername.setText(data.getString("name"));
                     editEmail.setText(data.getString("email"));
                     editPhone.setText(data.getString("phone"));
-                    editBirthday.setText(data.getString("gender"));
+                    editBirthday.setText(data.getString("birthday"));
                     editAddress.setText(data.getString("address"));
                 } catch (JSONException e) {
                     e.printStackTrace();
