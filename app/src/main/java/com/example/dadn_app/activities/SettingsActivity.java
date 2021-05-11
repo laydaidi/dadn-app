@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
@@ -108,54 +107,49 @@ public class SettingsActivity extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = Helper.buildAPIURL("/users/save-information");
 
-        JSONObject requestObj = new JSONObject();
-        try {
-            requestObj.put("email", editEmail.getText());
-            requestObj.put("phone", editPhone.getText());
-            requestObj.put("birthday", editBirthday.getText());
-            requestObj.put("address", editAddress.getText());
+        Map<String, String> requestObj = new HashMap<>();
+        requestObj.put("email", editEmail.getText().toString());
+        requestObj.put("phone", editPhone.getText().toString());
+        requestObj.put("birthday", editBirthday.getText().toString());
+        requestObj.put("address", editAddress.getText().toString());
 
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, requestObj,
-                    response -> {
-                        Helper.showToast(getApplicationContext(), "Update successfully");
-                        this.renderInformation();
-                    },
-                    error -> {
-                        int statusCode = error.networkResponse.statusCode;
-                        try {
-                            String message = (new JSONObject(new String(error.networkResponse.data))).getString("message");
-                            if (statusCode == 403) {
-                                if (message.equals("Invalid token")) {
-                                    // Reset token here
-                                    Helper.resetToken(
-                                        queue,
-                                        getSharedPreferences("com.example.dadn_app", Context.MODE_PRIVATE),
-                                        this::onClickBtnSaveInformation,
-                                        this::switchToLogin
-                                    );
-                                } else {
-                                    Helper.showToast(getApplicationContext(), message);
-                                }
-                            } else if (statusCode == 401) {
-                                Helper.showToast(getApplicationContext(), message);
-                            } else {
-                                Helper.showToast(getApplicationContext(), "Cant connect to the server");
-                            }
-                        } catch (JSONException e) {
-                            this.switchToLogin();
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(requestObj),
+            response -> {
+                Helper.showToast(getApplicationContext(), "Update successfully");
+                this.renderInformation();
+            },
+            error -> {
+                int statusCode = error.networkResponse.statusCode;
+                try {
+                    String message = (new JSONObject(new String(error.networkResponse.data))).getString("message");
+                    if (statusCode == 403) {
+                        if (message.equals("Invalid token")) {
+                            // Reset token here
+                            Helper.resetToken(
+                                queue,
+                                getSharedPreferences("com.example.dadn_app", Context.MODE_PRIVATE),
+                                this::onClickBtnSaveInformation,
+                                this::switchToLogin
+                            );
+                        } else {
+                            Helper.showToast(getApplicationContext(), message);
                         }
+                    } else if (statusCode == 401) {
+                        Helper.showToast(getApplicationContext(), message);
+                    } else {
+                        Helper.showToast(getApplicationContext(), "Cant connect to the server");
                     }
-            ){
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    return Helper.buildAuthorizationHeader();
+                } catch (JSONException e) {
+                    this.switchToLogin();
                 }
-            };
-            queue.add(request);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+            }
+        ){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                return Helper.buildAuthorizationHeader();
+            }
+        };
+        queue.add(request);
     }
 
     private void onClickBtnLogout() {
@@ -163,24 +157,17 @@ public class SettingsActivity extends AppCompatActivity {
         String refreshToken = prefs.getString("refreshToken", null);
 
         if (refreshToken != null) {
-            try {
-                RequestQueue queue = Volley.newRequestQueue(this);
-                String url = Helper.buildAPIURL("/users/logout");
+            RequestQueue queue = Volley.newRequestQueue(this);
+            String url = Helper.buildAPIURL("/users/logout");
 
-                JSONObject obj = new JSONObject();
-                obj.put("token", refreshToken);
+            Map<String, String> requestObject = new HashMap<>();
+            requestObject.put("token", refreshToken);
 
-                JsonObjectRequest request = new JsonObjectRequest(
-                    Request.Method.POST,
-                    url,
-                    obj,
-                    response -> this.switchToLogin(),
-                    error -> {}
-                );
-                queue.add(request);
-            } catch (JSONException e) {
-                this.switchToLogin();
-            }
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(requestObject),
+                response -> this.switchToLogin(),
+                error -> {}
+            );
+            queue.add(request);
         } else {
             this.switchToLogin();
         }

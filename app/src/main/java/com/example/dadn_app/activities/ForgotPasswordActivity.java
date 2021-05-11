@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -18,6 +17,9 @@ import com.example.dadn_app.helpers.Helper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
 
@@ -43,38 +45,32 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     }
 
     private void onClickBtnResetPassword() {
-        try {
-            RequestQueue queue = Volley.newRequestQueue(this);
-            String url = Helper.buildAPIURL("/users/reset-password");
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = Helper.buildAPIURL("/users/reset-password");
 
+        Map<String, String> requestObject = new HashMap<>();
+        requestObject.put("username", editUsername.getText().toString());
+        requestObject.put("email", editEmail.getText().toString());
+        requestObject.put("phone", editPhone.getText().toString());
 
-
-            JSONObject obj = new JSONObject();
-            obj.put("username", editUsername.getText());
-            obj.put("email", editEmail.getText());
-            obj.put("phone", editPhone.getText());
-
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, obj,
-                response -> {
-                    Helper.showToast(getApplicationContext(), "Your password is reset to 123456");
-                },
-                error -> {
-                    if (error.networkResponse.statusCode == 401) {
-                        try {
-                            JSONObject res = new JSONObject(new String(error.networkResponse.data));
-                            String message = res.get("message").toString();
-                            Helper.showToast(getApplicationContext(), message);
-                        } catch (JSONException e) {
-                            Helper.showToast(getApplicationContext(), "Response is invalid");
-                        }
-                    } else {
-                        Helper.showToast(getApplicationContext(), "Cant connect to the server");
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(requestObject),
+            response -> {
+                Helper.showToast(getApplicationContext(), "Your password is reset to 123456");
+            },
+            error -> {
+                if (error.networkResponse.statusCode == 401) {
+                    try {
+                        JSONObject res = new JSONObject(new String(error.networkResponse.data));
+                        String message = res.get("message").toString();
+                        Helper.showToast(getApplicationContext(), message);
+                    } catch (JSONException e) {
+                        Helper.showToast(getApplicationContext(), "Response is invalid");
                     }
+                } else {
+                    Helper.showToast(getApplicationContext(), "Cant connect to the server");
                 }
-            );
-            queue.add(request);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+            }
+        );
+        queue.add(request);
     }
 }

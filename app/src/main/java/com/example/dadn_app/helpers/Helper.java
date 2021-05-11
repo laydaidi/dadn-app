@@ -62,23 +62,20 @@ public class Helper {
         String refreshToken = prefs.getString("refreshToken", null);
 
         if (refreshToken != null) {
-            try {
-                JSONObject obj = new JSONObject();
-                obj.put("token", refreshToken);
+            Map<String, String> requestObj = new HashMap<>();
+            requestObj.put("token", refreshToken);
 
-                JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, obj,
-                    response -> {
-                        try {
-                            String accessToken = response.get("token").toString();
-                            setAccessToken(accessToken);
-                            successMethod.run();
-
-                        } catch (JSONException e) { failedMethod.run(); }
-                    },
-                    error -> failedMethod.run()
-                );
-                queue.add(request);
-            } catch (JSONException e) { failedMethod.run(); }
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(requestObj),
+                response -> {
+                    try {
+                        String accessToken = response.get("token").toString();
+                        setAccessToken(accessToken);
+                        successMethod.run();
+                    } catch (JSONException e) { failedMethod.run(); }
+                },
+                error -> failedMethod.run()
+            );
+            queue.add(request);
         } else failedMethod.run();
     }
 }
