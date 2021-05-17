@@ -19,16 +19,19 @@ import org.json.JSONObject;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.UUID;
 
 public class MQTTHelper {
-    final String serverUri = "tcp://broker.mqttdashboard.com:1883";
-    final String clientId = "c91350f8-1f18-42e2-9d73-f182cdbc9670";
+    final String serverUri = "tcp://m14.cloudmqtt.com:17755";
+    final String clientId = UUID.randomUUID().toString();
     final String subscriptionTopic = "sensor/+";
-    final String username = "";
-    final String password = "";
-    public MqttAndroidClient mqttAndroidClient;
+    final String username = "bvuiwhey";
+    final String password = "70a-Yz49Ne72";
+    MqttAndroidClient mqttAndroidClient;
 
-    public MQTTHelper(Context context) {
+    public static MQTTHelper mqttHelper;
+
+    private MQTTHelper(Context context) {
         mqttAndroidClient = new MqttAndroidClient(context, serverUri, clientId);
         mqttAndroidClient.setCallback(new MqttCallbackExtended() {
             @Override
@@ -53,11 +56,25 @@ public class MQTTHelper {
         });
     }
 
+    public static MQTTHelper getHelper(Context context) {
+        if (mqttHelper == null) {
+            mqttHelper = new MQTTHelper(context);
+        }
+        return mqttHelper;
+    }
+
+    public static MQTTHelper getHelper() {
+        return mqttHelper;
+    }
+
     public void setCallback(MqttCallbackExtended callback) {
         mqttAndroidClient.setCallback(callback);
     }
 
-    public void connect() {
+    public synchronized void connect() {
+        if (isConnected()) {
+            return;
+        }
         Log.d("mqtt", "Create MQTT connection");
         MqttConnectOptions mqttConnectOptions = new MqttConnectOptions();
         mqttConnectOptions.setAutomaticReconnect(true);
@@ -92,9 +109,10 @@ public class MQTTHelper {
         }
     }
 
-    public void disconnect() {
+    public synchronized void disconnect() {
         try {
             mqttAndroidClient.disconnect();
+            mqttHelper = null;
         } catch (MqttException e) {
             e.printStackTrace();
         }
@@ -104,7 +122,7 @@ public class MQTTHelper {
         return mqttAndroidClient.isConnected();
     }
 
-    public void sendData(String topic, JSONObject data) {
+    public void publishData(String topic, JSONObject data) {
         MqttMessage msg = new MqttMessage();
         msg.setId(1234);
         msg.setQos(0);
