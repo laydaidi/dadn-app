@@ -86,8 +86,6 @@ public class TextSpeechActivity extends AppCompatActivity {
 
         // Connect to MQTT server
         startMQTT();
-
-        esp32Helper = ESP32Helper.getHelper();
     }
 
     public void onClickLibrary(View view) {
@@ -102,36 +100,6 @@ public class TextSpeechActivity extends AppCompatActivity {
 
     private void startMQTT() {
         mqttHelper = MQTTHelper.getHelper(getApplicationContext());
-        mqttHelper.setCallback(new MqttCallbackExtended() {
-            @Override
-            public void connectComplete(boolean b, String s) {
-                Log.w("mqtt", s);
-                JSONObject data = new JSONObject();
-                try {
-                    JSONArray array = new JSONArray();
-                    array.put(1);
-                    array.put(1024);
-                    data.put("id", 1234);
-                    data.put("value", array);
-                    mqttHelper.publishData("sensor/RP3", data);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void connectionLost(Throwable throwable) {
-            }
-
-            @Override
-            public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
-                Log.w("Mqtt", topic + "--" + mqttMessage.toString());
-            }
-
-            @Override
-            public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
-            }
-        });
         mqttHelper.connect();
     }
 }

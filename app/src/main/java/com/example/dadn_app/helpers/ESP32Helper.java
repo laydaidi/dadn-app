@@ -35,7 +35,7 @@ public class ESP32Helper {
         Log.w("WebSocket", "Start connection");
         WebSocketFactory factory = new WebSocketFactory().setConnectionTimeout(5000);
         try {
-            // Connect to local host
+            // Connect to server
             ws = factory.createSocket(serverUri);
 
             // Register a listener to receive WebSocket events.
@@ -87,7 +87,7 @@ public class ESP32Helper {
                     Log.w("WebSocket", type);
 //                    Log.w("WebSocket", message);
                     if (type.equals("frame")) {
-                        String frame = data.getString("frame");
+                        String frame = data.getString("data");
                         if (Base64.isBase64(frame)) {
                             byte[] bytesImage = Base64.decodeBase64(frame);
                             imageBuffer.put(bytesImage, true);
@@ -99,14 +99,25 @@ public class ESP32Helper {
             });
         } catch (Exception e) {
             e.printStackTrace();
-            return;
         }
-
-        connect();
     }
 
-    private void connect() {
+    public boolean isConnected() {
+        return ws.isOpen();
+    }
+
+    public void connect() {
+        if (isConnected()) {
+            return;
+        }
         // Connect to the server and perform an opening handshake.
         ws.connectAsynchronously();
+    }
+
+    public void disconnect() {
+        if (!isConnected()) {
+            return;
+        }
+        ws.disconnect();
     }
 }
