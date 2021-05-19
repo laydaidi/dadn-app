@@ -138,21 +138,19 @@ public class MQTTHelper {
         JSONObject data = null;
         try {
             data = new JSONObject(mqttMessage.toString());
-            // Receive data from button
-            if (data.getString("id").equals("5")) {
-                // Button released
+            // Receive data from ESP32 CAM
+            if (data.getString("id").equals("99")) {
+                // Cam closed
                 if (data.getString("data").equals("0")) {
+                    // Stop stream
                     esp32Helper.disconnect();
                     // Notify buzzer
                     notifyBuzzer("500");
-                    // Notify ESP32
-                    notifyESP32("0");
-                } else if (data.getString("data").equals("1")) {
+                } else if (data.getString("data").equals("1")) { // Cam opened
+                    // Connect and start streaming
                     esp32Helper.connect();
                     // Notify buzzer
                     notifyBuzzer("1000");
-                    // Notify ESP32
-                    notifyESP32("0");
                 }
             }
         } catch (JSONException e) {
