@@ -112,8 +112,8 @@ public class SettingsActivity extends AppCompatActivity {
         queue.add(request);
     }
 
-    private void backToLibraryActivity() {
-        Intent i = new Intent(SettingsActivity.this, LibraryActivity.class);
+    private void backToTextSpeechActivity() {
+        Intent i = new Intent(SettingsActivity.this, TextSpeechActivity.class);
         startActivity(i);
         finish();
     }
@@ -131,7 +131,7 @@ public class SettingsActivity extends AppCompatActivity {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(requestObj),
             response -> {
                 Helper.showToast(getApplicationContext(), "Update successfully");
-                backToLibraryActivity();
+                backToTextSpeechActivity();
             },
             error -> {
                 if (error == null || error.networkResponse == null) {
