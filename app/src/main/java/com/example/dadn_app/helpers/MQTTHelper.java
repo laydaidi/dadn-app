@@ -15,25 +15,41 @@ import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.UUID;
 
 public class MQTTHelper {
-    final String serverUri = "tcp://broker.mqttdashboard.com:1883";
-    final String clientId = "c91350f8-1f18-42e2-9d73-f182cdbc9670";
-    final String subscriptionTopic = "sensor/+";
-    final String username = "";
-    final String password = "";
-    public MqttAndroidClient mqttAndroidClient;
+    final String serverUri = "tcp://m14.cloudmqtt.com:17755";
+    final String clientId = UUID.randomUUID().toString();
+    final String subscriptionTopic = "NPNLab_BBC/feeds/+";
+    final String username = "bvuiwhey";
+    final String password = "70a-Yz49Ne72";
+    MqttAndroidClient mqttAndroidClient;
+    ESP32Helper esp32Helper = ESP32Helper.getHelper();
 
-    public MQTTHelper(Context context) {
+    public static MQTTHelper mqttHelper;
+
+    private MQTTHelper(Context context) {
         mqttAndroidClient = new MqttAndroidClient(context, serverUri, clientId);
         mqttAndroidClient.setCallback(new MqttCallbackExtended() {
             @Override
             public void connectComplete(boolean b, String s) {
                 Log.w("mqtt", s);
+                JSONObject data = new JSONObject();
+                try {
+                    data.put("id", "3");
+                    data.put("name", "SPEAKER");
+                    data.put("data", "100");
+                    data.put("unit", "");
+                    mqttHelper.publishData("NPNLab_BBC/feeds/bk-iotspeaker", data);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -41,23 +57,36 @@ public class MQTTHelper {
             }
 
             @Override
-            public void messageArrived(String topic, MqttMessage mqttMessage)
-                    throws Exception {
-                Log.w("Mqtt", mqttMessage.toString());
+            public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
+                Log.w("Mqtt", topic + "--" + mqttMessage.toString());
+                processData(topic, mqttMessage);
             }
 
             @Override
-            public void deliveryComplete(IMqttDeliveryToken
-                                                 iMqttDeliveryToken) {
+            public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
             }
         });
+    }
+
+    public static MQTTHelper getHelper(Context context) {
+        if (mqttHelper == null) {
+            mqttHelper = new MQTTHelper(context);
+        }
+        return mqttHelper;
+    }
+
+    public static MQTTHelper getHelper() {
+        return mqttHelper;
     }
 
     public void setCallback(MqttCallbackExtended callback) {
         mqttAndroidClient.setCallback(callback);
     }
 
-    public void connect() {
+    public synchronized void connect() {
+        if (isConnected()) {
+            return;
+        }
         Log.d("mqtt", "Create MQTT connection");
         MqttConnectOptions mqttConnectOptions = new MqttConnectOptions();
         mqttConnectOptions.setAutomaticReconnect(true);
@@ -92,9 +121,10 @@ public class MQTTHelper {
         }
     }
 
-    public void disconnect() {
+    public synchronized void disconnect() {
         try {
             mqttAndroidClient.disconnect();
+            mqttHelper = null;
         } catch (MqttException e) {
             e.printStackTrace();
         }
@@ -104,7 +134,57 @@ public class MQTTHelper {
         return mqttAndroidClient.isConnected();
     }
 
-    public void sendData(String topic, JSONObject data) {
+    private void processData(String topic, MqttMessage mqttMessage) {
+        JSONObject data = null;
+        try {
+            data = new JSONObject(mqttMessage.toString());
+            // Receive data from ESP32 CAM
+            if (data.getString("id").equals("99")) {
+                // Cam closed
+                if (data.getString("data").equals("0")) {
+                    // Stop stream
+                    esp32Helper.disconnect();
+                    // Notify buzzer
+                    notifyBuzzer("500");
+                } else if (data.getString("data").equals("1")) { // Cam opened
+                    // Connect and start streaming
+                    esp32Helper.connect();
+                    // Notify buzzer
+                    notifyBuzzer("1000");
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void notifyBuzzer(String value) {
+        JSONObject buzzerData = new JSONObject();
+        try {
+            buzzerData.put("id", "2");
+            buzzerData.put("name", "SPEAKER");
+            buzzerData.put("data", value);
+            buzzerData.put("unit", "");
+            mqttHelper.publishData("NPNLab_BBC/feeds/bk-iotspeaker", buzzerData);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void notifyESP32(String value) {
+        JSONObject ESP32Data = new JSONObject();
+        try {
+            ESP32Data.put("id", "99");
+            ESP32Data.put("name", "ESP32");
+            ESP32Data.put("data", value);
+            ESP32Data.put("unit", "");
+            mqttHelper.publishData("NPNLab_BBC/feeds/bk-iotesp", ESP32Data);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void publishData(String topic, JSONObject data) {
         MqttMessage msg = new MqttMessage();
         msg.setId(1234);
         msg.setQos(0);

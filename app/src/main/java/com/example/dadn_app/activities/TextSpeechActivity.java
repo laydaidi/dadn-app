@@ -2,9 +2,14 @@ package com.example.dadn_app.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
+import android.text.format.Formatter;
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -12,6 +17,7 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import com.example.dadn_app.R;
+import com.example.dadn_app.helpers.ESP32Helper;
 import com.example.dadn_app.helpers.MQTTHelper;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -21,6 +27,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.math.BigInteger;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Locale;
 
 public class TextSpeechActivity extends AppCompatActivity {
@@ -28,6 +37,7 @@ public class TextSpeechActivity extends AppCompatActivity {
     TextToSpeech tts;
     Switch btnSwitch;
     MQTTHelper mqttHelper;
+    ESP32Helper esp32Helper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +68,22 @@ public class TextSpeechActivity extends AppCompatActivity {
             }
         });
 
+        Context context = getApplicationContext();
+        WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+        String ssid = wifiInfo.getSSID();
+        String bssid = wifiInfo.getBSSID();
+        int ip = wifiInfo.getIpAddress();
+        try {
+            @SuppressLint("DefaultLocale")
+            String ipAddress = String.format("%d.%d.%d.%d", (ip & 0xff), (ip >> 8 & 0xff), (ip >> 16 & 0xff), (ip >> 24 & 0xff));
+            Log.d("Wifi-SSID", ssid);
+            Log.d("Wifi-BSSID", bssid);
+            Log.d("Wifi-IP", ipAddress);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         // Connect to MQTT server
         startMQTT();
     }
@@ -73,37 +99,7 @@ public class TextSpeechActivity extends AppCompatActivity {
     }
 
     private void startMQTT() {
-        mqttHelper = new MQTTHelper(getApplicationContext());
-        mqttHelper.setCallback(new MqttCallbackExtended() {
-            @Override
-            public void connectComplete(boolean b, String s) {
-                Log.w("mqtt", s);
-                JSONObject data = new JSONObject();
-                try {
-                    JSONArray array = new JSONArray();
-                    array.put(1);
-                    array.put(1024);
-                    data.put("id", 1234);
-                    data.put("value", array);
-                    mqttHelper.sendData("sensor/RP3", data);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void connectionLost(Throwable throwable) {
-            }
-
-            @Override
-            public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
-                Log.w("Mqtt", topic + "--" + mqttMessage.toString());
-            }
-
-            @Override
-            public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
-            }
-        });
+        mqttHelper = MQTTHelper.getHelper(getApplicationContext());
         mqttHelper.connect();
     }
 }
