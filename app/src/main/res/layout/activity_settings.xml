@@ -137,7 +137,7 @@
                         android:background="@drawable/bg_edittext"
                         android:ems="10"
                         android:hint="Birthday"
-                        android:inputType="date|none"
+                        android:inputType="none"
                         android:textColorHint="@color/cardview_dark_background" />
                 </LinearLayout>
 
@@ -225,19 +225,17 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/btnSaveInformation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_weight="0"
-                android:text="Save information"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:text="Save"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 app:backgroundTint="#5E8DB6" />
@@ -245,17 +243,32 @@
             <Button
                 android:id="@+id/btnLogout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginRight="15dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
                 android:layout_weight="1"
                 android:text="Logout"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 app:backgroundTint="#5E8DB6" />
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:onClick="backToTextSpeechActivity"
+                android:text="Back"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:backgroundTint="#5E8DB6" />
         </LinearLayout>
 
     </LinearLayout>
