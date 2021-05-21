@@ -17,7 +17,7 @@ import java.util.Map;
 
 public class Helper {
 
-    private static String apiURL = "http://192.168.1.254:1234";
+    private static String apiURL = "http://192.168.1.4:1234";
     private static String accessToken;
 
     public static String buildAPIURL(String url) {

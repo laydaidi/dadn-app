@@ -59,6 +59,10 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 Helper.showToast(getApplicationContext(), "Your password is reset to 123456");
             },
             error -> {
+                if (error == null || error.networkResponse == null) {
+                    Helper.showToast(getApplicationContext(), "Cant connect to the server");
+                    return;
+                }
                 if (error.networkResponse.statusCode == 401) {
                     try {
                         JSONObject res = new JSONObject(new String(error.networkResponse.data));
@@ -67,9 +71,10 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         Helper.showToast(getApplicationContext(), "Response is invalid");
                     }
-                } else {
-                    Helper.showToast(getApplicationContext(), "Cant connect to the server");
+                    return;
                 }
+
+                Helper.showToast(getApplicationContext(), "Cant connect to the server");
             }
         );
         queue.add(request);

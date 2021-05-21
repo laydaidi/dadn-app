@@ -75,6 +75,10 @@ public class SignupActivity extends AppCompatActivity {
                 startActivity(i);
             },
             error -> {
+                if (error == null || error.networkResponse == null) {
+                    Helper.showStatus(txtStatus, "Cant connect to the server");
+                    return;
+                }
                 if (error.networkResponse.statusCode == 406 || error.networkResponse.statusCode == 403) {
                     try {
                         JSONObject res = new JSONObject(new String(error.networkResponse.data));
@@ -83,9 +87,9 @@ public class SignupActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         Helper.showStatus(txtStatus, "Response is invalid");
                     }
-                } else {
-                    Helper.showStatus(txtStatus, "Cant connect to the server");
+                    return;
                 }
+                Helper.showStatus(txtStatus, "Cant connect to the server");
             }
         );
         queue.add(request);

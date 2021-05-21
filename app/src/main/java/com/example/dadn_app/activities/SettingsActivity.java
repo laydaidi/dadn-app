@@ -70,6 +70,10 @@ public class SettingsActivity extends AppCompatActivity {
                 }
             },
             error -> {
+                if (error == null || error.networkResponse == null) {
+                    Helper.showToast(getApplicationContext(), "Cant connect to the server");
+                    return;
+                }
                 int statusCode = error.networkResponse.statusCode;
                 try {
                     String message = (new JSONObject(new String(error.networkResponse.data))).getString("message");
@@ -119,6 +123,10 @@ public class SettingsActivity extends AppCompatActivity {
                 this.renderInformation();
             },
             error -> {
+                if (error == null || error.networkResponse == null) {
+                    Helper.showToast(getApplicationContext(), "Cant connect to the server");
+                    return;
+                }
                 int statusCode = error.networkResponse.statusCode;
                 try {
                     String message = (new JSONObject(new String(error.networkResponse.data))).getString("message");

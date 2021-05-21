@@ -103,6 +103,10 @@ public class LoginActivity extends AppCompatActivity {
                 }
             },
             error -> {
+                if (error == null || error.networkResponse == null) {
+                    Helper.showStatus(txtStatus, "Cant connect to the server");
+                    return;
+                }
                 if (error.networkResponse.statusCode == 401) {
                     try {
                         JSONObject res = new JSONObject(new String(error.networkResponse.data));
@@ -111,10 +115,9 @@ public class LoginActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         Helper.showStatus(txtStatus, "Response is invalid");
                     }
-                } else {
-                    Helper.showStatus(txtStatus, "Cant connect to the server");
+                    return;
                 }
-
+                Helper.showStatus(txtStatus, "Cant connect to the server");
             }
         );
         queue.add(request);

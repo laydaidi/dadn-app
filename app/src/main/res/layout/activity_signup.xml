@@ -15,15 +15,15 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="145dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
             app:srcCompat="@drawable/logobk" />
 
         <TextView
             android:id="@+id/signupStatusText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
+            android:layout_marginBottom="15dp"
             android:gravity="center"
             android:textColor="@android:color/holo_red_light"
             android:textSize="18sp" />
