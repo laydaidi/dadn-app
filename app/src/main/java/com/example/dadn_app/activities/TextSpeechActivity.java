@@ -40,7 +40,7 @@ public class TextSpeechActivity extends AppCompatActivity {
             @Override
             public void onInit(int status) {
                 if(status != TextToSpeech.ERROR) {
-                    tts.setLanguage(Locale.ENGLISH);
+                    tts.setLanguage(new Locale("vi"));
                     Toast.makeText(TextSpeechActivity.this, "Text to Speech supported", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(TextSpeechActivity.this, "Text to Speech not supported", Toast.LENGTH_SHORT).show();
@@ -52,7 +52,7 @@ public class TextSpeechActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    tts.speak("Hello World", TextToSpeech.QUEUE_FLUSH, null);
+                    tts.speak("Xin chào", TextToSpeech.QUEUE_FLUSH, null);
                     Toast.makeText(TextSpeechActivity.this, "speak", Toast.LENGTH_SHORT).show();
                 }
             }
