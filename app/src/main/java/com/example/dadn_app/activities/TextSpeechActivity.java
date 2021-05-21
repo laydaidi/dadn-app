@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.dadn_app.R;
 import com.example.dadn_app.helpers.ESP32Helper;
+import com.example.dadn_app.helpers.Helper;
 import com.example.dadn_app.helpers.MQTTHelper;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -55,9 +56,9 @@ public class TextSpeechActivity extends AppCompatActivity {
             public void onInit(int status) {
                 if(status != TextToSpeech.ERROR) {
                     tts.setLanguage(new Locale("vi"));
-                    Toast.makeText(TextSpeechActivity.this, "Text to Speech supported", Toast.LENGTH_SHORT).show();
+                    Helper.showToast(getApplicationContext(), "Text to Speech supported");
                 } else {
-                    Toast.makeText(TextSpeechActivity.this, "Text to Speech not supported", Toast.LENGTH_SHORT).show();
+                    Helper.showToast(getApplicationContext(), "Text to Speech not supported");
                 }
             }
         });
@@ -67,7 +68,7 @@ public class TextSpeechActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     tts.speak(txt.getText().toString(), TextToSpeech.QUEUE_FLUSH, null);
-                    Toast.makeText(TextSpeechActivity.this, "speak", Toast.LENGTH_SHORT).show();
+                    Helper.showToast(getApplicationContext(), "Speak");
                 }
             }
         });

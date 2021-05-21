@@ -585,7 +585,7 @@
             android:layout_marginEnd="30dp"
             android:layout_marginRight="30dp"
             android:layout_marginBottom="30dp"
-            android:onClick="btnBackOnClick"
+            android:onClick="onClickBtnBack"
             android:text="Back"
             android:textColor="@color/white"
             android:textSize="16sp"

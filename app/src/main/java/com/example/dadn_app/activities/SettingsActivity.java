@@ -21,7 +21,12 @@ import com.example.dadn_app.helpers.Helper;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -107,6 +112,12 @@ public class SettingsActivity extends AppCompatActivity {
         queue.add(request);
     }
 
+    private void backToLibraryActivity() {
+        Intent i = new Intent(SettingsActivity.this, LibraryActivity.class);
+        startActivity(i);
+        finish();
+    }
+
     private void onClickBtnSaveInformation() {
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = Helper.buildAPIURL("/users/save-information");
@@ -120,7 +131,7 @@ public class SettingsActivity extends AppCompatActivity {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(requestObj),
             response -> {
                 Helper.showToast(getApplicationContext(), "Update successfully");
-                this.renderInformation();
+                backToLibraryActivity();
             },
             error -> {
                 if (error == null || error.networkResponse == null) {
