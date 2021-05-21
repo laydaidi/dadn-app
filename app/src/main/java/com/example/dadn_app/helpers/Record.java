@@ -11,6 +11,12 @@ public class Record {
         this.videoImage = videoImage;
     }
 
+    public Record(Record record) {
+        txt = record.txt;
+        audioImage = record.audioImage;
+        videoImage = record.videoImage;
+    }
+
     public String getTxt() {
         return txt;
     }

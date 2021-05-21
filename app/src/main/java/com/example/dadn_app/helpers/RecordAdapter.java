@@ -10,32 +10,37 @@ import android.widget.TextView;
 
 import com.example.dadn_app.R;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class RecordAdapter extends BaseAdapter {
     private Context context;
     private int layout;
     private List<Record> recordList;
+    private List<Record> recordSearchList;
 
     public RecordAdapter(Context context, int layout, List<Record> recordList) {
         this.context = context;
         this.layout = layout;
         this.recordList = recordList;
+        this.recordSearchList = new ArrayList<Record>();
+        this.recordSearchList.addAll(this.recordList);
     }
 
     @Override
     public int getCount() {
-        return recordList.size();
+        return recordSearchList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return recordSearchList.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     @Override
@@ -49,11 +54,27 @@ public class RecordAdapter extends BaseAdapter {
         ImageButton videoImageBtn = (ImageButton) convertView.findViewById(R.id.libraryRecordVideoImage);
 
         // assign values
-        Record record = recordList.get(position);
+        Record record = recordSearchList.get(position);
         txt.setText(record.getTxt());
         audioImageBtn.setImageResource(record.getAudioImage());
         videoImageBtn.setImageResource(record.getVideoImage());
 
         return convertView;
+    }
+
+    // filter records
+    public void filter(String charText) {
+        charText = charText.toLowerCase(Locale.getDefault());
+        recordSearchList.clear();
+        if (charText.length() == 0) {
+            recordSearchList.addAll(recordList);
+        } else {
+            for (Record r : recordList) {
+                if (r.getTxt().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    recordSearchList.add(r);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 }
