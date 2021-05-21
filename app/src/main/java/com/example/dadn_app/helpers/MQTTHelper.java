@@ -24,11 +24,19 @@ import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 public class MQTTHelper {
-    final String serverUri = "tcp://m14.cloudmqtt.com:17755";
     final String clientId = UUID.randomUUID().toString();
-    final String subscriptionTopic = "NPNLab_BBC/feeds/+";
-    final String username = "bvuiwhey";
-    final String password = "70a-Yz49Ne72";
+    final String serverUri = "tcp://industrial.api.ubidots.com:1883";
+    final String baseTopic = "/v1.6/devices/bkiot/";
+    final String username = "BBFF-aQZpnM5D7nUbgsbG3IBQOWiWAEILZB";
+    final String password = "";
+
+    // Adafruit server
+//    final String serverUri = "tcp://io.adafruit.com:1883";
+//    final String baseTopic = "binh234/feeds/multidisciplinary.";
+//    final String username = "binh234";
+//    final String password = "aio_JQLU03df6FP2wyxsGYcIUibSpmA6";
+
+    final String subscriptionTopic = baseTopic + "bk-iotesp/lv";
     MqttAndroidClient mqttAndroidClient;
     ESP32Helper esp32Helper = ESP32Helper.getHelper();
 
@@ -44,9 +52,9 @@ public class MQTTHelper {
                 try {
                     data.put("id", "3");
                     data.put("name", "SPEAKER");
-                    data.put("data", "100");
+                    data.put("value", 100);
                     data.put("unit", "");
-                    mqttHelper.publishData("NPNLab_BBC/feeds/bk-iotspeaker", data);
+                    mqttHelper.publishData(baseTopic + "bk-iotspeaker", data);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -137,35 +145,49 @@ public class MQTTHelper {
     private void processData(String topic, MqttMessage mqttMessage) {
         JSONObject data = null;
         try {
-            data = new JSONObject(mqttMessage.toString());
-            // Receive data from ESP32 CAM
-            if (data.getString("id").equals("99")) {
-                // Cam closed
-                if (data.getString("data").equals("0")) {
+            int value = Math.round(Float.parseFloat(mqttMessage.toString()));
+            if (topic.equals(subscriptionTopic)) {
+                if (value == 0) {
                     // Stop stream
                     esp32Helper.disconnect();
                     // Notify buzzer
-                    notifyBuzzer("500");
-                } else if (data.getString("data").equals("1")) { // Cam opened
+                    notifyBuzzer(500);
+                } else {
                     // Connect and start streaming
                     esp32Helper.connect();
                     // Notify buzzer
-                    notifyBuzzer("1000");
+                    notifyBuzzer(1000);
                 }
             }
-        } catch (JSONException e) {
+//            data = new JSONObject(mqttMessage.toString());
+//            // Receive data from ESP32 CAM
+//            if (topic.equals(subscriptionTopic)) {
+//                // Cam closed
+//                if (data.getInt("value") == 0) {
+//                    // Stop stream
+//                    esp32Helper.disconnect();
+//                    // Notify buzzer
+//                    notifyBuzzer(500);
+//                } else if (data.getInt("value") == 1) { // Cam opened
+//                    // Connect and start streaming
+//                    esp32Helper.connect();
+//                    // Notify buzzer
+//                    notifyBuzzer(1000);
+//                }
+//            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void notifyBuzzer(String value) {
+    public void notifyBuzzer(int value) {
         JSONObject buzzerData = new JSONObject();
         try {
             buzzerData.put("id", "2");
             buzzerData.put("name", "SPEAKER");
-            buzzerData.put("data", value);
+            buzzerData.put("value", value);
             buzzerData.put("unit", "");
-            mqttHelper.publishData("NPNLab_BBC/feeds/bk-iotspeaker", buzzerData);
+            mqttHelper.publishData(baseTopic + "bk-iotspeaker", buzzerData);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -176,9 +198,9 @@ public class MQTTHelper {
         try {
             ESP32Data.put("id", "99");
             ESP32Data.put("name", "ESP32");
-            ESP32Data.put("data", value);
+            ESP32Data.put("value", value);
             ESP32Data.put("unit", "");
-            mqttHelper.publishData("NPNLab_BBC/feeds/bk-iotesp", ESP32Data);
+            mqttHelper.publishData(baseTopic + "bk-iotesp", ESP32Data);
         } catch (JSONException e) {
             e.printStackTrace();
         }
