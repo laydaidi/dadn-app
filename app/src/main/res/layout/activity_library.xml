@@ -28,533 +28,534 @@
             android:hint="Search..."
             android:inputType="textPersonName" />
 
-        <ScrollView
+        <ListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:paddingRight="15dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="start|center_vertical"
-                        android:paddingLeft="25dp"
-                        android:text="Hello"
-                        android:textColor="@color/cardview_dark_background"
-                        android:textSize="18dp" />
-
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0"
-                        app:backgroundTint="#5E8DB6"
-                        app:srcCompat="@drawable/ic_baseline_campaign_24" />
-
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0"
-                        app:backgroundTint="#5E8DB6"
-                        app:srcCompat="@drawable/ic_video_24" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:paddingRight="15dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="start|center_vertical"
-                        android:paddingLeft="25dp"
-                        android:text="Run"
-                        android:textColor="@color/cardview_dark_background"
-                        android:textSize="18dp" />
-
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0"
-                        app:backgroundTint="#5E8DB6"
-                        app:srcCompat="@drawable/ic_baseline_campaign_24" />
-
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0"
-                        app:backgroundTint="#5E8DB6"
-                        app:srcCompat="@drawable/ic_video_24" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:paddingRight="15dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="start|center_vertical"
-                        android:paddingLeft="25dp"
-                        android:text="Sleep"
-                        android:textColor="@color/cardview_dark_background"
-                        android:textSize="18dp" />
-
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0"
-                        app:backgroundTint="#5E8DB6"
-                        app:srcCompat="@drawable/ic_baseline_campaign_24" />
-
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0"
-                        app:backgroundTint="#5E8DB6"
-                        app:srcCompat="@drawable/ic_video_24" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:paddingRight="15dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="start|center_vertical"
-                        android:paddingLeft="25dp"
-                        android:text="Read"
-                        android:textColor="@color/cardview_dark_background"
-                        android:textSize="18dp" />
-
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0"
-                        app:backgroundTint="#5E8DB6"
-                        app:srcCompat="@drawable/ic_baseline_campaign_24" />
-
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0"
-                        app:backgroundTint="#5E8DB6"
-                        app:srcCompat="@drawable/ic_video_24" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:paddingRight="15dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="start|center_vertical"
-                        android:paddingLeft="25dp"
-                        android:text="Hello"
-                        android:textColor="@color/cardview_dark_background"
-                        android:textSize="18dp" />
-
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0"
-                        app:backgroundTint="#5E8DB6"
-                        app:srcCompat="@drawable/ic_baseline_campaign_24" />
-
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0"
-                        app:backgroundTint="#5E8DB6"
-                        app:srcCompat="@drawable/ic_video_24" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:paddingRight="15dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="start|center_vertical"
-                        android:paddingLeft="25dp"
-                        android:text="Run"
-                        android:textColor="@color/cardview_dark_background"
-                        android:textSize="18dp" />
-
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0"
-                        app:backgroundTint="#5E8DB6"
-                        app:srcCompat="@drawable/ic_baseline_campaign_24" />
-
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0"
-                        app:backgroundTint="#5E8DB6"
-                        app:srcCompat="@drawable/ic_video_24" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:paddingRight="15dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="start|center_vertical"
-                        android:paddingLeft="25dp"
-                        android:text="Sleep"
-                        android:textColor="@color/cardview_dark_background"
-                        android:textSize="18dp" />
-
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0"
-                        app:backgroundTint="#5E8DB6"
-                        app:srcCompat="@drawable/ic_baseline_campaign_24" />
-
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0"
-                        app:backgroundTint="#5E8DB6"
-                        app:srcCompat="@drawable/ic_video_24" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:paddingRight="15dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="start|center_vertical"
-                        android:paddingLeft="25dp"
-                        android:text="Read"
-                        android:textColor="@color/cardview_dark_background"
-                        android:textSize="18dp" />
-
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0"
-                        app:backgroundTint="#5E8DB6"
-                        app:srcCompat="@drawable/ic_baseline_campaign_24" />
-
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0"
-                        app:backgroundTint="#5E8DB6"
-                        app:srcCompat="@drawable/ic_video_24" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:paddingRight="15dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="start|center_vertical"
-                        android:paddingLeft="25dp"
-                        android:text="Hello"
-                        android:textColor="@color/cardview_dark_background"
-                        android:textSize="18dp" />
-
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0"
-                        app:backgroundTint="#5E8DB6"
-                        app:srcCompat="@drawable/ic_baseline_campaign_24" />
-
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0"
-                        app:backgroundTint="#5E8DB6"
-                        app:srcCompat="@drawable/ic_video_24" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:paddingRight="15dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="start|center_vertical"
-                        android:paddingLeft="25dp"
-                        android:text="Run"
-                        android:textColor="@color/cardview_dark_background"
-                        android:textSize="18dp" />
-
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0"
-                        app:backgroundTint="#5E8DB6"
-                        app:srcCompat="@drawable/ic_baseline_campaign_24" />
-
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0"
-                        app:backgroundTint="#5E8DB6"
-                        app:srcCompat="@drawable/ic_video_24" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:paddingRight="15dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="start|center_vertical"
-                        android:paddingLeft="25dp"
-                        android:text="Sleep"
-                        android:textColor="@color/cardview_dark_background"
-                        android:textSize="18dp" />
-
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0"
-                        app:backgroundTint="#5E8DB6"
-                        app:srcCompat="@drawable/ic_baseline_campaign_24" />
-
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0"
-                        app:backgroundTint="#5E8DB6"
-                        app:srcCompat="@drawable/ic_video_24" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:paddingRight="15dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="start|center_vertical"
-                        android:paddingLeft="25dp"
-                        android:text="Read"
-                        android:textColor="@color/cardview_dark_background"
-                        android:textSize="18dp" />
-
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0"
-                        app:backgroundTint="#5E8DB6"
-                        app:srcCompat="@drawable/ic_baseline_campaign_24" />
-
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0"
-                        app:backgroundTint="#5E8DB6"
-                        app:srcCompat="@drawable/ic_video_24" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingRight="15dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="start|center_vertical"
-                        android:paddingLeft="25dp"
-                        android:text="Hello"
-                        android:textColor="@color/cardview_dark_background"
-                        android:textSize="18dp" />
-
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0"
-                        app:backgroundTint="#5E8DB6"
-                        app:srcCompat="@drawable/ic_baseline_campaign_24" />
-
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0"
-                        app:backgroundTint="#5E8DB6"
-                        app:srcCompat="@drawable/ic_video_24" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingRight="15dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="start|center_vertical"
-                        android:onClick="onClickBtnBack"
-                        android:paddingLeft="25dp"
-                        android:text="Run"
-                        android:textColor="@color/cardview_dark_background"
-                        android:textSize="18dp" />
-
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0"
-                        app:backgroundTint="#5E8DB6"
-                        app:srcCompat="@drawable/ic_baseline_campaign_24" />
-
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0"
-                        app:backgroundTint="#5E8DB6"
-                        app:srcCompat="@drawable/ic_video_24" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingRight="15dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="start|center_vertical"
-                        android:paddingLeft="25dp"
-                        android:text="Sleep"
-                        android:textColor="@color/cardview_dark_background"
-                        android:textSize="18dp" />
-
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0"
-                        app:backgroundTint="#5E8DB6"
-                        app:srcCompat="@drawable/ic_baseline_campaign_24" />
-
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0"
-                        app:backgroundTint="#5E8DB6"
-                        app:srcCompat="@drawable/ic_video_24" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingRight="15dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="start|center_vertical"
-                        android:paddingLeft="25dp"
-                        android:text="Read"
-                        android:textColor="@color/cardview_dark_background"
-                        android:textSize="18dp" />
-
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0"
-                        app:backgroundTint="#5E8DB6"
-                        app:srcCompat="@drawable/ic_baseline_campaign_24" />
-
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0"
-                        app:backgroundTint="#5E8DB6"
-                        app:srcCompat="@drawable/ic_video_24" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-        </ScrollView>
+            android:layout_weight="1"
+            android:id="@+id/libraryRecordListView" />
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="30dp"-->
+<!--                android:layout_weight="1"-->
+<!--                android:orientation="vertical">-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:orientation="horizontal"-->
+<!--                    android:paddingRight="15dp">-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:gravity="start|center_vertical"-->
+<!--                        android:paddingLeft="25dp"-->
+<!--                        android:text="Hello"-->
+<!--                        android:textColor="@color/cardview_dark_background"-->
+<!--                        android:textSize="18dp" />-->
+
+<!--                    <ImageButton-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="0"-->
+<!--                        app:backgroundTint="#5E8DB6"-->
+<!--                        app:srcCompat="@drawable/ic_baseline_campaign_24" />-->
+
+<!--                    <ImageButton-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="0"-->
+<!--                        app:backgroundTint="#5E8DB6"-->
+<!--                        app:srcCompat="@drawable/ic_video_24" />-->
+
+<!--                </LinearLayout>-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:orientation="horizontal"-->
+<!--                    android:paddingRight="15dp">-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:gravity="start|center_vertical"-->
+<!--                        android:paddingLeft="25dp"-->
+<!--                        android:text="Run"-->
+<!--                        android:textColor="@color/cardview_dark_background"-->
+<!--                        android:textSize="18dp" />-->
+
+<!--                    <ImageButton-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="0"-->
+<!--                        app:backgroundTint="#5E8DB6"-->
+<!--                        app:srcCompat="@drawable/ic_baseline_campaign_24" />-->
+
+<!--                    <ImageButton-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="0"-->
+<!--                        app:backgroundTint="#5E8DB6"-->
+<!--                        app:srcCompat="@drawable/ic_video_24" />-->
+
+<!--                </LinearLayout>-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:orientation="horizontal"-->
+<!--                    android:paddingRight="15dp">-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:gravity="start|center_vertical"-->
+<!--                        android:paddingLeft="25dp"-->
+<!--                        android:text="Sleep"-->
+<!--                        android:textColor="@color/cardview_dark_background"-->
+<!--                        android:textSize="18dp" />-->
+
+<!--                    <ImageButton-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="0"-->
+<!--                        app:backgroundTint="#5E8DB6"-->
+<!--                        app:srcCompat="@drawable/ic_baseline_campaign_24" />-->
+
+<!--                    <ImageButton-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="0"-->
+<!--                        app:backgroundTint="#5E8DB6"-->
+<!--                        app:srcCompat="@drawable/ic_video_24" />-->
+
+<!--                </LinearLayout>-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:orientation="horizontal"-->
+<!--                    android:paddingRight="15dp">-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:gravity="start|center_vertical"-->
+<!--                        android:paddingLeft="25dp"-->
+<!--                        android:text="Read"-->
+<!--                        android:textColor="@color/cardview_dark_background"-->
+<!--                        android:textSize="18dp" />-->
+
+<!--                    <ImageButton-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="0"-->
+<!--                        app:backgroundTint="#5E8DB6"-->
+<!--                        app:srcCompat="@drawable/ic_baseline_campaign_24" />-->
+
+<!--                    <ImageButton-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="0"-->
+<!--                        app:backgroundTint="#5E8DB6"-->
+<!--                        app:srcCompat="@drawable/ic_video_24" />-->
+
+<!--                </LinearLayout>-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:orientation="horizontal"-->
+<!--                    android:paddingRight="15dp">-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:gravity="start|center_vertical"-->
+<!--                        android:paddingLeft="25dp"-->
+<!--                        android:text="Hello"-->
+<!--                        android:textColor="@color/cardview_dark_background"-->
+<!--                        android:textSize="18dp" />-->
+
+<!--                    <ImageButton-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="0"-->
+<!--                        app:backgroundTint="#5E8DB6"-->
+<!--                        app:srcCompat="@drawable/ic_baseline_campaign_24" />-->
+
+<!--                    <ImageButton-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="0"-->
+<!--                        app:backgroundTint="#5E8DB6"-->
+<!--                        app:srcCompat="@drawable/ic_video_24" />-->
+
+<!--                </LinearLayout>-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:orientation="horizontal"-->
+<!--                    android:paddingRight="15dp">-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:gravity="start|center_vertical"-->
+<!--                        android:paddingLeft="25dp"-->
+<!--                        android:text="Run"-->
+<!--                        android:textColor="@color/cardview_dark_background"-->
+<!--                        android:textSize="18dp" />-->
+
+<!--                    <ImageButton-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="0"-->
+<!--                        app:backgroundTint="#5E8DB6"-->
+<!--                        app:srcCompat="@drawable/ic_baseline_campaign_24" />-->
+
+<!--                    <ImageButton-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="0"-->
+<!--                        app:backgroundTint="#5E8DB6"-->
+<!--                        app:srcCompat="@drawable/ic_video_24" />-->
+
+<!--                </LinearLayout>-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:orientation="horizontal"-->
+<!--                    android:paddingRight="15dp">-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:gravity="start|center_vertical"-->
+<!--                        android:paddingLeft="25dp"-->
+<!--                        android:text="Sleep"-->
+<!--                        android:textColor="@color/cardview_dark_background"-->
+<!--                        android:textSize="18dp" />-->
+
+<!--                    <ImageButton-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="0"-->
+<!--                        app:backgroundTint="#5E8DB6"-->
+<!--                        app:srcCompat="@drawable/ic_baseline_campaign_24" />-->
+
+<!--                    <ImageButton-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="0"-->
+<!--                        app:backgroundTint="#5E8DB6"-->
+<!--                        app:srcCompat="@drawable/ic_video_24" />-->
+
+<!--                </LinearLayout>-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:orientation="horizontal"-->
+<!--                    android:paddingRight="15dp">-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:gravity="start|center_vertical"-->
+<!--                        android:paddingLeft="25dp"-->
+<!--                        android:text="Read"-->
+<!--                        android:textColor="@color/cardview_dark_background"-->
+<!--                        android:textSize="18dp" />-->
+
+<!--                    <ImageButton-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="0"-->
+<!--                        app:backgroundTint="#5E8DB6"-->
+<!--                        app:srcCompat="@drawable/ic_baseline_campaign_24" />-->
+
+<!--                    <ImageButton-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="0"-->
+<!--                        app:backgroundTint="#5E8DB6"-->
+<!--                        app:srcCompat="@drawable/ic_video_24" />-->
+
+<!--                </LinearLayout>-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:orientation="horizontal"-->
+<!--                    android:paddingRight="15dp">-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:gravity="start|center_vertical"-->
+<!--                        android:paddingLeft="25dp"-->
+<!--                        android:text="Hello"-->
+<!--                        android:textColor="@color/cardview_dark_background"-->
+<!--                        android:textSize="18dp" />-->
+
+<!--                    <ImageButton-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="0"-->
+<!--                        app:backgroundTint="#5E8DB6"-->
+<!--                        app:srcCompat="@drawable/ic_baseline_campaign_24" />-->
+
+<!--                    <ImageButton-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="0"-->
+<!--                        app:backgroundTint="#5E8DB6"-->
+<!--                        app:srcCompat="@drawable/ic_video_24" />-->
+
+<!--                </LinearLayout>-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:orientation="horizontal"-->
+<!--                    android:paddingRight="15dp">-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:gravity="start|center_vertical"-->
+<!--                        android:paddingLeft="25dp"-->
+<!--                        android:text="Run"-->
+<!--                        android:textColor="@color/cardview_dark_background"-->
+<!--                        android:textSize="18dp" />-->
+
+<!--                    <ImageButton-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="0"-->
+<!--                        app:backgroundTint="#5E8DB6"-->
+<!--                        app:srcCompat="@drawable/ic_baseline_campaign_24" />-->
+
+<!--                    <ImageButton-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="0"-->
+<!--                        app:backgroundTint="#5E8DB6"-->
+<!--                        app:srcCompat="@drawable/ic_video_24" />-->
+
+<!--                </LinearLayout>-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:orientation="horizontal"-->
+<!--                    android:paddingRight="15dp">-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:gravity="start|center_vertical"-->
+<!--                        android:paddingLeft="25dp"-->
+<!--                        android:text="Sleep"-->
+<!--                        android:textColor="@color/cardview_dark_background"-->
+<!--                        android:textSize="18dp" />-->
+
+<!--                    <ImageButton-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="0"-->
+<!--                        app:backgroundTint="#5E8DB6"-->
+<!--                        app:srcCompat="@drawable/ic_baseline_campaign_24" />-->
+
+<!--                    <ImageButton-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="0"-->
+<!--                        app:backgroundTint="#5E8DB6"-->
+<!--                        app:srcCompat="@drawable/ic_video_24" />-->
+
+<!--                </LinearLayout>-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:orientation="horizontal"-->
+<!--                    android:paddingRight="15dp">-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:gravity="start|center_vertical"-->
+<!--                        android:paddingLeft="25dp"-->
+<!--                        android:text="Read"-->
+<!--                        android:textColor="@color/cardview_dark_background"-->
+<!--                        android:textSize="18dp" />-->
+
+<!--                    <ImageButton-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="0"-->
+<!--                        app:backgroundTint="#5E8DB6"-->
+<!--                        app:srcCompat="@drawable/ic_baseline_campaign_24" />-->
+
+<!--                    <ImageButton-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="0"-->
+<!--                        app:backgroundTint="#5E8DB6"-->
+<!--                        app:srcCompat="@drawable/ic_video_24" />-->
+
+<!--                </LinearLayout>-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:orientation="horizontal"-->
+<!--                    android:paddingRight="15dp">-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:gravity="start|center_vertical"-->
+<!--                        android:paddingLeft="25dp"-->
+<!--                        android:text="Hello"-->
+<!--                        android:textColor="@color/cardview_dark_background"-->
+<!--                        android:textSize="18dp" />-->
+
+<!--                    <ImageButton-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="0"-->
+<!--                        app:backgroundTint="#5E8DB6"-->
+<!--                        app:srcCompat="@drawable/ic_baseline_campaign_24" />-->
+
+<!--                    <ImageButton-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="0"-->
+<!--                        app:backgroundTint="#5E8DB6"-->
+<!--                        app:srcCompat="@drawable/ic_video_24" />-->
+
+<!--                </LinearLayout>-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:orientation="horizontal"-->
+<!--                    android:paddingRight="15dp">-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:gravity="start|center_vertical"-->
+<!--                        android:onClick="onClickBtnBack"-->
+<!--                        android:paddingLeft="25dp"-->
+<!--                        android:text="Run"-->
+<!--                        android:textColor="@color/cardview_dark_background"-->
+<!--                        android:textSize="18dp" />-->
+
+<!--                    <ImageButton-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="0"-->
+<!--                        app:backgroundTint="#5E8DB6"-->
+<!--                        app:srcCompat="@drawable/ic_baseline_campaign_24" />-->
+
+<!--                    <ImageButton-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="0"-->
+<!--                        app:backgroundTint="#5E8DB6"-->
+<!--                        app:srcCompat="@drawable/ic_video_24" />-->
+
+<!--                </LinearLayout>-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:orientation="horizontal"-->
+<!--                    android:paddingRight="15dp">-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:gravity="start|center_vertical"-->
+<!--                        android:paddingLeft="25dp"-->
+<!--                        android:text="Sleep"-->
+<!--                        android:textColor="@color/cardview_dark_background"-->
+<!--                        android:textSize="18dp" />-->
+
+<!--                    <ImageButton-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="0"-->
+<!--                        app:backgroundTint="#5E8DB6"-->
+<!--                        app:srcCompat="@drawable/ic_baseline_campaign_24" />-->
+
+<!--                    <ImageButton-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="0"-->
+<!--                        app:backgroundTint="#5E8DB6"-->
+<!--                        app:srcCompat="@drawable/ic_video_24" />-->
+
+<!--                </LinearLayout>-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:orientation="horizontal"-->
+<!--                    android:paddingRight="15dp">-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:gravity="start|center_vertical"-->
+<!--                        android:paddingLeft="25dp"-->
+<!--                        android:text="Read"-->
+<!--                        android:textColor="@color/cardview_dark_background"-->
+<!--                        android:textSize="18dp" />-->
+
+<!--                    <ImageButton-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="0"-->
+<!--                        app:backgroundTint="#5E8DB6"-->
+<!--                        app:srcCompat="@drawable/ic_baseline_campaign_24" />-->
+
+<!--                    <ImageButton-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="0"-->
+<!--                        app:backgroundTint="#5E8DB6"-->
+<!--                        app:srcCompat="@drawable/ic_video_24" />-->
+
+<!--                </LinearLayout>-->
+
+<!--            </LinearLayout>-->
+<!--        </ListView>-->
 
         <Button
             android:id="@+id/btnBack"

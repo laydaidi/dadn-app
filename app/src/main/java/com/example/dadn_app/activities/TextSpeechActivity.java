@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.dadn_app.R;
@@ -36,6 +37,7 @@ public class TextSpeechActivity extends AppCompatActivity {
 
     TextToSpeech tts;
     Switch btnSwitch;
+    TextView txt;
     MQTTHelper mqttHelper;
     ESP32Helper esp32Helper;
 
@@ -45,6 +47,8 @@ public class TextSpeechActivity extends AppCompatActivity {
         setContentView(R.layout.activity_text_speech);
 
         btnSwitch = (Switch) findViewById(R.id.btnSwitch);
+        txt = (TextView) findViewById(R.id.textView2);
+        txt.setText("Xin chào");
 
         tts = new TextToSpeech(TextSpeechActivity.this, new TextToSpeech.OnInitListener() {
             @Override
@@ -62,7 +66,7 @@ public class TextSpeechActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    tts.speak("Xin chào", TextToSpeech.QUEUE_FLUSH, null);
+                    tts.speak(txt.getText().toString(), TextToSpeech.QUEUE_FLUSH, null);
                     Toast.makeText(TextSpeechActivity.this, "speak", Toast.LENGTH_SHORT).show();
                 }
             }

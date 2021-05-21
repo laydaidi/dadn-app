@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:paddingRight="15dp"
+
+    android:id="@+id/libraryRecord">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="start|center_vertical"
+        android:paddingLeft="25dp"
+        android:text="Hello"
+        android:textColor="@color/cardview_dark_background"
+        android:textSize="18dp"
+        android:id="@+id/libraryRecordText"/>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="0"
+        app:backgroundTint="#5E8DB6"
+        app:srcCompat="@drawable/ic_baseline_campaign_24"
+        android:id="@+id/libraryRecordAudioImage"/>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="0"
+        app:backgroundTint="#5E8DB6"
+        app:srcCompat="@drawable/ic_video_24"
+        android:id="@+id/libraryRecordVideoImage"/>
+</LinearLayout>
