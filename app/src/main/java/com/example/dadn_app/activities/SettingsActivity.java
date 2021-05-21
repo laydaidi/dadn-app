@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.android.volley.AuthFailureError;
@@ -70,6 +71,18 @@ public class SettingsActivity extends AppCompatActivity {
                     editPhone.setText(data.getString("phone"));
                     editBirthday.setText(data.getString("birthday"));
                     editAddress.setText(data.getString("address"));
+
+                    switch (data.getInt("gender")) {
+                        case 1:
+                            radioGender.check(R.id.radioSettingGenderMale);
+                            break;
+                        case 2:
+                            radioGender.check(R.id.radioSettingGenderFemale);
+                            break;
+                        default:
+                            radioGender.check(R.id.radioSettingGenderOther);
+                            break;
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -127,6 +140,19 @@ public class SettingsActivity extends AppCompatActivity {
         requestObj.put("phone", editPhone.getText().toString());
         requestObj.put("birthday", editBirthday.getText().toString());
         requestObj.put("address", editAddress.getText().toString());
+
+        int genderSelectedId = radioGender.getCheckedRadioButtonId();
+        switch (genderSelectedId) {
+            case R.id.radioSettingGenderMale:
+                requestObj.put("gender", "1");
+                break;
+            case R.id.radioSettingGenderFemale:
+                requestObj.put("gender", "2");
+                break;
+            default:
+                requestObj.put("gender", "0");
+                break;
+        }
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(requestObj),
             response -> {
