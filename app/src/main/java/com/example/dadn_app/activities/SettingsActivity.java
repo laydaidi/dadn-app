@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -125,7 +126,7 @@ public class SettingsActivity extends AppCompatActivity {
         queue.add(request);
     }
 
-    private void backToTextSpeechActivity() {
+    public void backToTextSpeechActivity(View v) {
         Intent i = new Intent(SettingsActivity.this, TextSpeechActivity.class);
         startActivity(i);
         finish();
@@ -157,7 +158,7 @@ public class SettingsActivity extends AppCompatActivity {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(requestObj),
             response -> {
                 Helper.showToast(getApplicationContext(), "Update successfully");
-                backToTextSpeechActivity();
+                renderInformation();
             },
             error -> {
                 if (error == null || error.networkResponse == null) {
