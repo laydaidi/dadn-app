@@ -7,10 +7,12 @@ import com.neovisionaries.ws.client.WebSocketAdapter;
 import com.neovisionaries.ws.client.WebSocketException;
 import com.neovisionaries.ws.client.WebSocketFactory;
 import com.neovisionaries.ws.client.WebSocketFrame;
+import com.neovisionaries.ws.client.WebSocketState;
 
 import org.apache.commons.codec.binary.Base64;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -110,8 +112,18 @@ public class ESP32Helper {
         if (isConnected()) {
             return;
         }
-        // Connect to the server and perform an opening handshake.
-        ws.connectAsynchronously();
+        if (ws.getState() == WebSocketState.CLOSED) {
+            try {
+                ws = ws.recreate();
+                // Connect to the server and perform an opening handshake.
+                ws.connectAsynchronously();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            // Connect to the server and perform an opening handshake.
+            ws.connectAsynchronously();
+        }
     }
 
     public void disconnect() {
