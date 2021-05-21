@@ -78,5 +78,6 @@ public class LibraryActivity extends AppCompatActivity {
     public void onClickBtnBack(View view) {
         Intent i = new Intent(LibraryActivity.this, TextSpeechActivity.class);
         startActivity(i);
+        finish();
     }
 }

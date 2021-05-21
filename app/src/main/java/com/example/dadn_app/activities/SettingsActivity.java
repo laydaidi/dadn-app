@@ -176,5 +176,6 @@ public class SettingsActivity extends AppCompatActivity {
     private void switchToLogin() {
         Intent i = new Intent(SettingsActivity.this, LoginActivity.class);
         startActivity(i);
+        finish();
     }
 }

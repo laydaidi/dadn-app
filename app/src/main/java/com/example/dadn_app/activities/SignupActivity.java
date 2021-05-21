@@ -48,11 +48,13 @@ public class SignupActivity extends AppCompatActivity {
     public void onClickForgetPassword(View view) {
         Intent i = new Intent(SignupActivity.this, ForgotPasswordActivity.class);
         startActivity(i);
+        finish();
     }
 
     public void onClickLogin(View view) {
         Intent i = new Intent(SignupActivity.this, LoginActivity.class);
         startActivity(i);
+        finish();
     }
 
     private void onClickSignup() {

@@ -55,21 +55,25 @@ public class LoginActivity extends AppCompatActivity {
     private void switchToTextSpeech() {
         Intent i = new Intent(LoginActivity.this, TextSpeechActivity.class);
         startActivity(i);
+        finish();
     }
 
     public void onClickBtnCancel(View view) {
         Intent i = new Intent(LoginActivity.this, WelcomeActivity.class);
         startActivity(i);
+        finish();
     }
 
     public void onClickSignup(View view) {
         Intent i = new Intent(LoginActivity.this, SignupActivity.class);
         startActivity(i);
+        finish();
     }
 
     public void onClickForgotPassword(View view) {
         Intent i = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
         startActivity(i);
+        finish();
     }
 
     private void onClickBtnLogin() {

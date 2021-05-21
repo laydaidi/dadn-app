@@ -36,10 +36,12 @@ public class WelcomeActivity extends AppCompatActivity {
     private void switchToLogin() {
         Intent i = new Intent(WelcomeActivity.this, LoginActivity.class);
         startActivity(i);
+        finish();
     }
 
     private void switchToTextSpeech() {
         Intent i = new Intent(WelcomeActivity.this, TextSpeechActivity.class);
         startActivity(i);
+        finish();
     }
 }

@@ -95,11 +95,13 @@ public class TextSpeechActivity extends AppCompatActivity {
     public void onClickLibrary(View view) {
         Intent i = new Intent(TextSpeechActivity.this, LibraryActivity.class);
         startActivity(i);
+        finish();
     }
 
     public void onClickBtnSetting(View view) {
         Intent i = new Intent(TextSpeechActivity.this, SettingsActivity.class);
         startActivity(i);
+        finish();
     }
 
     private void startMQTT() {

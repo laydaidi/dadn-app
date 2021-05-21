@@ -42,6 +42,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     public void onClickBtnBack(View view) {
         Intent i = new Intent(ForgotPasswordActivity.this, LoginActivity.class);
         startActivity(i);
+        finish();
     }
 
     private void onClickBtnResetPassword() {
