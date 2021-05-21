@@ -2,6 +2,7 @@ package com.example.dadn_app.helpers;
 
 import android.content.Context;
 import android.graphics.SurfaceTexture;
+import android.opengl.GLES20;
 import android.util.Log;
 
 import com.google.mediapipe.components.ExternalTextureConverter;
@@ -36,6 +37,18 @@ public class MediaPipeHelper {
     static {
         System.loadLibrary("mediapipe_jni");
         System.loadLibrary("opencv_java3");
+    }
+
+    public static SurfaceTexture createSurfaceTexture() {
+        int[] textures = new int[1];
+        GLES20.glGenTextures(1, textures, 0);
+
+        int textureId = textures[0];
+        GLES20.glBindTexture(0x8D65, textureId);
+        GLES20.glTexParameterf(0x8D65, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_NEAREST);
+        GLES20.glTexParameterf(0x8D65, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
+
+        return new SurfaceTexture(textureId);
     }
 
     public void initialize(Context context, SurfaceTexture surfaceTexture, int surfaceTextureWidth, int surfaceTextureHeight) {
