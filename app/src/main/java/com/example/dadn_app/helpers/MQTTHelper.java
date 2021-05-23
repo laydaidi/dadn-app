@@ -5,6 +5,8 @@ import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.RequiresApi;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.DisconnectedBufferOptions;
@@ -29,9 +31,9 @@ public class MQTTHelper {
     final String subscriptionTopic = "NPNLab_BBC/feeds/+";
     final String username = "bvuiwhey";
     final String password = "70a-Yz49Ne72";
-    MqttAndroidClient mqttAndroidClient;
+    static MqttAndroidClient mqttAndroidClient;
     ESP32Helper esp32Helper = ESP32Helper.getHelper();
-
+    private static final MutableLiveData<Boolean> isConnected = new MutableLiveData<Boolean>(false);
     public static MQTTHelper mqttHelper;
 
     private MQTTHelper(Context context) {
@@ -84,9 +86,6 @@ public class MQTTHelper {
     }
 
     public synchronized void connect() {
-        if (isConnected()) {
-            return;
-        }
         Log.d("mqtt", "Create MQTT connection");
         MqttConnectOptions mqttConnectOptions = new MqttConnectOptions();
         mqttConnectOptions.setAutomaticReconnect(true);
@@ -99,14 +98,14 @@ public class MQTTHelper {
                         @Override
                         public void onSuccess(IMqttToken asyncActionToken) {
                             Log.d("mqtt", "Success");
-                            DisconnectedBufferOptions disconnectedBufferOptions = new
-                                    DisconnectedBufferOptions();
+                            DisconnectedBufferOptions disconnectedBufferOptions = new DisconnectedBufferOptions();
                             disconnectedBufferOptions.setBufferEnabled(true);
                             disconnectedBufferOptions.setBufferSize(100);
                             disconnectedBufferOptions.setPersistBuffer(false);
                             disconnectedBufferOptions.setDeleteOldestMessages(false);
                             mqttAndroidClient.setBufferOpts(disconnectedBufferOptions);
                             subscribeToTopic(subscriptionTopic);
+                            isConnected.postValue(true);
                         }
 
                         @Override
@@ -125,13 +124,14 @@ public class MQTTHelper {
         try {
             mqttAndroidClient.disconnect();
             mqttHelper = null;
+            isConnected.postValue(false);
         } catch (MqttException e) {
             e.printStackTrace();
         }
     }
 
-    public boolean isConnected() {
-        return mqttAndroidClient.isConnected();
+    public static LiveData<Boolean> isConnected() {
+        return isConnected;
     }
 
     private void processData(String topic, MqttMessage mqttMessage) {

@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.microedition.khronos.egl.EGLSurface;
+
 public class MediaPipeHelper {
 
     private static final String DEBUG_TAG = "MediaPipe";
@@ -29,16 +31,14 @@ public class MediaPipeHelper {
     private EglManager eglManager;
     private FrameProcessor processor;
 
-    private ExternalTextureConverter converter;
-    private SurfaceTexture frameTexture;
-
+    private BitmapConverter converter;
 
     static {
         System.loadLibrary("mediapipe_jni");
         System.loadLibrary("opencv_java3");
     }
 
-    public void initialize(Context context, SurfaceTexture surfaceTexture, int surfaceTextureWidth, int surfaceTextureHeight) {
+    public void initialize(Context context, ESP32Helper esp32Helper) {
         AndroidAssetUtil.initializeNativeAssetManager(context);
         eglManager = new EglManager(null);
         processor = new FrameProcessor(
@@ -60,11 +60,16 @@ public class MediaPipeHelper {
             Log.v(DEBUG_TAG, "[TS:" + packet.getTimestamp() + "] " + getMultiHandLandmarksDebugString(multiHandLandmarks));
         });
 
-        frameTexture = surfaceTexture;
-
-        converter = new ExternalTextureConverter(eglManager.getContext(), 2);
+//        converter = new ExternalTextureConverter(eglManager.getContext(), 2);
+        converter = new BitmapConverter(eglManager.getContext());
         converter.setConsumer(processor);
-        converter.setSurfaceTextureAndAttachToGLContext(frameTexture, surfaceTextureWidth, surfaceTextureHeight);
+
+//        Bitmap bmp = BitmapFactory.decodeByteArray(frame, 0, frame.length);
+
+        BmpProducer bitmapProducer = new BmpProducer(esp32Helper);
+        bitmapProducer.setCustomFrameAvailableListner(converter);
+
+//        converter.setSurfaceTextureAndAttachToGLContext(surfaceTexture, surfaceTextureWidth, surfaceTextureHeight);
     }
 
     private String getMultiHandLandmarksDebugString(List<LandmarkProto.NormalizedLandmarkList> multiHandLandmarks) {

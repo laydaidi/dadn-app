@@ -2,6 +2,9 @@ package com.example.dadn_app.helpers;
 
 import android.util.Log;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import com.neovisionaries.ws.client.WebSocket;
 import com.neovisionaries.ws.client.WebSocketAdapter;
 import com.neovisionaries.ws.client.WebSocketException;
@@ -18,7 +21,8 @@ public class ESP32Helper {
     public static ESP32Helper helper = null;
     private final String serverUri = "ws://192.168.4.1:8888";
     private WebSocket ws;
-    private final ImageBuffer imageBuffer = SharedImageBuffer.getImageBuffer();
+    private static final ImageBuffer imageBuffer = SharedImageBuffer.getImageBuffer();
+    private static final MutableLiveData<Boolean> isActive = new MutableLiveData<Boolean>(false);
 
     private ESP32Helper() {
         createWebSocketClient();
@@ -29,6 +33,10 @@ public class ESP32Helper {
             helper = new ESP32Helper();
         }
         return helper;
+    }
+
+    public static LiveData<Boolean> isActive() {
+        return isActive;
     }
 
     private void createWebSocketClient() {
@@ -43,6 +51,7 @@ public class ESP32Helper {
                 @Override
                 public void onConnected(WebSocket webSocket, Map<String, List<String>> headers) {
                     Log.w("WebSocket", "Session is starting");
+                    isActive.postValue(true);
                 }
 
                 @Override
@@ -56,6 +65,7 @@ public class ESP32Helper {
                                            WebSocketFrame serverCloseFrame, WebSocketFrame clientCloseFrame,
                                            boolean closedByServer) throws Exception {
                     Log.w("WebSocket", "Close");
+                    isActive.postValue(false);
                 }
 
                 @Override
@@ -101,6 +111,10 @@ public class ESP32Helper {
             e.printStackTrace();
         }
     }
+
+    public byte[] getImage() {
+      return imageBuffer.get();
+    };
 
     public boolean isConnected() {
         return ws.isOpen();
