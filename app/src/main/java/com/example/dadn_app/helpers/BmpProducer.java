@@ -13,14 +13,16 @@ public class BmpProducer extends Thread {
 
     public int height = 800, width = 600;
     Bitmap bmp;
+    Context context;
+    ESP32Helper esp32Helper;
+    byte[] byteImage;
 
     BmpProducer(Context context, ESP32Helper esp32Helper){
-//        byte[] byteImage = esp32Helper.getImage();
-//        bmp = BitmapFactory.decodeByteArray(byteImage, 0, byteImage.length);
-        bmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.img2);
-        bmp = Bitmap.createScaledBitmap(bmp,600,800,true);
-        height = bmp.getHeight();
-        width = bmp.getWidth();
+        this.context = context;
+        this.esp32Helper = esp32Helper;
+
+        this.bmp = BitmapFactory.decodeResource(this.context.getResources(), R.drawable.logobk);
+        this.bmp = Bitmap.createScaledBitmap(this.bmp,this.width,this.height,true);
 
         start();
     }
@@ -29,14 +31,23 @@ public class BmpProducer extends Thread {
         this.customFrameAvailableListner = customFrameAvailableListner;
     }
 
+    private void update_bitmap() {
+        this.byteImage = this.esp32Helper.getImage();
+        if (this.byteImage == null) return;
+        this.bmp = BitmapFactory.decodeByteArray(this.byteImage, 0, this.byteImage.length);
+        this.bmp = Bitmap.createScaledBitmap(this.bmp,this.width,this.height,true);
+    }
+
     public static final String TAG="BmpProducer";
     @Override
     public void run() {
         super.run();
-        while ((true)){
-            if(bmp==null || customFrameAvailableListner == null)
+        while (true) {
+            if (bmp == null || customFrameAvailableListner == null)
                 continue;
             Log.d(TAG,"Writing frame");
+
+            update_bitmap();
             customFrameAvailableListner.onFrame(bmp);
 
             /*OTMainActivity.imageView.post(new Runnable() {

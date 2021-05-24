@@ -19,7 +19,7 @@ import java.util.Map;
 
 public class ESP32Helper {
     public static ESP32Helper helper = null;
-    private final String serverUri = "ws://192.168.4.1:8888";
+    private final String serverUri = "ws://192.168.43.199:8888";
     private WebSocket ws;
     private static final ImageBuffer imageBuffer = SharedImageBuffer.getImageBuffer();
     private static final MutableLiveData<Boolean> isActive = new MutableLiveData<Boolean>(false);

@@ -132,6 +132,7 @@ public class TextSpeechActivity extends AppCompatActivity {
 
     private void startSign2Text() {
         mediaPipeHelper = new MediaPipeHelper();
+
         ESP32Helper.isActive().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean active) {
