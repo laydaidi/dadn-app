@@ -169,14 +169,15 @@ public class BitmapConverter implements TextureFrameProducer, CustomFrameAvailab
         }
 
         protected void renderNext() {
-            if (bitmap == null) {
+            if (this.bitmap == null) {
                 return;
             }
+
             try {
                 synchronized (consumers) {
                     boolean frameUpdated = false;
                     for (TextureFrameConsumer consumer : consumers) {
-                        AppTextureFrame outputFrame = nextOutputFrame(bitmap);
+                        AppTextureFrame outputFrame = nextOutputFrame(this.bitmap);
                         updateOutputFrame(outputFrame);
                         frameUpdated = true;
                         Log.d(TAG,"Frame updated ");
@@ -219,7 +220,9 @@ public class BitmapConverter implements TextureFrameProducer, CustomFrameAvailab
             waitUntilReleased(outputFrame);
             return outputFrame;
         }
-        private long timestamp=1l;
+
+        private long timestamp = 1L;
+
         private void updateOutputFrame(AppTextureFrame outputFrame) {
             // Populate frame timestamp with surface texture timestamp after render() as renderer
             // ensures that surface texture has the up-to-date timestamp. (Also adjust

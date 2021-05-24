@@ -66,8 +66,8 @@ public class MediaPipeHelper {
 
 //        Bitmap bmp = BitmapFactory.decodeByteArray(frame, 0, frame.length);
 
-        BmpProducer bitmapProducer = new BmpProducer(esp32Helper);
-        bitmapProducer.setCustomFrameAvailableListner(converter);
+        BmpProducer bitmapProducer = new BmpProducer(context.getApplicationContext(), esp32Helper);
+        bitmapProducer.setCustomFrameAvailableListener(converter);
 
 //        converter.setSurfaceTextureAndAttachToGLContext(surfaceTexture, surfaceTextureWidth, surfaceTextureHeight);
     }
