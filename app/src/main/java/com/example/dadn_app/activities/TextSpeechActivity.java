@@ -1,10 +1,14 @@
 package com.example.dadn_app.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -18,9 +22,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.dadn_app.R;
+import com.example.dadn_app.helpers.BmpProducer;
 import com.example.dadn_app.helpers.ESP32Helper;
 import com.example.dadn_app.helpers.Helper;
 import com.example.dadn_app.helpers.MQTTHelper;
+import com.example.dadn_app.helpers.MediaPipeHelper;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
@@ -41,6 +47,7 @@ public class TextSpeechActivity extends AppCompatActivity {
     TextView txt;
     MQTTHelper mqttHelper;
     ESP32Helper esp32Helper;
+    MediaPipeHelper mediaPipeHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +98,10 @@ public class TextSpeechActivity extends AppCompatActivity {
 
         // Connect to MQTT server
         startMQTT();
+
+        // Start translation
+        esp32Helper = ESP32Helper.getHelper();
+        startSign2Text();
     }
 
     public void onClickLibrary(View view) {
@@ -108,5 +119,31 @@ public class TextSpeechActivity extends AppCompatActivity {
     private void startMQTT() {
         mqttHelper = MQTTHelper.getHelper(getApplicationContext());
         mqttHelper.connect();
+
+        isServerConnected().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean success) {
+                if (success) {
+                    // Do something here
+                }
+            }
+        });
+    }
+
+    private void startSign2Text() {
+        mediaPipeHelper = new MediaPipeHelper();
+
+        ESP32Helper.isActive().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean active) {
+                if (active) {
+                    mediaPipeHelper.initialize(getApplicationContext(), esp32Helper);
+                }
+            }
+        });
+    }
+
+    private LiveData<Boolean> isServerConnected() {
+        return MQTTHelper.isConnected();
     }
 }

@@ -5,6 +5,8 @@ import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.RequiresApi;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.DisconnectedBufferOptions;
@@ -24,22 +26,14 @@ import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 public class MQTTHelper {
+    final String serverUri = "tcp://m14.cloudmqtt.com:17755";
     final String clientId = UUID.randomUUID().toString();
-    final String serverUri = "tcp://industrial.api.ubidots.com:1883";
-    final String baseTopic = "/v1.6/devices/bkiot/";
-    final String username = "BBFF-aQZpnM5D7nUbgsbG3IBQOWiWAEILZB";
-    final String password = "";
-
-    // Adafruit server
-//    final String serverUri = "tcp://io.adafruit.com:1883";
-//    final String baseTopic = "binh234/feeds/multidisciplinary.";
-//    final String username = "binh234";
-//    final String password = "aio_JQLU03df6FP2wyxsGYcIUibSpmA6";
-
-    final String subscriptionTopic = baseTopic + "bk-iotesp/lv";
-    MqttAndroidClient mqttAndroidClient;
+    final String subscriptionTopic = "NPNLab_BBC/feeds/+";
+    final String username = "bvuiwhey";
+    final String password = "70a-Yz49Ne72";
+    static MqttAndroidClient mqttAndroidClient;
     ESP32Helper esp32Helper = ESP32Helper.getHelper();
-
+    private static final MutableLiveData<Boolean> isConnected = new MutableLiveData<Boolean>(false);
     public static MQTTHelper mqttHelper;
 
     private MQTTHelper(Context context) {
@@ -52,9 +46,9 @@ public class MQTTHelper {
                 try {
                     data.put("id", "3");
                     data.put("name", "SPEAKER");
-                    data.put("value", 100);
+                    data.put("data", "100");
                     data.put("unit", "");
-                    mqttHelper.publishData(baseTopic + "bk-iotspeaker", data);
+                    mqttHelper.publishData("NPNLab_BBC/feeds/bk-iotspeaker", data);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -92,9 +86,6 @@ public class MQTTHelper {
     }
 
     public synchronized void connect() {
-        if (isConnected()) {
-            return;
-        }
         Log.d("mqtt", "Create MQTT connection");
         MqttConnectOptions mqttConnectOptions = new MqttConnectOptions();
         mqttConnectOptions.setAutomaticReconnect(true);
@@ -107,14 +98,14 @@ public class MQTTHelper {
                         @Override
                         public void onSuccess(IMqttToken asyncActionToken) {
                             Log.d("mqtt", "Success");
-                            DisconnectedBufferOptions disconnectedBufferOptions = new
-                                    DisconnectedBufferOptions();
+                            DisconnectedBufferOptions disconnectedBufferOptions = new DisconnectedBufferOptions();
                             disconnectedBufferOptions.setBufferEnabled(true);
                             disconnectedBufferOptions.setBufferSize(100);
                             disconnectedBufferOptions.setPersistBuffer(false);
                             disconnectedBufferOptions.setDeleteOldestMessages(false);
                             mqttAndroidClient.setBufferOpts(disconnectedBufferOptions);
                             subscribeToTopic(subscriptionTopic);
+                            isConnected.postValue(true);
                         }
 
                         @Override
@@ -133,61 +124,48 @@ public class MQTTHelper {
         try {
             mqttAndroidClient.disconnect();
             mqttHelper = null;
+            isConnected.postValue(false);
         } catch (MqttException e) {
             e.printStackTrace();
         }
     }
 
-    public boolean isConnected() {
-        return mqttAndroidClient.isConnected();
+    public static LiveData<Boolean> isConnected() {
+        return isConnected;
     }
 
     private void processData(String topic, MqttMessage mqttMessage) {
         JSONObject data = null;
         try {
-            int value = Math.round(Float.parseFloat(mqttMessage.toString()));
-            if (topic.equals(subscriptionTopic)) {
-                if (value == 0) {
+            data = new JSONObject(mqttMessage.toString());
+            // Receive data from ESP32 CAM
+            if (data.getString("id").equals("99")) {
+                // Cam closed
+                if (data.getString("data").equals("0")) {
                     // Stop stream
                     esp32Helper.disconnect();
                     // Notify buzzer
-                    notifyBuzzer(500);
-                } else {
+                    notifyBuzzer("500");
+                } else if (data.getString("data").equals("1")) { // Cam opened
                     // Connect and start streaming
                     esp32Helper.connect();
                     // Notify buzzer
-                    notifyBuzzer(1000);
+                    notifyBuzzer("1000");
                 }
             }
-//            data = new JSONObject(mqttMessage.toString());
-//            // Receive data from ESP32 CAM
-//            if (topic.equals(subscriptionTopic)) {
-//                // Cam closed
-//                if (data.getInt("value") == 0) {
-//                    // Stop stream
-//                    esp32Helper.disconnect();
-//                    // Notify buzzer
-//                    notifyBuzzer(500);
-//                } else if (data.getInt("value") == 1) { // Cam opened
-//                    // Connect and start streaming
-//                    esp32Helper.connect();
-//                    // Notify buzzer
-//                    notifyBuzzer(1000);
-//                }
-//            }
-        } catch (Exception e) {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    public void notifyBuzzer(int value) {
+    public void notifyBuzzer(String value) {
         JSONObject buzzerData = new JSONObject();
         try {
             buzzerData.put("id", "2");
             buzzerData.put("name", "SPEAKER");
-            buzzerData.put("value", value);
+            buzzerData.put("data", value);
             buzzerData.put("unit", "");
-            mqttHelper.publishData(baseTopic + "bk-iotspeaker", buzzerData);
+            mqttHelper.publishData("NPNLab_BBC/feeds/bk-iotspeaker", buzzerData);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -198,9 +176,9 @@ public class MQTTHelper {
         try {
             ESP32Data.put("id", "99");
             ESP32Data.put("name", "ESP32");
-            ESP32Data.put("value", value);
+            ESP32Data.put("data", value);
             ESP32Data.put("unit", "");
-            mqttHelper.publishData(baseTopic + "bk-iotesp", ESP32Data);
+            mqttHelper.publishData("NPNLab_BBC/feeds/bk-iotesp", ESP32Data);
         } catch (JSONException e) {
             e.printStackTrace();
         }
