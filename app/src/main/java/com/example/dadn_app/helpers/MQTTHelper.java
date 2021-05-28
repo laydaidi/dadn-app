@@ -57,7 +57,7 @@ public class MQTTHelper {
                 Log.d("mqtt", s);
                 JSONObject data = new JSONObject();
                 try {
-                    data.put("id", "3");
+                    data.put("id", "2");
                     data.put("name", "SPEAKER");
                     data.put("data", "100");
                     data.put("unit", "");
