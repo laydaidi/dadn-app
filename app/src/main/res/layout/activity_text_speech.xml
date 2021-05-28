@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
+    android:onClick="onClickBtnSetting"
     tools:context=".activities.TextSpeechActivity">
 
     <LinearLayout
@@ -20,7 +21,7 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="303dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="60dp"
                 android:layout_marginLeft="60dp"
@@ -46,15 +47,22 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="44dp"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="20dp"
                 android:layout_marginRight="20dp"
                 android:gravity="fill_vertical"
                 android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:onClick="onClickBtnSetting"
+                    app:srcCompat="@drawable/ic_baseline_settings_24" />
             </LinearLayout>
 
         </LinearLayout>
+
         <TextView
             android:id="@+id/textView2"
             android:layout_width="match_parent"
