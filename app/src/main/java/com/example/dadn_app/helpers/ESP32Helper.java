@@ -24,9 +24,10 @@ public class ESP32Helper {
     private final String serverUri = "ws://192.168.43.199:8888";
     private WebSocket ws;
     private static final ImageBuffer imageBuffer = SharedImageBuffer.getImageBuffer();
-    private static final MutableLiveData<Boolean> isActive = new MutableLiveData<Boolean>(false);
+    private static final MutableLiveData<Boolean> isActive = new MutableLiveData<Boolean>();
 
     private ESP32Helper() {
+        isActive.postValue(false);
         createWebSocketClient();
     }
 

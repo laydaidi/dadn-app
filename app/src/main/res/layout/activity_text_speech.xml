@@ -52,18 +52,9 @@
                 android:layout_marginRight="20dp"
                 android:gravity="fill_vertical"
                 android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/btnSetting"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:minWidth="40dp"
-                    android:onClick="onClickBtnSetting"
-                    app:srcCompat="@drawable/ic_baseline_settings_24" />
             </LinearLayout>
 
         </LinearLayout>
-
         <TextView
             android:id="@+id/textView2"
             android:layout_width="match_parent"
