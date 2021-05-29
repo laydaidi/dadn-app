@@ -35,5 +35,5 @@
         android:layout_weight="0"
         app:backgroundTint="#5E8DB6"
         app:srcCompat="@drawable/ic_video_24"
-        android:id="@+id/libraryRecordVideoImage"/>
+        android:id="@+id/libraryRecordVideoImage" />
 </LinearLayout>

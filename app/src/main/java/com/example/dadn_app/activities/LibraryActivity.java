@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.SearchView;
@@ -92,6 +93,13 @@ public class LibraryActivity extends AppCompatActivity {
         });
     }
 
+//    public void onClickVideoImage(View view) {
+//        Intent i = new Intent(LibraryActivity.this, LibraryVideoActivity.class);
+//        i.putExtra("id", recordList.get(view.getId()).getId());
+//        startActivity(i);
+//        finish();
+//    }
+
     public void onClickBtnBack(View view) {
         Intent i = new Intent(LibraryActivity.this, TextSpeechActivity.class);
         startActivity(i);
@@ -112,7 +120,9 @@ public class LibraryActivity extends AppCompatActivity {
                             for (int i=0;i<jArray.length();i++){
                                 JSONObject jsonobject = jArray.getJSONObject(i);
                                 String name = jsonobject.getString("name");
-                                recordList.add(new Record(name, R.drawable.ic_baseline_campaign_24, R.drawable.ic_video_24));
+                                String id = jsonobject.getString("id");
+                                Log.d("LESSON ID:", id);
+                                recordList.add(new Record(name, R.drawable.ic_baseline_campaign_24, R.drawable.ic_video_24, id));
                             }
                         }
 
@@ -121,6 +131,21 @@ public class LibraryActivity extends AppCompatActivity {
 
                         recordAdapter = new RecordAdapter(this, R.layout.library_record, recordList);
                         recordListView.setAdapter(recordAdapter);
+
+                        recordListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                long viewId = view.getId();
+                                if (viewId == R.id.libraryRecordVideoImage) {
+                                    Intent i = new Intent(LibraryActivity.this, LibraryVideoActivity.class);
+                                    i.putExtra("id", recordList.get(position).getId());
+                                    startActivity(i);
+                                    finish();
+                                }
+                            }
+                        });
+
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
