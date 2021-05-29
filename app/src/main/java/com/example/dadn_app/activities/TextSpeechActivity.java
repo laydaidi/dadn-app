@@ -75,7 +75,7 @@ public class TextSpeechActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     tts.speak(txt.getText().toString(), TextToSpeech.QUEUE_FLUSH, null);
-                    Helper.showToast(getApplicationContext(), "Speak");
+//                    Helper.showToast(getApplicationContext(), "Speak");
                 }
             }
         });

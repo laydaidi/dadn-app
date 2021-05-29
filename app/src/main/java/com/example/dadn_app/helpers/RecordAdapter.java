@@ -61,6 +61,7 @@ public class RecordAdapter extends BaseAdapter {
         videoImageBtn.setImageResource(record.getVideoImage());
 
         setClickListener(videoImageBtn, position, parent);
+        setClickListener(audioImageBtn, position, parent);
 
         return convertView;
     }
