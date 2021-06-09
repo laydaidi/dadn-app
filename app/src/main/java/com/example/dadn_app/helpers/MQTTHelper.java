@@ -45,7 +45,7 @@ public class MQTTHelper {
     MqttAndroidClient mqttAndroidClient;
     MqttAndroidClient mqttAndroidClient1;
     ESP32Helper esp32Helper = ESP32Helper.getHelper();
-    private static final MutableLiveData<Boolean> isConnected = new MutableLiveData<Boolean>();
+    private static final MutableLiveData<Boolean> isConnected = new MutableLiveData<Boolean>(false);
     public static MQTTHelper mqttHelper;
 
     private MQTTHelper(Context context) {
