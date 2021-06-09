@@ -56,7 +56,6 @@ public class MediaPipeHelper {
                 null
         );
 
-        handPatternRecognitionHelper = new HandPatternRecognitionHelper(context);
         AndroidPacketCreator packetCreator = processor.getPacketCreator();
         Map<String, Packet> inputSidePackets = new HashMap<>();
         inputSidePackets.put(INPUT_NUM_HANDS_SIDE_PACKET_NAME, packetCreator.createInt32(NUM_HANDS));
@@ -71,6 +70,8 @@ public class MediaPipeHelper {
     }
 
     public void initialize() {
+        handPatternRecognitionHelper = new HandPatternRecognitionHelper(this.context.getApplicationContext());
+
         // converter = new ExternalTextureConverter(eglManager.getContext(), 2);
         converter = new BitmapConverter(eglManager.getContext());
         converter.setConsumer(processor);
@@ -86,6 +87,7 @@ public class MediaPipeHelper {
     public void suspend() {
         bitmapProducer.removeListener();
         converter.removeConsumer(processor);
+        handPatternRecognitionHelper.close();
     }
 
     private String getMultiHandLandmarksDebugString(List<LandmarkProto.NormalizedLandmarkList> multiHandLandmarks) {

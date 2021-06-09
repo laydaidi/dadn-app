@@ -17,7 +17,7 @@ import java.nio.ByteBuffer;
 
 public class HandPatternRecognitionHelper {
     private Context mContext;
-    private HandPatternRecognition model;
+    private static HandPatternRecognition model;
     private TensorBuffer inputFeature;
 
     public HandPatternRecognitionHelper(Context context) {
@@ -26,22 +26,23 @@ public class HandPatternRecognitionHelper {
     }
 
     public void initialize() {
-        if (this.model == null) {
+        if (model == null) {
             try {
-                this.model = HandPatternRecognition.newInstance(this.mContext);
-                this.inputFeature = TensorBuffer.createFixedSize(new int[]{1, 3, 21, 21}, DataType.FLOAT32);
+                model = HandPatternRecognition.newInstance(this.mContext);
             } catch (IOException e) {
                 // TODO Handle the exception
             }
         }
+        inputFeature = TensorBuffer.createFixedSize(new int[]{1, 3, 21, 21}, DataType.FLOAT32);
     }
 
     public void close() {
-        this.model.close();
+        model.close();
+        model = null;
     }
 
     public int infer(ByteBuffer inputBuffer) {
-        if (this.model == null) return -1;
+        if (model == null) return -1;
 
         this.inputFeature.loadBuffer(inputBuffer);
 
