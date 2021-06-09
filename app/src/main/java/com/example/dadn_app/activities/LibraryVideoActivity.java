@@ -141,41 +141,65 @@ public class LibraryVideoActivity extends AppCompatActivity {
         String url = Helper.buildAPIURL("/video/" + videoUrl);
         Log.d("LESSON URL: ", url);
         VideoStreamVolleyRequest request = new VideoStreamVolleyRequest(Request.Method.GET, url,
-                new Response.Listener<byte[]>() {
-                    @Override
-                    public void onResponse(byte[] response) {
-                        // TODO handle the response
-                        try {
-                            if (response!=null) {
-                                String filePrefix = videoUrl.substring(0, videoUrl.lastIndexOf("."));
-                                String fileSuffix = videoUrl.substring(videoUrl.lastIndexOf(".") + 1);
-                                File tempVideo = File.createTempFile(filePrefix, fileSuffix, getCacheDir());
-                                tempVideo.deleteOnExit();
-                                FileOutputStream fos = new FileOutputStream(tempVideo);
-                                fos.write(response);
-                                fos.close();
+                response -> {
+                    try {
+                        if (response!=null) {
+                            String filePrefix = videoUrl.substring(0, videoUrl.lastIndexOf("."));
+                            String fileSuffix = videoUrl.substring(videoUrl.lastIndexOf(".") + 1);
+                            File tempVideo = File.createTempFile(filePrefix, fileSuffix, getCacheDir());
+                            tempVideo.deleteOnExit();
+                            FileOutputStream fos = new FileOutputStream(tempVideo);
+                            fos.write(response);
+                            fos.close();
 
-                                videoView.setVideoPath(tempVideo.getAbsolutePath());
-                                MediaController mediaController = new MediaController(LibraryVideoActivity.this);
-                                videoView.setMediaController(mediaController);
-                                mediaController.setMediaPlayer(videoView);
-                                videoView.setVisibility(View.VISIBLE);
-                                videoView.start();
-                            }
-                        } catch (Exception e) {
-                            // TODO Auto-generated catch block
-                            Log.d("KEY_ERROR", "UNABLE TO DOWNLOAD FILE");
-                            e.printStackTrace();
+                            videoView.setVideoPath(tempVideo.getAbsolutePath());
+                            MediaController mediaController = new MediaController(LibraryVideoActivity.this);
+                            videoView.setMediaController(mediaController);
+                            mediaController.setMediaPlayer(videoView);
+                            videoView.setVisibility(View.VISIBLE);
+                            videoView.start();
                         }
+                    } catch (Exception e) {
+                        // TODO Auto-generated catch block
+                        Log.d("KEY_ERROR", "UNABLE TO DOWNLOAD FILE");
+                        e.printStackTrace();
                     }
-                } ,new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                // TODO handle the error
-                error.printStackTrace();
-            }
-        }, null);
+                },
+                error -> {
+                    if (error == null || error.networkResponse == null) {
+                        Helper.showToast(getApplicationContext(), "Cant connect to the server");
+                        return;
+                    }
+                    int statusCode = error.networkResponse.statusCode;
+                    try {
+                        String message = (new JSONObject(new String(error.networkResponse.data))).getString("message");
+                        if (statusCode == 403) {
+                            if (message.equals("Invalid token")) {
+                                // Reset token here
+                                Helper.resetToken(
+                                        queue,
+                                        getSharedPreferences("com.example.dadn_app", Context.MODE_PRIVATE),
+                                        this::loadLesson,
+                                        this::switchToLogin
+                                );
+                            } else {
+                                Helper.showToast(getApplicationContext(), message);
+                            }
+                        } else if (statusCode == 401) {
+                            Helper.showToast(getApplicationContext(), message);
+                        } else {
+                            Helper.showToast(getApplicationContext(), "Cant connect to the server");
+                        }
+                    } catch (JSONException e) {
+                        this.switchToLogin();
+                    }
+                },
+                null) {
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        return Helper.buildAuthorizationHeader();
+                    }
+        };
 
         queue.add(request);
 
