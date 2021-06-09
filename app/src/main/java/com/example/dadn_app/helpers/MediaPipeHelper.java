@@ -62,7 +62,7 @@ public class MediaPipeHelper {
         processor.setInputSidePackets(inputSidePackets);
 
         processor.addPacketCallback(OUTPUT_LANDMARKS_STREAM_NAME, (packet) -> {
-            Log.v("MediaPipe", "Received multi-hand landmarks packet.");
+//            Log.v("MediaPipe", "Received multi-hand landmarks packet.");
             List<LandmarkProto.NormalizedLandmarkList> multiHandLandmarks = PacketGetter.getProtoVector(packet, LandmarkProto.NormalizedLandmarkList.parser());
             Log.v(DEBUG_TAG, "[TS:" + packet.getTimestamp() + "] " + getMultiHandLandmarksDebugString(multiHandLandmarks));
         });
@@ -99,16 +99,28 @@ public class MediaPipeHelper {
         for (LandmarkProto.NormalizedLandmarkList landmarks : multiHandLandmarks) {
             multiHandLandmarksStr += "\t#Hand landmarks for hand[" + handIndex + "]: " + landmarks.getLandmarkCount() + "\n";
             int landmarkIndex = 0;
-            // TODO: Create buffer array of distance
 
-            for (LandmarkProto.NormalizedLandmark landmark : landmarks.getLandmarkList()) {
-                multiHandLandmarksStr += "\t\tLandmark [" + landmarkIndex + "]: (" + landmark.getX() + ", " + landmark.getY() + ", " + landmark.getZ() + ")\n";
-                ++landmarkIndex;
-
+            float[][][][] distance_buffer = new float[1][3][21][21];
+            int row_index = 0;
+            for(LandmarkProto.NormalizedLandmark firstlandmark: landmarks.getLandmarkList()) {
+                int column_index = 0;
+                for (LandmarkProto.NormalizedLandmark secondlandmark: landmarks.getLandmarkList()) {
+                    distance_buffer[0][0][row_index][column_index] = Math.abs(firstlandmark.getX() - secondlandmark.getX());
+                    distance_buffer[0][1][row_index][column_index] = Math.abs(firstlandmark.getY() - secondlandmark.getY());
+                    distance_buffer[0][2][row_index][column_index] = Math.abs(firstlandmark.getZ() - secondlandmark.getZ());
+                    column_index++;
+                }
+                row_index++;
             }
 
-            // TODO: pass it through handPatternRecognitionHelper.infer() to get index of action
+            int index = handPatternRecognitionHelper.doInference(distance_buffer);
+            Log.v("RESUTL", String.valueOf(index));
 
+//            for (LandmarkProto.NormalizedLandmark landmark : landmarks.getLandmarkList()) {
+//                multiHandLandmarksStr += "\t\tLandmark [" + landmarkIndex + "]: (" + landmark.getX() + ", " + landmark.getY() + ", " + landmark.getZ() + ")\n";
+//                ++landmarkIndex;
+//
+//            }
             ++handIndex;
         }
         return multiHandLandmarksStr;

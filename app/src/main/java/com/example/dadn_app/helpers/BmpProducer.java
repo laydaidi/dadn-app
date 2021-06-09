@@ -49,7 +49,7 @@ public class BmpProducer extends Thread {
         while (true) {
             if (bmp == null || customFrameAvailableListner == null)
                 continue;
-            Log.d(TAG,"Writing frame");
+//            Log.d(TAG,"Writing frame");
 
             update_bitmap();
             customFrameAvailableListner.onFrame(bmp);

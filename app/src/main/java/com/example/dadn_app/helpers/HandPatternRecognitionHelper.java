@@ -1,65 +1,58 @@
 package com.example.dadn_app.helpers;
 
 import android.content.Context;
-
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-
-import com.example.dadn_app.ml.HandPatternRecognition;
-
-import org.tensorflow.lite.DataType;
-import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
-
+import android.content.res.AssetFileDescriptor;
+import org.tensorflow.lite.Interpreter;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.ByteBuffer;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
 
 public class HandPatternRecognitionHelper {
     private Context mContext;
-    private static HandPatternRecognition model;
-    private TensorBuffer inputFeature;
+    Interpreter model;
 
     public HandPatternRecognitionHelper(Context context) {
         this.mContext = context;
         this.initialize();
     }
 
+    private MappedByteBuffer loadModelFile() throws IOException{
+        AssetFileDescriptor fileDescriptor = this.mContext.getAssets().openFd("hand_pattern_recognition.tflite");
+        FileInputStream inputStream=new FileInputStream(fileDescriptor.getFileDescriptor());
+        FileChannel fileChannel=inputStream.getChannel();
+        long startOffset=fileDescriptor.getStartOffset();
+        long declareLength=fileDescriptor.getDeclaredLength();
+        return fileChannel.map(FileChannel.MapMode.READ_ONLY,startOffset,declareLength);
+    }
+
     public void initialize() {
-        if (model == null) {
-            try {
-                model = HandPatternRecognition.newInstance(this.mContext);
-            } catch (IOException e) {
-                // TODO Handle the exception
-            }
+        try {
+            this.model = new Interpreter(this.loadModelFile());
+        }catch (Exception ex){
+            ex.printStackTrace();
         }
-        inputFeature = TensorBuffer.createFixedSize(new int[]{1, 3, 21, 21}, DataType.FLOAT32);
     }
 
     public void close() {
-        model.close();
-        model = null;
+        this.model.close();
     }
 
-    public int infer(ByteBuffer inputBuffer) {
-        if (model == null) return -1;
+    public int doInference(float[][][][] inputBuffer) {
+        float[][] output=new float[1][10];
+        this.model.run(inputBuffer, output);
 
-        this.inputFeature.loadBuffer(inputBuffer);
-
-        // Runs model inference and gets result.
-        HandPatternRecognition.Outputs outputs = model.process(this.inputFeature);
-        TensorBuffer outputFeature = outputs.getOutputFeature0AsTensorBuffer();
-        float[] outputArray = outputFeature.getFloatArray();
-        return this.getMaxIndex(outputArray);
+        return this.getMaxIndex(output[0]);
     }
 
     private int getMaxIndex(float[] array) {
         int maxAt = 0;
 
         for (int i = 0; i < array.length; i++) {
-            maxAt = array[i] > array[maxAt] ? i : maxAt;
+            maxAt = (array[i] > array[maxAt]) ? i : maxAt;
         }
 
         return maxAt;
     }
 }
+
