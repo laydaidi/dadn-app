@@ -13,6 +13,7 @@ import com.google.mediapipe.framework.Packet;
 import com.google.mediapipe.framework.PacketGetter;
 import com.google.mediapipe.glutil.EglManager;
 
+import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,25 +31,32 @@ public class MediaPipeHelper {
 
     private EglManager eglManager;
     private FrameProcessor processor;
-
     private BitmapConverter converter;
+    private Context context;
+    private ESP32Helper esp32Helper;
+    private BmpProducer bitmapProducer;
+    private HandPatternRecognitionHelper handPatternRecognitionHelper;
 
     static {
         System.loadLibrary("mediapipe_jni");
         System.loadLibrary("opencv_java3");
     }
 
-    public void initialize(Context context, ESP32Helper esp32Helper) {
+    public MediaPipeHelper(Context context, ESP32Helper esp32Helper) {
+        this.context = context;
+        this.esp32Helper = esp32Helper;
+
         AndroidAssetUtil.initializeNativeAssetManager(context);
         eglManager = new EglManager(null);
         processor = new FrameProcessor(
-            context,
-            eglManager.getNativeContext(),
-            BINARY_GRAPH_NAME,
-            INPUT_VIDEO_STREAM_NAME,
-            null
+                context,
+                eglManager.getNativeContext(),
+                BINARY_GRAPH_NAME,
+                INPUT_VIDEO_STREAM_NAME,
+                null
         );
 
+        handPatternRecognitionHelper = new HandPatternRecognitionHelper(context);
         AndroidPacketCreator packetCreator = processor.getPacketCreator();
         Map<String, Packet> inputSidePackets = new HashMap<>();
         inputSidePackets.put(INPUT_NUM_HANDS_SIDE_PACKET_NAME, packetCreator.createInt32(NUM_HANDS));
@@ -60,16 +68,24 @@ public class MediaPipeHelper {
             Log.v(DEBUG_TAG, "[TS:" + packet.getTimestamp() + "] " + getMultiHandLandmarksDebugString(multiHandLandmarks));
         });
 
-//        converter = new ExternalTextureConverter(eglManager.getContext(), 2);
+    }
+
+    public void initialize() {
+        // converter = new ExternalTextureConverter(eglManager.getContext(), 2);
         converter = new BitmapConverter(eglManager.getContext());
         converter.setConsumer(processor);
 
-//        Bitmap bmp = BitmapFactory.decodeByteArray(frame, 0, frame.length);
+        // Bitmap bmp = BitmapFactory.decodeByteArray(frame, 0, frame.length);
 
-        BmpProducer bitmapProducer = new BmpProducer(context.getApplicationContext(), esp32Helper);
+        bitmapProducer = new BmpProducer(this.context.getApplicationContext(), this.esp32Helper);
         bitmapProducer.setCustomFrameAvailableListener(converter);
 
-//        converter.setSurfaceTextureAndAttachToGLContext(surfaceTexture, surfaceTextureWidth, surfaceTextureHeight);
+        // converter.setSurfaceTextureAndAttachToGLContext(surfaceTexture, surfaceTextureWidth, surfaceTextureHeight);
+    }
+
+    public void suspend() {
+        bitmapProducer.removeListener();
+        converter.removeConsumer(processor);
     }
 
     private String getMultiHandLandmarksDebugString(List<LandmarkProto.NormalizedLandmarkList> multiHandLandmarks) {
@@ -81,10 +97,16 @@ public class MediaPipeHelper {
         for (LandmarkProto.NormalizedLandmarkList landmarks : multiHandLandmarks) {
             multiHandLandmarksStr += "\t#Hand landmarks for hand[" + handIndex + "]: " + landmarks.getLandmarkCount() + "\n";
             int landmarkIndex = 0;
+            // TODO: Create buffer array of distance
+
             for (LandmarkProto.NormalizedLandmark landmark : landmarks.getLandmarkList()) {
                 multiHandLandmarksStr += "\t\tLandmark [" + landmarkIndex + "]: (" + landmark.getX() + ", " + landmark.getY() + ", " + landmark.getZ() + ")\n";
                 ++landmarkIndex;
+
             }
+
+            // TODO: pass it through handPatternRecognitionHelper.infer() to get index of action
+
             ++handIndex;
         }
         return multiHandLandmarksStr;
