@@ -14,6 +14,7 @@ import com.google.mediapipe.framework.PacketGetter;
 import com.google.mediapipe.glutil.EglManager;
 
 import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,18 +68,22 @@ public class MediaPipeHelper {
             Log.v(DEBUG_TAG, "[TS:" + packet.getTimestamp() + "] " + getMultiHandLandmarksDebugString(multiHandLandmarks));
         });
 
+
+        bitmapProducer = new BmpProducer(this.context.getApplicationContext(), this.esp32Helper);
+        converter = new BitmapConverter(eglManager.getContext());
+        handPatternRecognitionHelper = new HandPatternRecognitionHelper(this.context.getApplicationContext());
     }
 
     public void initialize() {
-        handPatternRecognitionHelper = new HandPatternRecognitionHelper(this.context.getApplicationContext());
+//        handPatternRecognitionHelper = new HandPatternRecognitionHelper(this.context.getApplicationContext());
 
         // converter = new ExternalTextureConverter(eglManager.getContext(), 2);
-        converter = new BitmapConverter(eglManager.getContext());
+//        converter = new BitmapConverter(eglManager.getContext());
         converter.setConsumer(processor);
 
         // Bitmap bmp = BitmapFactory.decodeByteArray(frame, 0, frame.length);
 
-        bitmapProducer = new BmpProducer(this.context.getApplicationContext(), this.esp32Helper);
+//        bitmapProducer = new BmpProducer(this.context.getApplicationContext(), this.esp32Helper);
         bitmapProducer.setCustomFrameAvailableListener(converter);
 
         // converter.setSurfaceTextureAndAttachToGLContext(surfaceTexture, surfaceTextureWidth, surfaceTextureHeight);
@@ -100,6 +105,18 @@ public class MediaPipeHelper {
             multiHandLandmarksStr += "\t#Hand landmarks for hand[" + handIndex + "]: " + landmarks.getLandmarkCount() + "\n";
             int landmarkIndex = 0;
             // TODO: Create buffer array of distance
+            float[] distance_buffer = new float[1*3*21*21];
+            int row_index = 0;
+            for(LandmarkProto.NormalizedLandmark firstlandmark: landmarks.getLandmarkList()) {
+                int column_index = 0;
+                for (LandmarkProto.NormalizedLandmark secondlandmark: landmarks.getLandmarkList()) {
+                    distance_buffer[row_index*21 + column_index] = Math.abs(firstlandmark.getX() - secondlandmark.getX());
+                    distance_buffer[row_index*21 + column_index + 21*21] = Math.abs(firstlandmark.getY() - secondlandmark.getY());
+                    distance_buffer[row_index*21 + column_index + 21*21*2] = Math.abs(firstlandmark.getZ() - secondlandmark.getZ());
+                    column_index++;
+                }
+                row_index++;
+            }
 
             for (LandmarkProto.NormalizedLandmark landmark : landmarks.getLandmarkList()) {
                 multiHandLandmarksStr += "\t\tLandmark [" + landmarkIndex + "]: (" + landmark.getX() + ", " + landmark.getY() + ", " + landmark.getZ() + ")\n";
@@ -108,6 +125,12 @@ public class MediaPipeHelper {
             }
 
             // TODO: pass it through handPatternRecognitionHelper.infer() to get index of action
+            ByteBuffer inputBuffer = ByteBuffer.allocate(distance_buffer.length * Float.BYTES);
+            for (Float value: distance_buffer) {
+                inputBuffer.putFloat(value);
+            }
+            int index = handPatternRecognitionHelper.infer(inputBuffer);
+            multiHandLandmarksStr += "ACTION INDEX: " + index + "\n";
 
             ++handIndex;
         }
