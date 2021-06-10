@@ -75,7 +75,7 @@ public class TextSpeechActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     tts.speak(txt.getText().toString(), TextToSpeech.QUEUE_FLUSH, null);
-                    Helper.showToast(getApplicationContext(), "Speak");
+//                    Helper.showToast(getApplicationContext(), "Speak");
                 }
             }
         });
@@ -101,6 +101,7 @@ public class TextSpeechActivity extends AppCompatActivity {
 
         // Start translation
         esp32Helper = ESP32Helper.getHelper();
+        mediaPipeHelper = new MediaPipeHelper(getApplicationContext(), esp32Helper);
         startSign2Text();
     }
 
@@ -131,13 +132,13 @@ public class TextSpeechActivity extends AppCompatActivity {
     }
 
     private void startSign2Text() {
-        mediaPipeHelper = new MediaPipeHelper();
-
         ESP32Helper.isActive().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean active) {
                 if (active) {
-                    mediaPipeHelper.initialize(getApplicationContext(), esp32Helper);
+                    mediaPipeHelper.initialize();
+                } else {
+                    mediaPipeHelper.suspend();
                 }
             }
         });

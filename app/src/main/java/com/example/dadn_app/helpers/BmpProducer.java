@@ -31,6 +31,10 @@ public class BmpProducer extends Thread {
         this.customFrameAvailableListner = customFrameAvailableListner;
     }
 
+    public void removeListener() {
+        this.customFrameAvailableListner = null;
+    }
+
     private void update_bitmap() {
         this.byteImage = this.esp32Helper.getImage();
         if (this.byteImage == null) return;
@@ -45,7 +49,7 @@ public class BmpProducer extends Thread {
         while (true) {
             if (bmp == null || customFrameAvailableListner == null)
                 continue;
-            Log.d(TAG,"Writing frame");
+//            Log.d(TAG,"Writing frame");
 
             update_bitmap();
             customFrameAvailableListner.onFrame(bmp);

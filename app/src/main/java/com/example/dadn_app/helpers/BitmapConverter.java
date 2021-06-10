@@ -162,7 +162,7 @@ public class BitmapConverter implements TextureFrameProducer, CustomFrameAvailab
 
         @Override
         public void onFrame(Bitmap bitmap) {
-            Log.d(TAG,"New Frame");
+//            Log.d(TAG,"New Frame");
             this.bitmap = bitmap;
 
             handler.post(() -> renderNext());
@@ -180,19 +180,19 @@ public class BitmapConverter implements TextureFrameProducer, CustomFrameAvailab
                         AppTextureFrame outputFrame = nextOutputFrame(this.bitmap);
                         updateOutputFrame(outputFrame);
                         frameUpdated = true;
-                        Log.d(TAG,"Frame updated ");
+//                        Log.d(TAG,"Frame updated ");
                         if (consumer != null) {
                             if (Log.isLoggable(TAG, Log.VERBOSE)) {
-                                Log.v(
-                                        TAG,
-                                        String.format(
-                                                "Locking tex: %d width: %d height: %d",
-                                                outputFrame.getTextureName(),
-                                                outputFrame.getWidth(),
-                                                outputFrame.getHeight()));
+//                                Log.v(
+//                                        TAG,
+//                                        String.format(
+//                                                "Locking tex: %d width: %d height: %d",
+//                                                outputFrame.getTextureName(),
+//                                                outputFrame.getWidth(),
+//                                                outputFrame.getHeight()));
                             }
                             outputFrame.setInUse();
-                            Log.d(TAG,"Frame sending to consumer");
+//                            Log.d(TAG,"Frame sending to consumer");
                             consumer.onNewFrame(outputFrame);
                         }
                     }
