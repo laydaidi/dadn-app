@@ -1,0 +1,13 @@
+Word,LeftPattern,RightPattern,Action,Position,Direction
+ăn,[],[chum],"[,static]","[,mouth]","[,]"
+bạn,[],[tro],"[,static]","[,chess]","[,front]"
+cảm ơn,[],"[chum,xoe]","[,change]","[,mouth]","[,]"
+đi,[],[trogiua],"[,stir]","[,bottomright]","[,]"
+học,[],[chum],"[,static]","[,head]","[,]"
+hôm nay,[xoe],[xoe],"[movedown,movedown]","[bottomleft, bottomright]","[,]"
+hôm qua,[],[xoe],"[,moveback]","[,topright]","[,]"
+không,[],[xoe],"[,shake]","[,topright]","[,]"
+tôi,[],[tro],"[,static]","[,chess]","[,back]"
+xin chào,[],[xoe],"[,fluctuate]","[,topright]","[,]"
+yêu,[],[y],"[,static]","[,chess]","[,]"
+buồn,[],[a],"[,movearound]","[,chess]","[,]"

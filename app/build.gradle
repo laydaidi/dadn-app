@@ -64,6 +64,7 @@ dependencies {
     implementation 'com.neovisionaries:nv-websocket-client:2.14'
     implementation 'commons-codec:commons-codec:1.10'
     implementation 'com.google.code.gson:gson:2.8.7'
+    implementation 'com.opencsv:opencsv:5.4'
 
     // MediaPipe deps
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])

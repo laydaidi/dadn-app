@@ -27,6 +27,7 @@ import com.example.dadn_app.helpers.ESP32Helper;
 import com.example.dadn_app.helpers.Helper;
 import com.example.dadn_app.helpers.MQTTHelper;
 import com.example.dadn_app.helpers.MediaPipeHelper;
+import com.example.dadn_app.helpers.WordHelper;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
@@ -103,6 +104,10 @@ public class TextSpeechActivity extends AppCompatActivity {
         esp32Helper = ESP32Helper.getHelper();
         mediaPipeHelper = new MediaPipeHelper(getApplicationContext(), esp32Helper);
         startSign2Text();
+
+        // test WordHelper
+        WordHelper wordHelper = new WordHelper(getApplicationContext());
+        wordHelper.loadWordDescriptor("word_description.csv");
     }
 
     public void onClickLibrary(View view) {
