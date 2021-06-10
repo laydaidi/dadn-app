@@ -2,25 +2,32 @@ package com.example.dadn_app.helpers;
 
 import android.util.Log;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import com.neovisionaries.ws.client.WebSocket;
 import com.neovisionaries.ws.client.WebSocketAdapter;
 import com.neovisionaries.ws.client.WebSocketException;
 import com.neovisionaries.ws.client.WebSocketFactory;
 import com.neovisionaries.ws.client.WebSocketFrame;
+import com.neovisionaries.ws.client.WebSocketState;
 
 import org.apache.commons.codec.binary.Base64;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 public class ESP32Helper {
     public static ESP32Helper helper = null;
-    private final String serverUri = "ws://192.168.4.1:8888";
+    private final String serverUri = "ws://192.168.43.199:8888";
     private WebSocket ws;
-    private final ImageBuffer imageBuffer = SharedImageBuffer.getImageBuffer();
+    private static final ImageBuffer imageBuffer = SharedImageBuffer.getImageBuffer();
+    private static final MutableLiveData<Boolean> isActive = new MutableLiveData<Boolean>();
 
     private ESP32Helper() {
+        isActive.postValue(false);
         createWebSocketClient();
     }
 
@@ -29,6 +36,10 @@ public class ESP32Helper {
             helper = new ESP32Helper();
         }
         return helper;
+    }
+
+    public static LiveData<Boolean> isActive() {
+        return isActive;
     }
 
     private void createWebSocketClient() {
@@ -43,6 +54,7 @@ public class ESP32Helper {
                 @Override
                 public void onConnected(WebSocket webSocket, Map<String, List<String>> headers) {
                     Log.w("WebSocket", "Session is starting");
+                    isActive.postValue(true);
                 }
 
                 @Override
@@ -56,6 +68,7 @@ public class ESP32Helper {
                                            WebSocketFrame serverCloseFrame, WebSocketFrame clientCloseFrame,
                                            boolean closedByServer) throws Exception {
                     Log.w("WebSocket", "Close");
+                    isActive.postValue(false);
                 }
 
                 @Override
@@ -102,6 +115,10 @@ public class ESP32Helper {
         }
     }
 
+    public byte[] getImage() {
+      return imageBuffer.get();
+    };
+
     public boolean isConnected() {
         return ws.isOpen();
     }
@@ -110,8 +127,18 @@ public class ESP32Helper {
         if (isConnected()) {
             return;
         }
-        // Connect to the server and perform an opening handshake.
-        ws.connectAsynchronously();
+        if (ws.getState() == WebSocketState.CLOSED) {
+            try {
+                ws = ws.recreate();
+                // Connect to the server and perform an opening handshake.
+                ws.connectAsynchronously();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            // Connect to the server and perform an opening handshake.
+            ws.connectAsynchronously();
+        }
     }
 
     public void disconnect() {

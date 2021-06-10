@@ -21,7 +21,6 @@ public class WelcomeActivity extends AppCompatActivity {
     }
 
     public void onClickBtnStart(View view) {
-
         SharedPreferences prefs = getSharedPreferences("com.example.dadn_app", Context.MODE_PRIVATE);
         RequestQueue queue = Volley.newRequestQueue(this);
 

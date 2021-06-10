@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.dadn_app.R;
@@ -59,7 +60,20 @@ public class RecordAdapter extends BaseAdapter {
         audioImageBtn.setImageResource(record.getAudioImage());
         videoImageBtn.setImageResource(record.getVideoImage());
 
+        setClickListener(videoImageBtn, position, parent);
+        setClickListener(audioImageBtn, position, parent);
+
         return convertView;
+    }
+
+    private void setClickListener(View view, final int position, final ViewGroup parent){
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // this part is important, it lets ListView handle the clicks
+                ((ListView) parent).performItemClick(v, position, 0);
+            }
+        });
     }
 
     // filter records
