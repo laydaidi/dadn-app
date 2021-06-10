@@ -23,6 +23,8 @@ import org.json.JSONObject;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.UUID;
 
 public class MQTTHelper {
@@ -32,7 +34,7 @@ public class MQTTHelper {
     final String baseTopic = "CSE_BBC/feeds/";
     final String subscriptionTopic = "";
     final String username = "CSE_BBC";
-    final String password = "aio_rTgF008YejIJKh4RFlHiLjZGBYfs";
+    final String password = "aio_YWqQ75LLnzE66cGrbMWNhCka1Xhb";
 
     // Second mqtt server
     final String serverUri1 = "tcp://io.adafruit.com:1883";
@@ -56,15 +58,7 @@ public class MQTTHelper {
             public void connectComplete(boolean b, String s) {
                 Log.d("mqtt", s);
                 JSONObject data = new JSONObject();
-                try {
-                    data.put("id", "2");
-                    data.put("name", "SPEAKER");
-                    data.put("data", "100");
-                    data.put("unit", "");
-                    mqttHelper.publishData("CSE_BBC/feeds/bk-iot-speaker", data);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                notifyBuzzer("100");
             }
 
             @Override
@@ -177,7 +171,7 @@ public class MQTTHelper {
     }
 
     private void processData(String topic, MqttMessage mqttMessage) {
-        JSONObject data = null;
+        JSONObject data;
         try {
             data = new JSONObject(mqttMessage.toString());
             // Receive data from ESP32 CAM
@@ -208,6 +202,23 @@ public class MQTTHelper {
             buzzerData.put("data", value);
             buzzerData.put("unit", "");
             mqttHelper.publishData(baseTopic + "bk-iot-speaker", buzzerData);
+            if (!value.equals("0")) {
+                new Timer().schedule(
+                        new TimerTask() {
+                            @Override
+                            public void run() {
+                                try {
+                                    // Turn off buzzer after 1 second
+                                    buzzerData.put("data", "0");
+                                    mqttHelper.publishData(baseTopic + "bk-iot-speaker", buzzerData);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        },
+                        1000
+                );
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
