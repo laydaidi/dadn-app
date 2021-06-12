@@ -153,7 +153,7 @@ public class TextSpeechActivity extends AppCompatActivity {
     }
 
     private void startDecode() {
-        MediaPipeHelper.retrievePatternBuffer().observe((LifecycleOwner) getApplicationContext(), new Observer<HandPatternBuffer> () {
+        MediaPipeHelper.retrievePatternBuffer().observe(this, new Observer<HandPatternBuffer> () {
             @Override
             public void onChanged(HandPatternBuffer handPatternBuffer) {
                 speakOut(textDecoder.decode(handPatternBuffer));
