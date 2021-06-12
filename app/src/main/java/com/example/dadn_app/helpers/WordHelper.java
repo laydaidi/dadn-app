@@ -46,16 +46,14 @@ public class WordHelper {
             }
 
             // test
-            for(List<String> dt: descriptions) {
-                String[] params = new String[] {dt.get(1),dt.get(2),dt.get(3),dt.get(4),dt.get(5)};
-                for(String param: params) {
-                    Log.d("PARAMS", param);
-                }
-                String word = this.getWord(params);
-                Log.d("CSV_DATA", word);
-            }
-
-
+//            for(List<String> dt: descriptions) {
+//                String[] params = new String[] {dt.get(1),dt.get(2),dt.get(3),dt.get(4),dt.get(5)};
+//                for(String param: params) {
+//                    Log.d("PARAMS", param);
+//                }
+//                String word = this.getWord(params);
+//                Log.d("CSV_DATA", word);
+//            }
 
         } catch (CsvValidationException e) {
             Log.d("LOAD_CSV_ERROR", e.toString());
