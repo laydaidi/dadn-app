@@ -162,7 +162,9 @@ public class TextSpeechActivity extends AppCompatActivity {
     }
 
     private void speakOut(String decodeString) {
-        this.tts.speak(decodeString, TextToSpeech.QUEUE_FLUSH, null);
+        if (decodeString != null && decodeString != "") {
+            this.tts.speak(decodeString, TextToSpeech.QUEUE_FLUSH, null);
+        }
     }
 
     private LiveData<Boolean> isServerConnected() {
