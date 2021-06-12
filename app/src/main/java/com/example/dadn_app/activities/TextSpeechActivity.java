@@ -1,7 +1,9 @@
 package com.example.dadn_app.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
 import android.annotation.SuppressLint;
@@ -23,7 +25,9 @@ import android.widget.Toast;
 
 import com.example.dadn_app.R;
 import com.example.dadn_app.helpers.BmpProducer;
+import com.example.dadn_app.helpers.DecodeText;
 import com.example.dadn_app.helpers.ESP32Helper;
+import com.example.dadn_app.helpers.HandPatternBuffer;
 import com.example.dadn_app.helpers.Helper;
 import com.example.dadn_app.helpers.MQTTHelper;
 import com.example.dadn_app.helpers.MediaPipeHelper;
@@ -49,6 +53,7 @@ public class TextSpeechActivity extends AppCompatActivity {
     MQTTHelper mqttHelper;
     ESP32Helper esp32Helper;
     MediaPipeHelper mediaPipeHelper;
+    DecodeText textDecoder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,11 +108,8 @@ public class TextSpeechActivity extends AppCompatActivity {
         // Start translation
         esp32Helper = ESP32Helper.getHelper();
         mediaPipeHelper = new MediaPipeHelper(getApplicationContext(), esp32Helper);
+        textDecoder = new DecodeText(getApplicationContext());
         startSign2Text();
-
-        // test WordHelper
-        WordHelper wordHelper = new WordHelper(getApplicationContext());
-        wordHelper.loadWordDescriptor("word_description.csv");
     }
 
     public void onClickLibrary(View view) {
@@ -142,11 +144,25 @@ public class TextSpeechActivity extends AppCompatActivity {
             public void onChanged(Boolean active) {
                 if (active) {
                     mediaPipeHelper.initialize();
+                    startDecode();
                 } else {
                     mediaPipeHelper.suspend();
                 }
             }
         });
+    }
+
+    private void startDecode() {
+        MediaPipeHelper.retrievePatternBuffer().observe((LifecycleOwner) getApplicationContext(), new Observer<HandPatternBuffer> () {
+            @Override
+            public void onChanged(HandPatternBuffer handPatternBuffer) {
+                speakOut(textDecoder.decode(handPatternBuffer));
+            }
+        });
+    }
+
+    private void speakOut(String decodeString) {
+        this.tts.speak(decodeString, TextToSpeech.QUEUE_FLUSH, null);
     }
 
     private LiveData<Boolean> isServerConnected() {

@@ -4,8 +4,11 @@ import android.content.Context;
 import android.graphics.SurfaceTexture;
 import android.util.Log;
 
+import androidx.lifecycle.MutableLiveData;
+
 import com.google.mediapipe.components.ExternalTextureConverter;
 import com.google.mediapipe.components.FrameProcessor;
+import com.google.mediapipe.formats.proto.ClassificationProto;
 import com.google.mediapipe.formats.proto.LandmarkProto;
 import com.google.mediapipe.framework.AndroidAssetUtil;
 import com.google.mediapipe.framework.AndroidPacketCreator;
@@ -13,7 +16,10 @@ import com.google.mediapipe.framework.Packet;
 import com.google.mediapipe.framework.PacketGetter;
 import com.google.mediapipe.glutil.EglManager;
 
+import org.apache.commons.lang3.mutable.Mutable;
+
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +42,7 @@ public class MediaPipeHelper {
     private ESP32Helper esp32Helper;
     private BmpProducer bitmapProducer;
     private HandPatternRecognitionHelper handPatternRecognitionHelper;
+    private static MutableLiveData<HandPatternBuffer> listHandPattern;
 
     static {
         System.loadLibrary("mediapipe_jni");
@@ -45,6 +52,7 @@ public class MediaPipeHelper {
     public MediaPipeHelper(Context context, ESP32Helper esp32Helper) {
         this.context = context;
         this.esp32Helper = esp32Helper;
+        listHandPattern = new MutableLiveData<HandPatternBuffer>();
 
         AndroidAssetUtil.initializeNativeAssetManager(context);
         eglManager = new EglManager(null);
@@ -63,8 +71,11 @@ public class MediaPipeHelper {
 
         processor.addPacketCallback(OUTPUT_LANDMARKS_STREAM_NAME, (packet) -> {
 //            Log.v("MediaPipe", "Received multi-hand landmarks packet.");
+
             List<LandmarkProto.NormalizedLandmarkList> multiHandLandmarks = PacketGetter.getProtoVector(packet, LandmarkProto.NormalizedLandmarkList.parser());
-            Log.v(DEBUG_TAG, "[TS:" + packet.getTimestamp() + "] " + getMultiHandLandmarksDebugString(multiHandLandmarks));
+            List<ClassificationProto.ClassificationList> multiHandClassification = PacketGetter.getProtoVector(packet, ClassificationProto.ClassificationList.parser());
+
+            Log.v(DEBUG_TAG, "[TS:" + packet.getTimestamp() + "] " + getMultiHandLandmarksDebugString(multiHandLandmarks, multiHandClassification));
         });
 
     }
@@ -90,10 +101,12 @@ public class MediaPipeHelper {
         handPatternRecognitionHelper.close();
     }
 
-    private String getMultiHandLandmarksDebugString(List<LandmarkProto.NormalizedLandmarkList> multiHandLandmarks) {
+    private String getMultiHandLandmarksDebugString(List<LandmarkProto.NormalizedLandmarkList> multiHandLandmarks,
+                                                    List<ClassificationProto.ClassificationList> multiHandClassification) {
         if (multiHandLandmarks.isEmpty()) {
             return "No hand landmarks";
         }
+        List<Integer> listPatternIndex = new ArrayList<Integer>();
         String multiHandLandmarksStr = "Number of hands detected: " + multiHandLandmarks.size() + "\n";
         int handIndex = 0;
         for (LandmarkProto.NormalizedLandmarkList landmarks : multiHandLandmarks) {
@@ -114,6 +127,7 @@ public class MediaPipeHelper {
             }
 
             int index = handPatternRecognitionHelper.doInference(distance_buffer);
+            listPatternIndex.add(index);
             Log.v("RESUTL", String.valueOf(index));
 
 //            for (LandmarkProto.NormalizedLandmark landmark : landmarks.getLandmarkList()) {
@@ -121,9 +135,18 @@ public class MediaPipeHelper {
 //                ++landmarkIndex;
 //
 //            }
+
             ++handIndex;
         }
+
+        HandPatternBuffer newBuffer = new HandPatternBuffer(listPatternIndex, multiHandLandmarks, multiHandClassification);
+        listHandPattern.postValue(newBuffer);
+
         return multiHandLandmarksStr;
+    }
+
+    public static MutableLiveData<HandPatternBuffer> retrievePatternBuffer() {
+        return listHandPattern;
     }
 
 }

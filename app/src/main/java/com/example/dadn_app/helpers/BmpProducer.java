@@ -11,7 +11,7 @@ public class BmpProducer extends Thread {
 
     CustomFrameAvailableListner customFrameAvailableListner;
 
-    public int height = 800, width = 600;
+    public int height, width;
     Bitmap bmp;
     Context context;
     ESP32Helper esp32Helper;
@@ -20,6 +20,8 @@ public class BmpProducer extends Thread {
     BmpProducer(Context context, ESP32Helper esp32Helper){
         this.context = context;
         this.esp32Helper = esp32Helper;
+        this.height = context.getResources().getInteger(R.integer.image_height);
+        this.width = context.getResources().getInteger(R.integer.image_width);
 
         this.bmp = BitmapFactory.decodeResource(this.context.getResources(), R.drawable.logobk);
         this.bmp = Bitmap.createScaledBitmap(this.bmp,this.width,this.height,true);
