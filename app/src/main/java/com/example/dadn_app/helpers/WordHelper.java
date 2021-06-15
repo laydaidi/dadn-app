@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -104,9 +105,89 @@ public class WordHelper {
         for(String key: descriptions) {
             value = ((HashMap)value).get(key);
             if (value == null) {
-                return "<UNDEFINE>";
+                return "";
             }
         }
         return (String)value;
     }
+
+    public String getWord(MappingPattern mappingPattern) {
+        String leftPattern = "[";
+        for(int i=0; i< mappingPattern.leftPatterns.size(); i++) {
+            leftPattern += mappingPattern.leftPatterns.get(i) + ",";
+        }
+        leftPattern += leftPattern.length() == 1 ? leftPattern : leftPattern.substring(0,leftPattern.length()-1) + "]";
+
+        String rightPattern = "[";
+        for(int i=0; i< mappingPattern.rightPatterns.size(); i++) {
+            rightPattern += mappingPattern.rightPatterns.get(i) + ",";
+        }
+        rightPattern += rightPattern.length() == 1 ? rightPattern : rightPattern.substring(0,rightPattern.length()-1) + "]";
+
+        String[] descriptions = new String[] {leftPattern, rightPattern, mappingPattern.action, mappingPattern.position, mappingPattern.direction};
+        return getWord(descriptions);
+
+    }
+
+    public List<List<String>> getLeftPatterns() {
+        String[] leftPatternKeys = (String[]) wordDescriptor.keySet().toArray(new String[0]);
+        List<List<String>> leftPatterns = new ArrayList<>();
+        for(String key: leftPatternKeys) {
+            Log.v("LEFT-PATTERN", key);
+            List<String> patterns = new ArrayList<>(Arrays.asList(key.substring(1,key.length()-1).split(",")));
+            leftPatterns.add(patterns);
+            Log.v("LEFT-PATTERN-LIST", patterns.toString());
+        }
+        return leftPatterns;
+    }
+
+    public List<List<String>> getRightPatterns() {
+        String[] leftPatternKeys = (String[]) wordDescriptor.keySet().toArray(new String[0]);
+        List<List<String>> rightPatterns = new ArrayList<>();
+        for(String leftKey: leftPatternKeys) {
+            String[] rightPatternKeys = (String[]) wordDescriptor.get(leftKey).keySet().toArray(new String[0]);
+            for(String key: rightPatternKeys) {
+                Log.v("RIGHT-PATTERN", key);
+                List<String> patterns = new ArrayList<>(Arrays.asList(key.substring(1,key.length()-1).split(",")));
+                rightPatterns.add(patterns);
+                Log.v("RIGHT-PATTERN-LIST", patterns.toString());
+            }
+        }
+        return rightPatterns;
+    }
+
+    public boolean checkValidLeftPattern(MappingPattern mappingPattern) {
+        // valid if mappingPattern.leftPatterns is sub array of any LeftPattern list in WordHelper
+        // invalid otherwise
+
+        List<List<String>> leftPatternsList = this.getLeftPatterns();
+
+        boolean validLeftPatterns = false;
+        for(List<String> leftPatterns: leftPatternsList) {
+            if(Collections.indexOfSubList(leftPatterns, mappingPattern.leftPatterns) != -1) {
+                validLeftPatterns = true;
+                break;
+            }
+        }
+
+        return validLeftPatterns;
+    }
+
+    public boolean checkValidRightPattern(MappingPattern mappingPattern) {
+        // valid if mapping.rightPatterns is sub array of any RightPattern list in WordHelper
+        // invalid otherwise
+        List<List<String>> rightPatternsList = this.getRightPatterns();
+
+        boolean validRightPatterns = false;
+        for(List<String> rightPatterns: rightPatternsList) {
+            if(Collections.indexOfSubList(rightPatterns, mappingPattern.rightPatterns) != -1) {
+                validRightPatterns = true;
+                break;
+            }
+        }
+
+        return validRightPatterns;
+    }
+
+
 }

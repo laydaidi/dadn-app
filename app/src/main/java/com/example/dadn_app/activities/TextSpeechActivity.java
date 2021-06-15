@@ -14,6 +14,7 @@ import android.graphics.BitmapFactory;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.text.format.Formatter;
 import android.util.Log;
@@ -62,7 +63,8 @@ public class TextSpeechActivity extends AppCompatActivity {
 
         btnSwitch = (Switch) findViewById(R.id.btnSwitch);
         txt = (TextView) findViewById(R.id.textView2);
-        txt.setText("Xin chào");
+//        txt.setText("Xin chào");
+        txt.setText("");
 
         tts = new TextToSpeech(TextSpeechActivity.this, new TextToSpeech.OnInitListener() {
             @Override
@@ -110,6 +112,10 @@ public class TextSpeechActivity extends AppCompatActivity {
         mediaPipeHelper = new MediaPipeHelper(getApplicationContext(), esp32Helper);
         textDecoder = new DecodeText(getApplicationContext());
         startSign2Text();
+
+
+
+        this.fakeData(0);
     }
 
     public void onClickLibrary(View view) {
@@ -139,17 +145,19 @@ public class TextSpeechActivity extends AppCompatActivity {
     }
 
     private void startSign2Text() {
-        ESP32Helper.isActive().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean active) {
-                if (active) {
-                    mediaPipeHelper.initialize();
-                    startDecode();
-                } else {
-                    mediaPipeHelper.suspend();
-                }
-            }
-        });
+        mediaPipeHelper.initialize();
+        startDecode();
+//        ESP32Helper.isActive().observe(this, new Observer<Boolean>() {
+//            @Override
+//            public void onChanged(Boolean active) {
+//                if (active) {
+//                    mediaPipeHelper.initialize();
+//                    startDecode();
+//                } else {
+//                    mediaPipeHelper.suspend();
+//                }
+//            }
+//        });
     }
 
     private void startDecode() {
@@ -165,6 +173,20 @@ public class TextSpeechActivity extends AppCompatActivity {
         if (decodeString != null && !decodeString.equals("")) {
             this.tts.speak(decodeString, TextToSpeech.QUEUE_FLUSH, null);
         }
+    }
+
+    private void fakeData(int index) {
+        if (index > 3) return;
+        String[] words = new String[] {"hôm nay", "tôi",  "đi", "học"};
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                txt.setText(words[index]);
+                tts.speak(words[index], TextToSpeech.QUEUE_FLUSH, null);
+                fakeData(index+1);
+            }
+        }, 2000);
+
     }
 
     private LiveData<Boolean> isServerConnected() {

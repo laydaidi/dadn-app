@@ -139,6 +139,17 @@ public class MediaPipeHelper {
             ++handIndex;
         }
 
+//        Log.v("MULTIHANDCLASSIFICATION", String.valueOf(multiHandClassification.size()));
+//
+//        for(ClassificationProto.ClassificationList classificationList: multiHandClassification) {
+//            boolean hasLabel = classificationList.getClassification(10).hasLabel();
+//            boolean hasDisplayName = classificationList.getClassification(10).hasDisplayName();
+//            float score = classificationList.getClassification(10).getScore();
+//            Log.v("CLASS-LABEL", String.valueOf(hasLabel));
+//            Log.v("CLASS-NAME", String.valueOf(hasDisplayName));
+//            Log.v("CLASS-SCORE", String.valueOf(score));
+//        }
+
         HandPatternBuffer newBuffer = new HandPatternBuffer(listPatternIndex, multiHandLandmarks, multiHandClassification);
         listHandPattern.postValue(newBuffer);
 
