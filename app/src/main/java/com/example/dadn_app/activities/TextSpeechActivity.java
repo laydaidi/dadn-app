@@ -177,7 +177,7 @@ public class TextSpeechActivity extends AppCompatActivity {
 
     private void fakeData(int index) {
         if (index > 3) return;
-        String[] words = new String[] {"hôm nay", "tôi",  "đi", "học"};
+        String[] words = new String[] {"chúng tôi", "thuộc", "nhóm", "U", "R", "A", "trường", "đại học", "bách khoa", "thành phố", "Hồ Chí Minh"};
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             public void run() {

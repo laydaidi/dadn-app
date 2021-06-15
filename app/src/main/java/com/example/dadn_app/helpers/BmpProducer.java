@@ -23,7 +23,7 @@ public class BmpProducer extends Thread {
         this.height = context.getResources().getInteger(R.integer.image_height);
         this.width = context.getResources().getInteger(R.integer.image_width);
 
-        this.bmp = BitmapFactory.decodeResource(this.context.getResources(), R.drawable.demo_hand);
+        this.bmp = BitmapFactory.decodeResource(this.context.getResources(), R.drawable.logobk);
         this.bmp = Bitmap.createScaledBitmap(this.bmp,this.width,this.height,true);
 
         start();

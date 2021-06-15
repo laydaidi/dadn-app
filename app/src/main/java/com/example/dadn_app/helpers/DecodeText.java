@@ -28,7 +28,7 @@ public class DecodeText {
         this.mappingPattern = new MappingPattern();
 
 
-        wordHelper = new WordHelper(context);
+        wordHelper = new WordHelper(this.context);
         wordHelper.loadWordDescriptor("word_description.csv");
         labelMapping = new HashMap<>();
         this.loadLabelMapping("label_mapping.csv");
