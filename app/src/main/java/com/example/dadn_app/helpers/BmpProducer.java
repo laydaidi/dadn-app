@@ -3,6 +3,7 @@ package com.example.dadn_app.helpers;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.util.Log;
 
 import com.example.dadn_app.R;
@@ -16,15 +17,19 @@ public class BmpProducer extends Thread {
     Context context;
     ESP32Helper esp32Helper;
     byte[] byteImage;
+    Matrix transformMatrix;
 
     BmpProducer(Context context, ESP32Helper esp32Helper){
         this.context = context;
         this.esp32Helper = esp32Helper;
         this.height = context.getResources().getInteger(R.integer.image_height);
         this.width = context.getResources().getInteger(R.integer.image_width);
+        transformMatrix = new Matrix();
+        transformMatrix.preScale(1.0f, -1.0f);
 
         this.bmp = BitmapFactory.decodeResource(this.context.getResources(), R.drawable.demo_hand);
-        this.bmp = Bitmap.createScaledBitmap(this.bmp,this.width,this.height,true);
+        this.bmp = Bitmap.createScaledBitmap(this.bmp, this.width, this.height,true);
+        this.bmp = Bitmap.createBitmap(this.bmp, 0, 0, this.bmp.getWidth(), this.bmp.getHeight(), transformMatrix, true);
 
         start();
     }
@@ -41,7 +46,8 @@ public class BmpProducer extends Thread {
         this.byteImage = this.esp32Helper.getImage();
         if (this.byteImage == null) return;
         this.bmp = BitmapFactory.decodeByteArray(this.byteImage, 0, this.byteImage.length);
-        this.bmp = Bitmap.createScaledBitmap(this.bmp,this.width,this.height,true);
+        this.bmp = Bitmap.createScaledBitmap(this.bmp, this.width, this.height,true);
+        this.bmp = Bitmap.createBitmap(this.bmp, 0, 0, this.bmp.getWidth(), this.bmp.getHeight(), transformMatrix, true);
     }
 
     public static final String TAG="BmpProducer";

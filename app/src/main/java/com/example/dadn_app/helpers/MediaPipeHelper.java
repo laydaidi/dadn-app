@@ -1,12 +1,10 @@
 package com.example.dadn_app.helpers;
 
 import android.content.Context;
-import android.graphics.SurfaceTexture;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.google.mediapipe.components.ExternalTextureConverter;
 import com.google.mediapipe.components.FrameProcessor;
 import com.google.mediapipe.formats.proto.ClassificationProto;
 import com.google.mediapipe.formats.proto.LandmarkProto;
@@ -16,15 +14,10 @@ import com.google.mediapipe.framework.Packet;
 import com.google.mediapipe.framework.PacketGetter;
 import com.google.mediapipe.glutil.EglManager;
 
-import org.apache.commons.lang3.mutable.Mutable;
-
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.microedition.khronos.egl.EGLSurface;
 
 public class MediaPipeHelper {
 
@@ -32,6 +25,7 @@ public class MediaPipeHelper {
     private static final String BINARY_GRAPH_NAME = "hand_tracking_mobile_gpu.binarypb";
     private static final String INPUT_VIDEO_STREAM_NAME = "input_video";
     private static final String OUTPUT_LANDMARKS_STREAM_NAME = "hand_landmarks";
+    private static final String OUTPUT_CLASSIFICATION_STREAM_NAME = "handedness";
     private static final String INPUT_NUM_HANDS_SIDE_PACKET_NAME = "num_hands";
     private static final int NUM_HANDS = 2;
 
@@ -43,6 +37,8 @@ public class MediaPipeHelper {
     private BmpProducer bitmapProducer;
     private HandPatternRecognitionHelper handPatternRecognitionHelper;
     private static MutableLiveData<HandPatternBuffer> listHandPattern;
+    List<ClassificationProto.ClassificationList> multiHandClassification;
+    List<LandmarkProto.NormalizedLandmarkList> multiHandLandmarks;
 
     static {
         System.loadLibrary("mediapipe_jni");
@@ -69,15 +65,23 @@ public class MediaPipeHelper {
         inputSidePackets.put(INPUT_NUM_HANDS_SIDE_PACKET_NAME, packetCreator.createInt32(NUM_HANDS));
         processor.setInputSidePackets(inputSidePackets);
 
-        processor.addPacketCallback(OUTPUT_LANDMARKS_STREAM_NAME, (packet) -> {
-//            Log.v("MediaPipe", "Received multi-hand landmarks packet.");
+        processor.addPacketCallback(OUTPUT_CLASSIFICATION_STREAM_NAME, (packet_classification) -> {
+            multiHandClassification = PacketGetter.getProtoVector(packet_classification, ClassificationProto.ClassificationList.parser());
 
-            List<LandmarkProto.NormalizedLandmarkList> multiHandLandmarks = PacketGetter.getProtoVector(packet, LandmarkProto.NormalizedLandmarkList.parser());
-            List<ClassificationProto.ClassificationList> multiHandClassification = PacketGetter.getProtoVector(packet, ClassificationProto.ClassificationList.parser());
-
-            Log.v(DEBUG_TAG, "[TS:" + packet.getTimestamp() + "] " + getMultiHandLandmarksDebugString(multiHandLandmarks, multiHandClassification));
         });
 
+        processor.addPacketCallback(OUTPUT_LANDMARKS_STREAM_NAME, (packet_landmark) -> {
+            multiHandLandmarks = PacketGetter.getProtoVector(packet_landmark, LandmarkProto.NormalizedLandmarkList.parser());
+
+            for (ClassificationProto.ClassificationList classificationList: multiHandClassification) {
+                String hasLabel = classificationList.getClassification(0).getLabel();
+                float score = classificationList.getClassification(0).getScore();
+                Log.v("CLASS-LABEL", String.valueOf(hasLabel));
+                Log.v("CLASS-SCORE", String.valueOf(score));
+            }
+
+            Log.v(DEBUG_TAG, "[TS:" + packet_landmark.getTimestamp() + "] " + getMultiHandLandmarksDebugString(multiHandLandmarks, multiHandClassification));
+        });
     }
 
     public void initialize() {
@@ -131,27 +135,10 @@ public class MediaPipeHelper {
 
             int index = handPatternRecognitionHelper.doInference(distance_buffer);
             listPatternIndex.add(index);
-            Log.v("RESUTL", String.valueOf(index));
-
-//            for (LandmarkProto.NormalizedLandmark landmark : landmarks.getLandmarkList()) {
-//                multiHandLandmarksStr += "\t\tLandmark [" + landmarkIndex + "]: (" + landmark.getX() + ", " + landmark.getY() + ", " + landmark.getZ() + ")\n";
-//                ++landmarkIndex;
-//
-//            }
+            Log.v("RESULT", String.valueOf(index));
 
             ++handIndex;
         }
-
-//        Log.v("MULTIHANDCLASSIFICATION", String.valueOf(multiHandClassification.size()));
-//
-//        for(ClassificationProto.ClassificationList classificationList: multiHandClassification) {
-//            boolean hasLabel = classificationList.getClassification(10).hasLabel();
-//            boolean hasDisplayName = classificationList.getClassification(10).hasDisplayName();
-//            float score = classificationList.getClassification(10).getScore();
-//            Log.v("CLASS-LABEL", String.valueOf(hasLabel));
-//            Log.v("CLASS-NAME", String.valueOf(hasDisplayName));
-//            Log.v("CLASS-SCORE", String.valueOf(score));
-//        }
 
         HandPatternBuffer newBuffer = new HandPatternBuffer(listPatternIndex, multiHandLandmarks, multiHandClassification);
         listHandPattern.postValue(newBuffer);

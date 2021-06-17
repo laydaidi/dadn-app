@@ -2,7 +2,13 @@ package com.example.dadn_app.helpers;
 
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
+import android.util.Log;
+
+import com.example.dadn_app.R;
+
 import org.tensorflow.lite.Interpreter;
+
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.MappedByteBuffer;
@@ -11,9 +17,11 @@ import java.nio.channels.FileChannel;
 public class HandPatternRecognitionHelper {
     private Context mContext;
     Interpreter model;
+    private int NUM_PATTERNS;
 
     public HandPatternRecognitionHelper(Context context) {
         this.mContext = context;
+        this.NUM_PATTERNS = context.getResources().getInteger(R.integer.num_patterns);
         this.initialize();
     }
 
@@ -39,9 +47,12 @@ public class HandPatternRecognitionHelper {
     }
 
     public int doInference(float[][][] inputBuffer) {
-        float[][] output=new float[1][10];
-        this.model.run(inputBuffer, output);
-
+        float[][] output = new float[1][NUM_PATTERNS];
+        try {
+            this.model.run(inputBuffer, output);
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
         return this.getMaxIndex(output[0]);
     }
 

@@ -44,57 +44,57 @@ public class DecodeText {
         // If no word match, continue to store current buffer, waiting for the next
         // If more than 1000ms and no word match, clear buffer
         // Exception: If the recent buffer's pattern combined with old buffer's patterns do not match any pattern list, delete old buffer's patterns.
-
+        return "";
 
         // update mapping pattern
-        for (Integer index: handBuffer.patternIndex) {
-            String fullPattern = labelMapping.get(index);
-            String hand = fullPattern.substring(0, fullPattern.indexOf("_"));
-            String pattern = fullPattern.substring(fullPattern.indexOf("_")+1);
-            Log.v("HAND", hand);
-            Log.v("PATTERN", pattern);
-
-            if (hand.equals("Right")) {
-                mappingPattern.rightPatterns.add(pattern);
-            } else if (hand.equals("Left")) {
-                mappingPattern.leftPatterns.add(pattern);
-            }
-        }
-
-        // check valid pattern list
-        // valid if mappingPattern.leftPatterns is subarray of any LeftPattern list in WordHelper
-        // and mapping.rightPatterns is subarray of any RightPattern list in WordHelper
-        // invalid otherwise
-        if(!wordHelper.checkValidLeftPattern(mappingPattern)) {
-            mappingPattern.leftPatterns.remove(0);
-        }
-        if(!wordHelper.checkValidRightPattern(mappingPattern)) {
-            mappingPattern.rightPatterns.remove(0);
-        }
-
-        // find word
-        String word = wordHelper.getWord(mappingPattern);
-
-
-        if(word != null && !word.equals("")) { // match
-            listBuffer.clear();
-            timerBegin = null;
-            mappingPattern = new MappingPattern();
-        }
-
-        // check timeout
-        if(timerBegin == null) {
-            timerBegin = System.currentTimeMillis();
-        } else {
-            Long timeElapsed = System.currentTimeMillis() - timerBegin;
-            if (timeElapsed > 1000) { // timeout
-                listBuffer.clear();
-                timerBegin = null;
-                mappingPattern = new MappingPattern();
-            }
-        }
-
-        return word;
+//        for (Integer index: handBuffer.patternIndex) {
+//            String fullPattern = labelMapping.get(index);
+//            String hand = fullPattern.substring(0, fullPattern.indexOf("_"));
+//            String pattern = fullPattern.substring(fullPattern.indexOf("_")+1);
+//            Log.v("HAND", hand);
+//            Log.v("PATTERN", pattern);
+//
+//            if (hand.equals("Right")) {
+//                mappingPattern.rightPatterns.add(pattern);
+//            } else if (hand.equals("Left")) {
+//                mappingPattern.leftPatterns.add(pattern);
+//            }
+//        }
+//
+//        // check valid pattern list
+//        // valid if mappingPattern.leftPatterns is subarray of any LeftPattern list in WordHelper
+//        // and mapping.rightPatterns is subarray of any RightPattern list in WordHelper
+//        // invalid otherwise
+//        if(!wordHelper.checkValidLeftPattern(mappingPattern)) {
+//            mappingPattern.leftPatterns.remove(0);
+//        }
+//        if(!wordHelper.checkValidRightPattern(mappingPattern)) {
+//            mappingPattern.rightPatterns.remove(0);
+//        }
+//
+//        // find word
+//        String word = wordHelper.getWord(mappingPattern);
+//
+//
+//        if(word != null && !word.equals("")) { // match
+//            listBuffer.clear();
+//            timerBegin = null;
+//            mappingPattern = new MappingPattern();
+//        }
+//
+//        // check timeout
+//        if(timerBegin == null) {
+//            timerBegin = System.currentTimeMillis();
+//        } else {
+//            Long timeElapsed = System.currentTimeMillis() - timerBegin;
+//            if (timeElapsed > 1000) { // timeout
+//                listBuffer.clear();
+//                timerBegin = null;
+//                mappingPattern = new MappingPattern();
+//            }
+//        }
+//
+//        return word;
     }
 
     private void loadLabelMapping(String fileName) {
