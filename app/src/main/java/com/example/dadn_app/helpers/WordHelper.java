@@ -133,10 +133,10 @@ public class WordHelper {
         String[] leftPatternKeys = (String[]) wordDescriptor.keySet().toArray(new String[0]);
         List<List<String>> leftPatterns = new ArrayList<>();
         for(String key: leftPatternKeys) {
-            Log.v("LEFT-PATTERN", key);
+//            Log.v("LEFT-PATTERN", key);
             List<String> patterns = new ArrayList<>(Arrays.asList(key.substring(1,key.length()-1).split(",")));
             leftPatterns.add(patterns);
-            Log.v("LEFT-PATTERN-LIST", patterns.toString());
+//            Log.v("LEFT-PATTERN-LIST", patterns.toString());
         }
         return leftPatterns;
     }
@@ -147,10 +147,10 @@ public class WordHelper {
         for(String leftKey: leftPatternKeys) {
             String[] rightPatternKeys = (String[]) wordDescriptor.get(leftKey).keySet().toArray(new String[0]);
             for(String key: rightPatternKeys) {
-                Log.v("RIGHT-PATTERN", key);
+//                Log.v("RIGHT-PATTERN", key);
                 List<String> patterns = new ArrayList<>(Arrays.asList(key.substring(1,key.length()-1).split(",")));
                 rightPatterns.add(patterns);
-                Log.v("RIGHT-PATTERN-LIST", patterns.toString());
+//                Log.v("RIGHT-PATTERN-LIST", patterns.toString());
             }
         }
         return rightPatterns;

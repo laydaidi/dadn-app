@@ -19,7 +19,7 @@ public class DecodeText {
     private Context context;
     private List<HandPatternBuffer> listBuffer;
     private MappingPattern mappingPattern;
-    private HashMap<String, String> labelMapping;
+    private HashMap<Integer, String> labelMapping;
     private Long timerBegin;
 
     public DecodeText(Context context) {
@@ -48,7 +48,7 @@ public class DecodeText {
 
         // update mapping pattern
         for (Integer index: handBuffer.patternIndex) {
-            String fullPattern = labelMapping.get(String.valueOf(handBuffer.patternIndex.get(index)));
+            String fullPattern = labelMapping.get(index);
             String hand = fullPattern.substring(0, fullPattern.indexOf("_"));
             String pattern = fullPattern.substring(fullPattern.indexOf("_")+1);
             Log.v("HAND", hand);
@@ -104,12 +104,12 @@ public class DecodeText {
             String[] values = null;
             boolean isHeader = true;
             while ((values = csvReader.readNext()) != null) {
-                labelMapping.put(values[0], values[1].substring(values[1].indexOf("_")+1));
+                labelMapping.put(Integer.valueOf(values[0]), values[1]);
             }
 
-            for(int i=0; i<9; i++) {
-                Log.v("LABELMAPPING", labelMapping.get(String.valueOf(i)));
-            }
+//            for(int i=0; i<10; i++) {
+//                Log.v("LABELMAPPING", labelMapping.get(String.valueOf(i)));
+//            }
 
         } catch (CsvValidationException e) {
             Log.d("LOAD_CSV_ERROR", e.toString());
