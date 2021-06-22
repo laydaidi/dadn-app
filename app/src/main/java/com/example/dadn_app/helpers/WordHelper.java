@@ -112,17 +112,26 @@ public class WordHelper {
     }
 
     public String getWord(MappingPattern mappingPattern) {
+//        Log.v("PATTERN-SIZE", mappingPattern.leftPatterns.size() + "-" + mappingPattern.rightPatterns.size());
         String leftPattern = "[";
         for(int i=0; i< mappingPattern.leftPatterns.size(); i++) {
             leftPattern += mappingPattern.leftPatterns.get(i) + ",";
+//            Log.v("LPATTERN", mappingPattern.leftPatterns.get(i));
         }
-        leftPattern += leftPattern.length() == 1 ? leftPattern : leftPattern.substring(0,leftPattern.length()-1) + "]";
+        leftPattern = (leftPattern.length() == 1 ? leftPattern : leftPattern.substring(0,leftPattern.length()-1)) + "]";
+        Log.v("LEFT-PATTERN", leftPattern);
 
         String rightPattern = "[";
         for(int i=0; i< mappingPattern.rightPatterns.size(); i++) {
             rightPattern += mappingPattern.rightPatterns.get(i) + ",";
+//            Log.v("RPATTERN", mappingPattern.rightPatterns.get(i));
         }
-        rightPattern += rightPattern.length() == 1 ? rightPattern : rightPattern.substring(0,rightPattern.length()-1) + "]";
+        rightPattern = (rightPattern.length() == 1 ? rightPattern : rightPattern.substring(0,rightPattern.length()-1)) + "]";
+        Log.v("RIGHT-PATTERN", rightPattern);
+
+//        Log.v("action", mappingPattern.action);
+//        Log.v("position", mappingPattern.position);
+        Log.v("DIRECTION", mappingPattern.direction);
 
         String[] descriptions = new String[] {leftPattern, rightPattern, mappingPattern.action, mappingPattern.position, mappingPattern.direction};
         return getWord(descriptions);
@@ -136,7 +145,7 @@ public class WordHelper {
 //            Log.v("LEFT-PATTERN", key);
             List<String> patterns = new ArrayList<>(Arrays.asList(key.substring(1,key.length()-1).split(",")));
             leftPatterns.add(patterns);
-//            Log.v("LEFT-PATTERN-LIST", patterns.toString());
+//            Log.v("LEFT-PATTERNS", patterns.toString());
         }
         return leftPatterns;
     }
@@ -150,7 +159,7 @@ public class WordHelper {
 //                Log.v("RIGHT-PATTERN", key);
                 List<String> patterns = new ArrayList<>(Arrays.asList(key.substring(1,key.length()-1).split(",")));
                 rightPatterns.add(patterns);
-//                Log.v("RIGHT-PATTERN-LIST", patterns.toString());
+//                Log.v("RIGHT-PATTERNS", patterns.toString());
             }
         }
         return rightPatterns;
@@ -170,6 +179,8 @@ public class WordHelper {
             }
         }
 
+//        Log.v("VALID-LEFT-PATTERN", String.valueOf(validLeftPatterns));
+
         return validLeftPatterns;
     }
 
@@ -185,6 +196,8 @@ public class WordHelper {
                 break;
             }
         }
+
+//        Log.v("VALID-RIGHT-PATTERN", String.valueOf(validRightPatterns));
 
         return validRightPatterns;
     }
