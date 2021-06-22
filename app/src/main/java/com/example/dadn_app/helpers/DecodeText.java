@@ -104,12 +104,12 @@ public class DecodeText {
             String[] values = null;
             boolean isHeader = true;
             while ((values = csvReader.readNext()) != null) {
-                labelMapping.put(values[0], values[1]);
+                labelMapping.put(values[0], values[1].substring(values[1].indexOf("_")+1));
             }
 
-//            for(int i=0; i<10; i++) {
-//                Log.v("LABELMAPPING", labelMapping.get(String.valueOf(i)));
-//            }
+            for(int i=0; i<9; i++) {
+                Log.v("LABELMAPPING", labelMapping.get(String.valueOf(i)));
+            }
 
         } catch (CsvValidationException e) {
             Log.d("LOAD_CSV_ERROR", e.toString());

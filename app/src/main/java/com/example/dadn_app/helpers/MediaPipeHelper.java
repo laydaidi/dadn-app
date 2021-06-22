@@ -113,22 +113,23 @@ public class MediaPipeHelper {
             multiHandLandmarksStr += "\t#Hand landmarks for hand[" + handIndex + "]: " + landmarks.getLandmarkCount() + "\n";
             int landmarkIndex = 0;
 
-            float[][][][] distance_buffer = new float[1][3][21][21];
+            float[][][] dist = new float[1][21][21];
             int row_index = 0;
             for(LandmarkProto.NormalizedLandmark firstlandmark: landmarks.getLandmarkList()) {
                 int column_index = 0;
                 for (LandmarkProto.NormalizedLandmark secondlandmark: landmarks.getLandmarkList()) {
-                    distance_buffer[0][0][row_index][column_index] = Math.abs(firstlandmark.getX() - secondlandmark.getX());
-                    distance_buffer[0][1][row_index][column_index] = Math.abs(firstlandmark.getY() - secondlandmark.getY());
-                    distance_buffer[0][2][row_index][column_index] = Math.abs(firstlandmark.getZ() - secondlandmark.getZ());
+                    float dx = firstlandmark.getX() - secondlandmark.getX();
+                    float dy = firstlandmark.getY() - secondlandmark.getY();
+                    float dz = firstlandmark.getZ() - secondlandmark.getZ();
+                    dist[0][row_index][column_index] = (float)Math.sqrt(dx*dx + dy*dy + dz*dz);
                     column_index++;
                 }
                 row_index++;
             }
 
-            int index = handPatternRecognitionHelper.doInference(distance_buffer);
+            int index = handPatternRecognitionHelper.doInference(dist);
             listPatternIndex.add(index);
-            Log.v("RESUTL", String.valueOf(index));
+            Log.v("RESULT", String.valueOf(index));
 
 //            for (LandmarkProto.NormalizedLandmark landmark : landmarks.getLandmarkList()) {
 //                multiHandLandmarksStr += "\t\tLandmark [" + landmarkIndex + "]: (" + landmark.getX() + ", " + landmark.getY() + ", " + landmark.getZ() + ")\n";

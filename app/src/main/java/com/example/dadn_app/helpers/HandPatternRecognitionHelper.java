@@ -38,8 +38,8 @@ public class HandPatternRecognitionHelper {
         this.model.close();
     }
 
-    public int doInference(float[][][][] inputBuffer) {
-        float[][] output=new float[1][10];
+    public int doInference(float[][][] inputBuffer) {
+        float[][] output=new float[1][9];
         this.model.run(inputBuffer, output);
 
         return this.getMaxIndex(output[0]);

@@ -113,9 +113,6 @@ public class TextSpeechActivity extends AppCompatActivity {
         textDecoder = new DecodeText(getApplicationContext());
         startSign2Text();
 
-
-
-        this.fakeData(0);
     }
 
     public void onClickLibrary(View view) {
