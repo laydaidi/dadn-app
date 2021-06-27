@@ -21,6 +21,7 @@ public class DecodeText {
     private List<HandPatternBuffer> listBuffer;
     private MappingPattern mappingPattern;
     private HashMap<Integer, String> labelMapping;
+    private HashMap<String, float[]> positionMapping;
     private Long timerBegin;
 
     public DecodeText(Context context) {
@@ -33,6 +34,8 @@ public class DecodeText {
         wordHelper.loadWordDescriptor("word_description.csv");
         labelMapping = new HashMap<>();
         this.loadLabelMapping("label_mapping.csv");
+        positionMapping = new HashMap<>();
+        this.loadPositionMapping("position_mapping.csv");
     }
 
     public String decode(HandPatternBuffer handBuffer) {
@@ -48,10 +51,15 @@ public class DecodeText {
 
 
         // update mapping pattern
+        if(handBuffer.patternIndex.size() != handBuffer.patternHandedness.size()) {
+            return "";
+        }
+
         String coordinateDebug = "";
         mappingPattern.position = "[,]";
         mappingPattern.direction = "[,]";
         mappingPattern.action = "";
+
         for (int i=0; i < handBuffer.patternIndex.size(); i++) {  // i is hand index (left/right)
             // update left/right patterns
             String pattern = labelMapping.get(handBuffer.patternIndex.get(i));
@@ -92,10 +100,11 @@ public class DecodeText {
             }
 
             // update position
-
+            float[] palmBoundingBox = this.getPalmBoundingBox(landmarkList);
+            mappingPattern.position = this.getPosition(landmarkList, palmBoundingBox);
 
             // update action
-
+            mappingPattern.action = "";
         }
         Log.v("LANDMARKS", coordinateDebug);
 
@@ -157,6 +166,41 @@ public class DecodeText {
         }
     }
 
+    private void loadPositionMapping(String fileName) {
+        try {
+            InputStreamReader is = new InputStreamReader(context.getAssets().open(fileName));
+            CSVReader csvReader = new CSVReader(is);
+            String[] values = null;
+            boolean isHeader = true;
+            while ((values = csvReader.readNext()) != null) {
+                if (isHeader) {
+                    isHeader = false;
+                    continue;
+                }
+                positionMapping.put(String.valueOf(values[0]),
+                        new float[] {
+                                Float.valueOf(values[1]),
+                                Float.valueOf(values[2]),
+                                Float.valueOf(values[3]),
+                                Float.valueOf(values[4])
+                        });
+            }
+
+//            Log.v("POSITIONMAPPING",
+//                    positionMapping.get("forehead")[0] + "," +
+//                            positionMapping.get("forehead")[1] + "," +
+//                            positionMapping.get("forehead")[2] + "," +
+//                            positionMapping.get("forehead")[3]
+//            );
+
+
+        } catch (CsvValidationException e) {
+            Log.d("LOAD_CSV_ERROR", e.toString());
+        } catch (IOException e) {
+            Log.d("LOAD_CSV_ERROR", e.toString());
+        }
+    }
+
     private float[] getHandBoundingBox(LandmarkProto.NormalizedLandmarkList landmarkList) {
         float HAND_TOP = 0.0f;
         float HAND_BOTTOM = 1.0f;
@@ -188,6 +232,42 @@ public class DecodeText {
         float [] handBoundingBox = new float[] {HAND_LEFT, HAND_RIGHT, HAND_TOP, HAND_BOTTOM, HAND_NEAR, HAND_FAR};
         return handBoundingBox;
 
+    }
+
+    private float[] getPalmBoundingBox(LandmarkProto.NormalizedLandmarkList landmarkList) {
+        float PALM_TOP = 0.0f;
+        float PALM_BOTTOM = 1.0f;
+        float PALM_LEFT = 1.0f;
+        float PALM_RIGHT = 0.0f;
+        float PALM_NEAR = 1.0f;
+        float PALM_FAR = -1.0f;
+        for(LandmarkProto.NormalizedLandmark landmark: landmarkList.getLandmarkList()) {
+            if (landmark.equals(landmarkList.getLandmark(0)) ||
+                    landmark.equals(landmarkList.getLandmark(5)) ||
+                    landmark.equals(landmarkList.getLandmark(17))) {
+                if (landmark.getX() < PALM_LEFT) {
+                    PALM_LEFT = landmark.getX();
+                }
+                if (landmark.getX() > PALM_RIGHT) {
+                    PALM_RIGHT = landmark.getX();
+                }
+                if (landmark.getY() > PALM_TOP) {
+                    PALM_TOP = landmark.getY();
+                }
+                if (landmark.getY() < PALM_BOTTOM) {
+                    PALM_BOTTOM = landmark.getY();
+                }
+                if (landmark.getZ() < PALM_NEAR) {
+                    PALM_NEAR = landmark.getZ();
+                }
+                if (landmark.getZ() > PALM_FAR) {
+                    PALM_FAR = landmark.getZ();
+                }
+            }
+        }
+
+        float [] palmBoundingBox = new float[] {PALM_LEFT, PALM_RIGHT, PALM_TOP, PALM_BOTTOM, PALM_NEAR, PALM_FAR};
+        return palmBoundingBox;
     }
 
     private String getDirection(LandmarkProto.NormalizedLandmarkList landmarkList, float[] handBoundingBox) {
@@ -224,5 +304,58 @@ public class DecodeText {
         }
 
         return direction;
+    }
+
+    private String getPosition(LandmarkProto.NormalizedLandmarkList landmarkList, float[] palmBoundingBox) {
+        float HEAD_THRESHOLD = 0.5f;
+        float MOUTH_THRESHOLD = 0.25f;
+        float CHEST_THRESHOLD = 0.125f;
+
+        float width = palmBoundingBox[1] - palmBoundingBox[0];
+        float height = palmBoundingBox[2] - palmBoundingBox[3];
+        float diagonal = (float)Math.sqrt(width*width + height*height);
+
+        ArrayList<String> matchPositions = new ArrayList<>();
+        for(String position: positionMapping.keySet()) {
+            float[] coords = positionMapping.get(position);
+            float TOP = coords[0];
+            float BOTTOM = coords[1];
+            float LEFT = coords[2];
+            float RIGHT = coords[3];
+
+            if(palmBoundingBox[0] >= LEFT &&
+                    palmBoundingBox[1] <= RIGHT &&
+                    palmBoundingBox[2] <= TOP &&
+                    palmBoundingBox[3] >= BOTTOM) {
+                boolean valid = false;
+                if(position == "forehead") {
+                    if(diagonal > HEAD_THRESHOLD) {
+                        valid = true;
+                    }
+                } else if (position == "mouth") {
+                    if(diagonal > MOUTH_THRESHOLD && diagonal <= HEAD_THRESHOLD) {
+                        valid = true;
+                    }
+                } else if (position == "chest") {
+                    if(diagonal <= MOUTH_THRESHOLD) {
+                        valid = true;
+                    }
+                } else {
+                    valid = true;
+                }
+
+                if(valid) {
+                    matchPositions.add(position);
+                }
+            }
+        }
+
+        Log.v("NUM-MATCH-POSITION", String.valueOf(matchPositions.size()));
+
+        for(String position: matchPositions) {
+            Log.v("MATCH-POSITION", position);
+        }
+
+        return "";
     }
 }
