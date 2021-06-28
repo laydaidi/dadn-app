@@ -108,7 +108,7 @@ public class WordHelper {
                 return "";
             }
         }
-        return (String)value;
+        return (String) value;
     }
 
     public String getWord(MappingPattern mappingPattern) {
@@ -130,7 +130,7 @@ public class WordHelper {
         Log.v("RIGHT-PATTERN", rightPattern);
 
 //        Log.v("action", mappingPattern.action);
-//        Log.v("position", mappingPattern.position);
+        Log.v("position", mappingPattern.position);
         Log.v("DIRECTION", mappingPattern.direction);
 
         String[] descriptions = new String[] {leftPattern, rightPattern, mappingPattern.action, mappingPattern.position, mappingPattern.direction};
@@ -171,17 +171,15 @@ public class WordHelper {
 
         List<List<String>> leftPatternsList = this.getLeftPatterns();
 
-        boolean validLeftPatterns = false;
         for(List<String> leftPatterns: leftPatternsList) {
             if(Collections.indexOfSubList(leftPatterns, mappingPattern.leftPatterns) != -1) {
-                validLeftPatterns = true;
-                break;
+                return true;
             }
         }
 
 //        Log.v("VALID-LEFT-PATTERN", String.valueOf(validLeftPatterns));
 
-        return validLeftPatterns;
+        return false;
     }
 
     public boolean checkValidRightPattern(MappingPattern mappingPattern) {
@@ -189,17 +187,15 @@ public class WordHelper {
         // invalid otherwise
         List<List<String>> rightPatternsList = this.getRightPatterns();
 
-        boolean validRightPatterns = false;
         for(List<String> rightPatterns: rightPatternsList) {
             if(Collections.indexOfSubList(rightPatterns, mappingPattern.rightPatterns) != -1) {
-                validRightPatterns = true;
-                break;
+                return true;
             }
         }
 
 //        Log.v("VALID-RIGHT-PATTERN", String.valueOf(validRightPatterns));
 
-        return validRightPatterns;
+        return false;
     }
 
 

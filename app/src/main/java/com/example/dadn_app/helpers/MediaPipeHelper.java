@@ -73,12 +73,12 @@ public class MediaPipeHelper {
         processor.addPacketCallback(OUTPUT_LANDMARKS_STREAM_NAME, (packet_landmark) -> {
             multiHandLandmarks = PacketGetter.getProtoVector(packet_landmark, LandmarkProto.NormalizedLandmarkList.parser());
 
-            for (ClassificationProto.ClassificationList classificationList: multiHandClassification) {
-                String hasLabel = classificationList.getClassification(0).getLabel();
-                float score = classificationList.getClassification(0).getScore();
-                Log.v("CLASS-LABEL", String.valueOf(hasLabel));
-                Log.v("CLASS-SCORE", String.valueOf(score));
-            }
+//            for (ClassificationProto.ClassificationList classificationList: multiHandClassification) {
+//                String hasLabel = classificationList.getClassification(0).getLabel();
+//                float score = classificationList.getClassification(0).getScore();
+//                Log.v("CLASS-LABEL", String.valueOf(hasLabel));
+//                Log.v("CLASS-SCORE", String.valueOf(score));
+//            }
 
             Log.v(DEBUG_TAG, "[TS:" + packet_landmark.getTimestamp() + "] " + getMultiHandLandmarksDebugString(multiHandLandmarks, multiHandClassification));
         });
@@ -135,7 +135,7 @@ public class MediaPipeHelper {
 
             int index = handPatternRecognitionHelper.doInference(distance_buffer);
             listPatternIndex.add(index);
-            Log.v("RESULT", String.valueOf(index));
+//            Log.v("RESULT", String.valueOf(index));
 
             ++handIndex;
         }

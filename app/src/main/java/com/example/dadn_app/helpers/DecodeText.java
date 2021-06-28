@@ -65,10 +65,11 @@ public class DecodeText {
             String pattern = labelMapping.get(handBuffer.patternIndex.get(i));
 //            Log.v("PATTERN", pattern);
             String hand = handBuffer.patternHandedness.get(i).getClassification(0).getLabel();
-//            Log.v("HAND", hand);
-            if (hand.equals("Right")) {
+//            Log.v("HAND", String.valueOf(hand.contains("Right")));
+            if (hand.contains("Right")) {
+//                Log.v("DECODE", "ADD "+ pattern);
                 mappingPattern.rightPatterns.add(pattern);
-            } else if (hand.equals("Left")) {
+            } else if (hand.contains("Left")) {
                 mappingPattern.leftPatterns.add(pattern);
             }
 
@@ -88,11 +89,11 @@ public class DecodeText {
             // update direction
             String direction = this.getDirection(landmarkList, handBoundingBox);
             if(!direction.equals("")) {
-                if(hand.equals("Right")) {
+                if(hand.contains("Right")) {
                     mappingPattern.direction = new StringBuffer(mappingPattern.direction)
                             .insert(mappingPattern.direction.indexOf(",")+1,direction)
                             .toString();
-                } else if(hand.equals("Left")) {
+                } else if(hand.contains("Left")) {
                    mappingPattern.direction = new StringBuffer(mappingPattern.direction)
                            .insert(mappingPattern.direction.indexOf("[")+1, direction)
                            .toString();
@@ -122,7 +123,7 @@ public class DecodeText {
 
         // find word
         String word = wordHelper.getWord(mappingPattern);
-
+//        Log.v("WORD", word);
 
         if(word != null && !word.equals("")) { // match
             listBuffer.clear();
