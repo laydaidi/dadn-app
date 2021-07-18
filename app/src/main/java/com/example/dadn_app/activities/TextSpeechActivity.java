@@ -142,19 +142,19 @@ public class TextSpeechActivity extends AppCompatActivity {
     }
 
     private void startSign2Text() {
-        mediaPipeHelper.initialize();
-        startDecode();
-//        ESP32Helper.isActive().observe(this, new Observer<Boolean>() {
-//            @Override
-//            public void onChanged(Boolean active) {
-//                if (active) {
-//                    mediaPipeHelper.initialize();
-//                    startDecode();
-//                } else {
-//                    mediaPipeHelper.suspend();
-//                }
-//            }
-//        });
+//        mediaPipeHelper.initialize();
+//        startDecode();
+        ESP32Helper.isActive().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean active) {
+                if (active) {
+                    mediaPipeHelper.initialize();
+                    startDecode();
+                } else {
+                    mediaPipeHelper.suspend();
+                }
+            }
+        });
     }
 
     private void startDecode() {
