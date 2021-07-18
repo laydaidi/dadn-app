@@ -59,13 +59,26 @@ public class DecodeText {
         mappingPattern.position = "[,]";
         mappingPattern.direction = "[,]";
         mappingPattern.action = "";
+        String prevHand = "";
 
         for (int i=0; i < handBuffer.patternIndex.size(); i++) {  // i is hand index (left/right)
             // update left/right patterns
             String pattern = labelMapping.get(handBuffer.patternIndex.get(i));
 //            Log.v("PATTERN", pattern);
-            String hand = handBuffer.patternHandedness.get(i).getClassification(0).getLabel();
+//            String hand = handBuffer.patternHandedness.get(i).getClassification(0).getLabel();
+            String hand = getHandedness(handBuffer.patternHandedness.get(i));
 //            Log.v("HAND", String.valueOf(hand.contains("Right")));
+
+            // Ensure to 2 Left or 2 Right detected
+            // Note: trick -> need to solve properly
+            if(i == 0) {
+                prevHand = hand;
+            } else {
+                if(prevHand.equals(hand)) {
+                    hand = prevHand.equals("Right") ? "Left" : "Right";
+                }
+            }
+
             if (hand.contains("Right")) {
 //                Log.v("DECODE", "ADD "+ pattern);
                 mappingPattern.rightPatterns.add(pattern);
@@ -91,7 +104,7 @@ public class DecodeText {
             if(!direction.equals("")) {
                 if(hand.contains("Right")) {
                     mappingPattern.direction = new StringBuffer(mappingPattern.direction)
-                            .insert(mappingPattern.direction.indexOf(",")+1,direction)
+                            .insert(mappingPattern.direction.indexOf(",")+1, direction)
                             .toString();
                 } else if(hand.contains("Left")) {
                    mappingPattern.direction = new StringBuffer(mappingPattern.direction)
@@ -123,7 +136,7 @@ public class DecodeText {
 
         // find word
         String word = wordHelper.getWord(mappingPattern);
-//        Log.v("WORD", word);
+        Log.v("WORD", word);
 
         if(word != null && !word.equals("")) { // match
             listBuffer.clear();
@@ -267,6 +280,9 @@ public class DecodeText {
             }
         }
 
+        Log.v("PALM", String.format("left: %s%nright: %s%ntop: %s%nbottom: %s%nnear: %s%nfar: %s%n%n",
+                PALM_LEFT, PALM_RIGHT, PALM_TOP, PALM_BOTTOM, PALM_NEAR, PALM_FAR));
+
         float [] palmBoundingBox = new float[] {PALM_LEFT, PALM_RIGHT, PALM_TOP, PALM_BOTTOM, PALM_NEAR, PALM_FAR};
         return palmBoundingBox;
     }
@@ -329,15 +345,15 @@ public class DecodeText {
                     palmBoundingBox[2] <= TOP &&
                     palmBoundingBox[3] >= BOTTOM) {
                 boolean valid = false;
-                if(position == "forehead") {
+                if(position.equals("forehead")) {
                     if(diagonal > HEAD_THRESHOLD) {
                         valid = true;
                     }
-                } else if (position == "mouth") {
+                } else if (position.equals("mouth")) {
                     if(diagonal > MOUTH_THRESHOLD && diagonal <= HEAD_THRESHOLD) {
                         valid = true;
                     }
-                } else if (position == "chest") {
+                } else if (position.equals("chest")) {
                     if(diagonal <= MOUTH_THRESHOLD) {
                         valid = true;
                     }
@@ -358,5 +374,20 @@ public class DecodeText {
         }
 
         return "";
+    }
+
+    private String getHandedness(ClassificationProto.ClassificationList landmarksHandedness) {
+        int rightCount = 0;
+        int leftCount = 0;
+        for(ClassificationProto.Classification classification: landmarksHandedness.getClassificationList()) {
+            String label = classification.getLabel();
+            if(label.contains("Right")) {
+                rightCount += 1;
+            } else if (label.contains("Left")) {
+                leftCount += 1;
+            }
+        }
+
+        return rightCount >= leftCount ? "Right" : "Left";
     }
 }
