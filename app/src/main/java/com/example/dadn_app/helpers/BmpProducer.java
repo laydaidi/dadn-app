@@ -27,7 +27,7 @@ public class BmpProducer extends Thread {
         transformMatrix = new Matrix();
         transformMatrix.preScale(1.0f, -1.0f);
 
-        this.bmp = BitmapFactory.decodeResource(this.context.getResources(), R.drawable.hand_tro_front);
+        this.bmp = BitmapFactory.decodeResource(this.context.getResources(), R.drawable.demo_hand);
         this.bmp = Bitmap.createScaledBitmap(this.bmp, this.width, this.height,true);
         this.bmp = Bitmap.createBitmap(this.bmp, 0, 0, this.bmp.getWidth(), this.bmp.getHeight(), transformMatrix, true);
 
@@ -59,7 +59,7 @@ public class BmpProducer extends Thread {
                 continue;
 //            Log.d(TAG,"Writing frame");
 
-//            update_bitmap();
+            update_bitmap();
             customFrameAvailableListner.onFrame(bmp);
 
             /*OTMainActivity.imageView.post(new Runnable() {

@@ -81,19 +81,21 @@ public class MediaPipeHelper {
             }
 
             Log.v(DEBUG_TAG, "[TS:" + packet_landmark.getTimestamp() + "] " + getMultiHandLandmarksDebugString(multiHandLandmarks, multiHandClassification));
+
         });
+        handPatternRecognitionHelper = new HandPatternRecognitionHelper(this.context.getApplicationContext());
+        converter = new BitmapConverter(eglManager.getContext());
+        bitmapProducer = new BmpProducer(this.context.getApplicationContext(), this.esp32Helper);
+
     }
 
     public void initialize() {
-        handPatternRecognitionHelper = new HandPatternRecognitionHelper(this.context.getApplicationContext());
 
         // converter = new ExternalTextureConverter(eglManager.getContext(), 2);
-        converter = new BitmapConverter(eglManager.getContext());
         converter.setConsumer(processor);
 
         // Bitmap bmp = BitmapFactory.decodeByteArray(frame, 0, frame.length);
 
-        bitmapProducer = new BmpProducer(this.context.getApplicationContext(), this.esp32Helper);
         bitmapProducer.setCustomFrameAvailableListener(converter);
 
         // converter.setSurfaceTextureAndAttachToGLContext(surfaceTexture, surfaceTextureWidth, surfaceTextureHeight);

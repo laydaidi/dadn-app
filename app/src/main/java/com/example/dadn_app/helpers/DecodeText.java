@@ -36,6 +36,11 @@ public class DecodeText {
     }
 
     public String decode(HandPatternBuffer handBuffer) {
+        // update mapping pattern
+        if(handBuffer.patternIndex.size() != handBuffer.patternHandedness.size()) {
+            return "";
+        }
+
         listBuffer.add(handBuffer);
         // TODO: decode here
         // Every time received hand buffer, add it into buffer list
@@ -58,9 +63,9 @@ public class DecodeText {
 //            Log.v("PATTERN", pattern);
             String hand = handBuffer.patternHandedness.get(i).getClassification(0).getLabel();
 //            Log.v("HAND", hand);
-            if (hand.equals("Right")) {
+            if (hand.contains("Right")) {
                 mappingPattern.rightPatterns.add(pattern);
-            } else if (hand.equals("Left")) {
+            } else if (hand.contains("Left")) {
                 mappingPattern.leftPatterns.add(pattern);
             }
 
@@ -80,11 +85,11 @@ public class DecodeText {
             // update direction
             String direction = this.getDirection(landmarkList, handBoundingBox);
             if(!direction.equals("")) {
-                if(hand.equals("Right")) {
+                if(hand.contains("Right")) {
                     mappingPattern.direction = new StringBuffer(mappingPattern.direction)
                             .insert(mappingPattern.direction.indexOf(",")+1,direction)
                             .toString();
-                } else if(hand.equals("Left")) {
+                } else if(hand.contains("Left")) {
                    mappingPattern.direction = new StringBuffer(mappingPattern.direction)
                            .insert(mappingPattern.direction.indexOf("[")+1, direction)
                            .toString();
@@ -104,12 +109,14 @@ public class DecodeText {
         // valid if mappingPattern.leftPatterns is subarray of any LeftPattern list in WordHelper
         // and mapping.rightPatterns is subarray of any RightPattern list in WordHelper
         // invalid otherwise
-        if(!wordHelper.checkValidLeftPattern(mappingPattern)) {
-            mappingPattern.leftPatterns.remove(0);
-        }
-        if(!wordHelper.checkValidRightPattern(mappingPattern)) {
-            mappingPattern.rightPatterns.remove(0);
-        }
+
+
+//        if(!wordHelper.checkValidLeftPattern(mappingPattern)) {
+//            mappingPattern.leftPatterns.remove(0);
+//        }
+//        if(!wordHelper.checkValidRightPattern(mappingPattern)) {
+//            mappingPattern.rightPatterns.remove(0);
+//        }
 
         // find word
         String word = wordHelper.getWord(mappingPattern);
@@ -131,6 +138,13 @@ public class DecodeText {
                 timerBegin = null;
                 mappingPattern = new MappingPattern();
             }
+        }
+
+        if(mappingPattern.leftPatterns.size() > 0 ) {
+            mappingPattern.leftPatterns.clear();
+        }
+        if(mappingPattern.rightPatterns.size() > 0 ) {
+            mappingPattern.rightPatterns.clear();
         }
 
         return word;
@@ -207,19 +221,19 @@ public class DecodeText {
         if(distance_ratio_x > DIRECTION_THRESHOLD) {
             direction = "right";
         }
-        if(distance_ratio_x < -DIRECTION_THRESHOLD) {
+        else if(distance_ratio_x < -DIRECTION_THRESHOLD) {
             direction = "left";
         }
-        if(distance_ratio_y > DIRECTION_THRESHOLD) {
+        else if(distance_ratio_y > DIRECTION_THRESHOLD) {
             direction = "up";
         }
-        if(distance_ratio_y < -DIRECTION_THRESHOLD) {
+        else if(distance_ratio_y < -DIRECTION_THRESHOLD) {
             direction = "down";
         }
-        if(distance_ratio_z > DIRECTION_THRESHOLD) {
+        else if(distance_ratio_z > DIRECTION_THRESHOLD) {
             direction = "back";
         }
-        if(distance_ratio_z < -DIRECTION_THRESHOLD) {
+        else if(distance_ratio_z < -DIRECTION_THRESHOLD) {
             direction = "front";
         }
 

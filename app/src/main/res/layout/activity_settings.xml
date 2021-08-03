@@ -9,267 +9,273 @@
     android:paddingRight="10dp"
     tools:context=".activities.SettingsActivity">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="145dp"
-            android:layout_marginTop="35dp"
-            android:layout_marginBottom="35dp"
-            app:srcCompat="@drawable/logobk" />
-
-        <ScrollView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:verticalScrollbarPosition="right">
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="145dp"
+                android:layout_marginTop="35dp"
+                android:layout_marginBottom="35dp"
+                app:srcCompat="@drawable/logobk" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:verticalScrollbarPosition="right">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:orientation="horizontal"
+                        android:paddingRight="15dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.5"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp"
+                            app:srcCompat="@drawable/ic_user_24" />
+
+                        <EditText
+                            android:id="@+id/editSettingUsername"
+                            style="@style/Widget.AppCompat.EditText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_edittext"
+                            android:ems="10"
+                            android:hint="Username"
+                            android:inputType="textPersonName"
+                            android:textColorHint="@color/cardview_dark_background" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:orientation="horizontal"
+                        android:paddingRight="15dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.5"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp"
+                            app:srcCompat="@drawable/ic_baseline_email_24" />
+
+                        <EditText
+                            android:id="@+id/editSettingEmail"
+                            style="@style/Widget.AppCompat.EditText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_edittext"
+                            android:ems="10"
+                            android:hint="Email"
+                            android:inputType="textEmailAddress"
+                            android:textColorHint="@color/cardview_dark_background" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:orientation="horizontal"
+                        android:paddingRight="15dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.5"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp"
+                            app:srcCompat="@drawable/ic_baseline_phone_24" />
+
+                        <EditText
+                            android:id="@+id/editSettingPhone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_edittext"
+                            android:ems="10"
+                            android:hint="Phone"
+                            android:inputType="textPhonetic"
+                            android:textColorHint="@color/cardview_dark_background" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:orientation="horizontal"
+                        android:paddingRight="15dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.5"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp"
+                            app:srcCompat="@drawable/ic_baseline_cake_24" />
+
+                        <EditText
+                            android:id="@+id/editSettingBirthday"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_edittext"
+                            android:ems="10"
+                            android:hint="Birthday"
+                            android:inputType="none"
+                            android:textColorHint="@color/cardview_dark_background" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:layout_weight="0"
+                        android:orientation="horizontal"
+                        android:paddingRight="15dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.5"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp"
+                            app:srcCompat="@drawable/ic_baseline_group_24" />
+
+                        <RadioGroup
+                            android:id="@+id/radioSettingGender"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/radioSettingGenderMale"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.5"
+                                android:text="Male"
+                                android:textSize="18sp" />
+
+                            <RadioButton
+                                android:id="@+id/radioSettingGenderFemale"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.5"
+                                android:text="Female"
+                                android:textSize="18sp" />
+
+                            <RadioButton
+                                android:id="@+id/radioSettingGenderOther"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.5"
+                                android:text="Other"
+                                android:textSize="18sp" />
+                        </RadioGroup>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:layout_weight="0"
+                        android:orientation="horizontal"
+                        android:paddingRight="15dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.5"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp"
+                            app:srcCompat="@drawable/ic_baseline_place_24" />
+
+                        <EditText
+                            android:id="@+id/editSettingAddress"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_edittext"
+                            android:ems="10"
+                            android:hint="Address"
+                            android:inputType="text"
+                            android:textColorHint="@color/cardview_dark_background" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </ScrollView>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:orientation="horizontal">
 
-                <LinearLayout
+                <Button
+                    android:id="@+id/btnSaveInformation"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:orientation="horizontal"
-                    android:paddingRight="15dp">
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:text="Save"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:backgroundTint="#5E8DB6" />
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.5"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        app:srcCompat="@drawable/ic_user_24" />
-
-                    <EditText
-                        android:id="@+id/editSettingUsername"
-                        style="@style/Widget.AppCompat.EditText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_edittext"
-                        android:ems="10"
-                        android:hint="Username"
-                        android:inputType="textPersonName"
-                        android:textColorHint="@color/cardview_dark_background" />
-                </LinearLayout>
-
-                <LinearLayout
+                <Button
+                    android:id="@+id/btnLogout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:orientation="horizontal"
-                    android:paddingRight="15dp">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.5"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        app:srcCompat="@drawable/ic_baseline_email_24" />
-
-                    <EditText
-                        android:id="@+id/editSettingEmail"
-                        style="@style/Widget.AppCompat.EditText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_edittext"
-                        android:ems="10"
-                        android:hint="Email"
-                        android:inputType="textEmailAddress"
-                        android:textColorHint="@color/cardview_dark_background" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:orientation="horizontal"
-                    android:paddingRight="15dp">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.5"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        app:srcCompat="@drawable/ic_baseline_phone_24" />
-
-                    <EditText
-                        android:id="@+id/editSettingPhone"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_edittext"
-                        android:ems="10"
-                        android:hint="Phone"
-                        android:inputType="textPhonetic"
-                        android:textColorHint="@color/cardview_dark_background" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:orientation="horizontal"
-                    android:paddingRight="15dp">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.5"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        app:srcCompat="@drawable/ic_baseline_cake_24" />
-
-                    <EditText
-                        android:id="@+id/editSettingBirthday"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_edittext"
-                        android:ems="10"
-                        android:hint="Birthday"
-                        android:inputType="none"
-                        android:textColorHint="@color/cardview_dark_background" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:layout_weight="0"
-                    android:orientation="horizontal"
-                    android:paddingRight="15dp">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.5"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        app:srcCompat="@drawable/ic_baseline_group_24" />
-
-                    <RadioGroup
-                        android:id="@+id/radioSettingGender"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="horizontal">
-
-                        <RadioButton
-                            android:id="@+id/radioSettingGenderMale"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.5"
-                            android:text="Male"
-                            android:textSize="18sp" />
-
-                        <RadioButton
-                            android:id="@+id/radioSettingGenderFemale"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.5"
-                            android:text="Female"
-                            android:textSize="18sp" />
-
-                        <RadioButton
-                            android:id="@+id/radioSettingGenderOther"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.5"
-                            android:text="Other"
-                            android:textSize="18sp" />
-                    </RadioGroup>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:layout_weight="0"
-                    android:orientation="horizontal"
-                    android:paddingRight="15dp">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.5"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        app:srcCompat="@drawable/ic_baseline_place_24" />
-
-                    <EditText
-                        android:id="@+id/editSettingAddress"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_edittext"
-                        android:ems="10"
-                        android:hint="Address"
-                        android:inputType="text"
-                        android:textColorHint="@color/cardview_dark_background" />
-                </LinearLayout>
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:text="Logout"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:backgroundTint="#5E8DB6" />
 
             </LinearLayout>
-        </ScrollView>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/btnSaveInformation"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginRight="10dp"
-                android:layout_weight="1"
-                android:text="Save"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                app:backgroundTint="#5E8DB6" />
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/btnLogout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1"
-                android:text="Logout"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                app:backgroundTint="#5E8DB6" />
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:onClick="backToTextSpeechActivity"
+                    android:text="Back"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:backgroundTint="#5E8DB6" />
+            </LinearLayout>
 
         </LinearLayout>
+    </ScrollView>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:orientation="horizontal">
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:onClick="backToTextSpeechActivity"
-                android:text="Back"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                app:backgroundTint="#5E8DB6" />
-        </LinearLayout>
-
-    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

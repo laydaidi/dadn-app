@@ -31,18 +31,18 @@ public class MQTTHelper {
     // First mqtt server
     final String serverUri = "tcp://io.adafruit.com:1883";
     final String clientId = UUID.randomUUID().toString();
-    final String baseTopic = "CSE_BBC/feeds/";
-    final String subscriptionTopic = "";
-    final String username = "CSE_BBC";
-    final String password = "aio_YWqQ75LLnzE66cGrbMWNhCka1Xhb";
+    final String baseTopic = "CSE_BBC_phake/feeds/";
+    final String subscriptionTopic = baseTopic;
+    final String username = "CSE_BBC_phake";
+    final String password = "";
 
     // Second mqtt server
     final String serverUri1 = "tcp://io.adafruit.com:1883";
     final String clientId1 = UUID.randomUUID().toString();
-    final String baseTopic1 = "NPNLab_BBC_phake/feeds/";
+    final String baseTopic1 = "CSE_BBC_phake/feeds/";
     final String subscriptionTopic1 = baseTopic1 + "bk-iot-esp32-cam";
-    final String username1 = "NPNLab_BBC_phake";
-    final String password1 = "aio_WiPw41RLrnYJv18ohgVpCbnuZcN9"; // 70a-Yz49Ne72
+    final String username1 = "CSE_BBC_phake";
+    final String password1 = ""; // 70a-Yz49Ne72
 
     MqttAndroidClient mqttAndroidClient;
     MqttAndroidClient mqttAndroidClient1;

@@ -55,6 +55,7 @@ public class TextSpeechActivity extends AppCompatActivity {
     ESP32Helper esp32Helper;
     MediaPipeHelper mediaPipeHelper;
     DecodeText textDecoder;
+    String decodeWord = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,8 +149,8 @@ public class TextSpeechActivity extends AppCompatActivity {
 //            @Override
 //            public void onChanged(Boolean active) {
 //                if (active) {
-//                    mediaPipeHelper.initialize();
-//                    startDecode();
+////                    mediaPipeHelper.initialize();
+////                    startDecode();
 //                } else {
 //                    mediaPipeHelper.suspend();
 //                }
@@ -161,6 +162,7 @@ public class TextSpeechActivity extends AppCompatActivity {
         MediaPipeHelper.retrievePatternBuffer().observe(this, new Observer<HandPatternBuffer> () {
             @Override
             public void onChanged(HandPatternBuffer handPatternBuffer) {
+
                 speakOut(textDecoder.decode(handPatternBuffer));
             }
         });
@@ -168,7 +170,11 @@ public class TextSpeechActivity extends AppCompatActivity {
 
     private void speakOut(String decodeString) {
         if (decodeString != null && !decodeString.equals("")) {
-            this.tts.speak(decodeString, TextToSpeech.QUEUE_FLUSH, null);
+            if (!this.decodeWord.equals(decodeString)){
+                txt.setText(decodeString);
+                this.tts.speak(decodeString, TextToSpeech.QUEUE_FLUSH, null);
+                this.decodeWord = decodeString;
+            }
         }
     }
 
